@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Transporter extends SubsystemBase {
 
 
+    private TransporterConstants.TransporterState currentState;
     private final static Transporter INSTANCE = new Transporter();
     private final WPI_TalonSRX motor;
     public static Transporter getInstance() {
@@ -17,8 +18,10 @@ public class Transporter extends SubsystemBase {
     }
     public void setState (TransporterConstants.TransporterState state){
         motor.set(ControlMode.PercentOutput,state.voltage/TransporterConstants.VOLTAGE_COMPENSATION);
-
-
+        currentState = state;
+    }
+    public TransporterConstants.TransporterState getState(){
+        return currentState;
     }
 
 
