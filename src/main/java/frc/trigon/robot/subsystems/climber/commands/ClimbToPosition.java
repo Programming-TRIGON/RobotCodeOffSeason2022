@@ -1,7 +1,8 @@
-package frc.trigon.robot.subsystems.climber;
+package frc.trigon.robot.subsystems.climber.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.trigon.robot.subsystems.climber.Climber;
+import frc.trigon.robot.subsystems.climber.ClimberConstants;
 
 /**
  * This is a command for climbing to a position on the gear
