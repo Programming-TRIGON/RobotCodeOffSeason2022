@@ -1,11 +1,14 @@
 package frc.trigon.robot.subsystems.climber;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class ClimberConstants {
     protected static final int MAX_TICKS = 10000;
     protected static final double ALLOWABLE_ERROR = 100;
+    private static final boolean AUX_INVERTED = false;
     private static final int
             LEFT_MOTOR_ID = 0,
             RIGHT_MOTOR_ID = 1;
@@ -15,7 +18,8 @@ public class ClimberConstants {
     protected static final WPI_TalonFX
             LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
             RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID),
-            MASTER = RIGHT_MOTOR;
+            MASTER_MOTOR = RIGHT_MOTOR;
+
 
 
     private static final double
@@ -27,31 +31,50 @@ public class ClimberConstants {
                             AUX_D = 1;
 
     static {
+        LEFT_MOTOR.configFactoryDefault();
+        RIGHT_MOTOR.configFactoryDefault();
+
+        WPI_TalonFX followerMotor = LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
+
+        followerMotor.follow(MASTER_MOTOR, FollowerType.AuxOutput1);
+
         LEFT_MOTOR.setInverted(LEFT_MOTOR_INVERTED);
         RIGHT_MOTOR.setInverted(RIGHT_MOTOR_INVERTED);
-        LEFT_MOTOR.follow(MASTER, FollowerType.AuxOutput1);
-        RIGHT_MOTOR.follow(MASTER, FollowerType.AuxOutput1);
-        MASTER.config_kP(0, P);
-        MASTER.config_kI(0, I);
-        MASTER.config_kD(0, D);
-        MASTER.config_kP(1, AUX_P);
-        MASTER.config_kI(1, AUX_I);
-        MASTER.config_kD(1, AUX_D);
-    }
+        MASTER_MOTOR.configAuxPIDPolarity(AUX_INVERTED);
 
+
+        MASTER_MOTOR.config_kP(0, P);
+        MASTER_MOTOR.config_kI(0, I);
+        MASTER_MOTOR.config_kD(0, D);
+        MASTER_MOTOR.configAllowableClosedloopError(0, (int) ALLOWABLE_ERROR);
+
+        MASTER_MOTOR.config_kP(1, AUX_P);
+        MASTER_MOTOR.config_kI(1, AUX_I);
+        MASTER_MOTOR.config_kD(1, AUX_D);
+
+        followerMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        MASTER_MOTOR.configRemoteFeedbackFilter(followerMotor, 0);
+
+        MASTER_MOTOR.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.IntegratedSensor);
+        MASTER_MOTOR.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.RemoteSensor0);
+        MASTER_MOTOR.configSelectedFeedbackCoefficient(0.5, 0, 0);
+        MASTER_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 0,0);
+        MASTER_MOTOR.selectProfileSlot(0, 0);
+
+        MASTER_MOTOR.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.IntegratedSensor);
+        MASTER_MOTOR.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor0);
+        MASTER_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.SensorDifference, 1, 0);
+        MASTER_MOTOR.selectProfileSlot(1, 1);
+    }
     public enum ClimberPosition {
         HIGH(MAX_TICKS),
         LOW(-MAX_TICKS),
         MIDDLE(0);
 
-        final int ticks;
+        public final int ticks;
 
         ClimberPosition(int ticks) {
             this.ticks = ticks;
-        }
-
-        public int getTicks() {
-            return ticks;
         }
     }
 }
