@@ -1,4 +1,4 @@
-package frc.trigon.robot.subsystems.climber.commands;
+package frc.trigon.robot.subsystems.climber;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.trigon.robot.subsystems.climber.ClimberConstants.ClimberPosition;

@@ -18,9 +18,8 @@ public class ClimberConstants {
     protected static final WPI_TalonFX
             LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
             RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID),
-            MASTER_MOTOR = RIGHT_MOTOR;
-
-
+            MASTER_MOTOR = RIGHT_MOTOR,
+            FOLLOWER_MOTOR = LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
 
     private static final double
                             P = 1,
@@ -34,14 +33,11 @@ public class ClimberConstants {
         LEFT_MOTOR.configFactoryDefault();
         RIGHT_MOTOR.configFactoryDefault();
 
-        WPI_TalonFX followerMotor = LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
-
-        followerMotor.follow(MASTER_MOTOR, FollowerType.AuxOutput1);
+        FOLLOWER_MOTOR.follow(MASTER_MOTOR, FollowerType.AuxOutput1);
 
         LEFT_MOTOR.setInverted(LEFT_MOTOR_INVERTED);
         RIGHT_MOTOR.setInverted(RIGHT_MOTOR_INVERTED);
         MASTER_MOTOR.configAuxPIDPolarity(AUX_INVERTED);
-
 
         MASTER_MOTOR.config_kP(0, P);
         MASTER_MOTOR.config_kI(0, I);
@@ -52,8 +48,8 @@ public class ClimberConstants {
         MASTER_MOTOR.config_kI(1, AUX_I);
         MASTER_MOTOR.config_kD(1, AUX_D);
 
-        followerMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        MASTER_MOTOR.configRemoteFeedbackFilter(followerMotor, 0);
+        FOLLOWER_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        MASTER_MOTOR.configRemoteFeedbackFilter(FOLLOWER_MOTOR, 0);
 
         MASTER_MOTOR.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.IntegratedSensor);
         MASTER_MOTOR.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.RemoteSensor0);
@@ -66,7 +62,7 @@ public class ClimberConstants {
         MASTER_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.SensorDifference, 1, 0);
         MASTER_MOTOR.selectProfileSlot(1, 1);
     }
-    public enum ClimberPosition {
+    protected enum ClimberPosition {
         HIGH(MAX_TICKS),
         LOW(-MAX_TICKS),
         MIDDLE(0);
