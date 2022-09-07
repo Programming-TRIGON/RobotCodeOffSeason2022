@@ -14,7 +14,7 @@ public class Climber extends SubsystemBase {
 
     private final static Climber INSTANCE = new Climber();
 
-    protected static Climber getInstance() {
+     static Climber getInstance() {
         return INSTANCE;
     }
 
@@ -26,7 +26,7 @@ public class Climber extends SubsystemBase {
      * Sets the target position for the climber.
      * @param position the target position
      */
-    protected void setTargetPosition(ClimberPosition position) {
+     void setTargetPosition(ClimberPosition position) {
         followerMotor.follow(masterMotor, FollowerType.AuxOutput1);
         masterMotor.set(ControlMode.Position, position.ticks, DemandType.AuxPID, 0);
     }
@@ -35,7 +35,7 @@ public class Climber extends SubsystemBase {
      * Returns whether the climber is in the target position within the allowable error.
      * @return true if the climber is in the target position
      */
-    protected boolean inTargetPosition() {
+     boolean inTargetPosition() {
         if(!masterMotor.getControlMode().equals(ControlMode.Position))
             return false;
         return masterMotor.getClosedLoopError() <= ClimberConstants.ALLOWABLE_ERROR;
@@ -44,24 +44,30 @@ public class Climber extends SubsystemBase {
     /**
      * @return the current position from -1 (lowest) to 1 (highest)
      */
-    protected double getCurrentPosition() {
+     double getCurrentPosition() {
         return masterMotor.getSelectedSensorPosition() / ClimberConstants.MAX_TICKS;
     }
 
     /**
      * Stops the climber motors.
      */
-    protected void stop() {
+     void stop() {
         masterMotor.set(ControlMode.Disabled, 0);
     }
-    protected void setPower(double power) {
+     void setPower(double power) {
         followerMotor.follow(masterMotor, FollowerType.PercentOutput);
         masterMotor.set(ControlMode.PercentOutput, power);
     }
-    protected boolean atTop() {
+    double getSelectedSensorPosition(){
+         return masterMotor.getSelectedSensorPosition();
+    }
+    void setSelectedSensorPosition(double position){
+         masterMotor.setSelectedSensorPosition(position);
+    }
+     boolean atTop() {
         return masterMotor.isFwdLimitSwitchClosed() + followerMotor.isFwdLimitSwitchClosed() == 2;
     }
-    protected boolean atBottom() {
+     boolean atBottom() {
         return masterMotor.isRevLimitSwitchClosed()+ followerMotor.isRevLimitSwitchClosed() == 2;
     }
 }
