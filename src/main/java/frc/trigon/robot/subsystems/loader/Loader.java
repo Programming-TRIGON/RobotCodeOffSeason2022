@@ -3,11 +3,12 @@ package frc.trigon.robot.subsystems.loader;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.trigon.robot.subsystems.loader.LoaderConstants.LoaderState;
 
 public class Loader extends SubsystemBase {
-    private WPI_TalonSRX motor;
+    private WPI_TalonSRX motor = LoaderConstants.MOTOR;
 
-    private LoaderConstants.LoaderState currentState;
+    private LoaderState currentState;
 
     private final static Loader INSTANCE = new Loader();
 
@@ -16,14 +17,15 @@ public class Loader extends SubsystemBase {
     }
 
     private Loader() {
-        motor = LoaderConstants.MOTOR;
+
     }
 
-    public void setState(LoaderConstants.LoaderState state) {
+    public void setState(LoaderState state) {
         motor.set(ControlMode.PercentOutput, state.voltage / LoaderConstants.VOLTAGE_COMPENSATION);
+        currentState = state;
     }
 
-    public LoaderConstants.LoaderState getState() {
+    public LoaderState getState() {
         return currentState;
     }
 }
