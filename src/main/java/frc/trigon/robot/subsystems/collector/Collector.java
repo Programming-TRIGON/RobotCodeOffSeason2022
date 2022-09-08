@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Collector extends SubsystemBase {
 
     private static final WPI_TalonFX
-            openingMotor = CollectorConstants.OPENER_MOTOR;
-    private static final WPI_TalonSRX
+            openingMotor = CollectorConstants.OPENER_MOTOR,
             collectingMotor = CollectorConstants.COLLECTOR_MOTOR;
 
     private final static Collector INSTANCE = new Collector();

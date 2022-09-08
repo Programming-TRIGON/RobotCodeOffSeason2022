@@ -13,9 +13,8 @@ public class CollectorConstants {
             MOTOR_OPENER_INVERTED = false,
             MOTOR_COLLECTOR_INVERTED = false;
     protected static final WPI_TalonFX
-            OPENER_MOTOR = new WPI_TalonFX(MOTOR_OPENER_ID);
-    protected static final WPI_TalonSRX
-            COLLECTOR_MOTOR = new WPI_TalonSRX(MOTOR_COLLECTOR_ID);
+            OPENER_MOTOR = new WPI_TalonFX(MOTOR_OPENER_ID),
+            COLLECTOR_MOTOR = new WPI_TalonFX(MOTOR_COLLECTOR_ID);
     protected static final double
             COLLECTING_VOLTAGE = 1,
             OPENING_VOLTAGE = 1,
