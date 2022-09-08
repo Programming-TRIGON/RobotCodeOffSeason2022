@@ -8,8 +8,9 @@ import frc.trigon.robot.Robot;
 
 public class Collector extends SubsystemBase {
 
+    private static final WPI_TalonFX
+            openerMotor = CollectorConstants.OPENER_MOTOR;
     private static final WPI_TalonSRX
-            openerMotor = CollectorConstants.OPENER_MOTOR,
             collector = CollectorConstants.COLLECTOR_MOTOR;
 
     private final static Collector INSTANCE = new Collector();
