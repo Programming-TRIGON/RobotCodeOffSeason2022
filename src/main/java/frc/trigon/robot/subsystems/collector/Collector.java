@@ -4,14 +4,13 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.trigon.robot.Robot;
 
 public class Collector extends SubsystemBase {
 
     private static final WPI_TalonFX
-            openerMotor = CollectorConstants.OPENER_MOTOR;
+            openingMotor = CollectorConstants.OPENER_MOTOR;
     private static final WPI_TalonSRX
-            collector = CollectorConstants.COLLECTOR_MOTOR;
+            collectingMotor = CollectorConstants.COLLECTOR_MOTOR;
 
     private final static Collector INSTANCE = new Collector();
 
@@ -23,19 +22,24 @@ public class Collector extends SubsystemBase {
 
     }
 
-    protected void stop(){
-        collector.set(ControlMode.Disabled, 0);
-        openerMotor.set(ControlMode.Disabled, 0);
+    private void stop(){
+        collectingMotor.disable();
+        openingMotor.disable();
     }
-    protected void collect() {
-        openerMotor.set(CollectorConstants.MOTOR_OPENER_VOLTAGE);
-        collector.set(ControlMode.PercentOutput, CollectorConstants.MOTOR_COLLECTOR_VOLTAGE);
-    }
-    protected void close(){
+    private void collect() {
+        openingMotor.set(CollectorConstants.OPENING_VOLTAGE);
+        collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.COLLECTING_VOLTAGE);
 
     }
-    protected void eject(){
-
+    private void close(){
+        openingMotor.set(CollectorConstants.CLOSING_VOLTAGE);
+        collectingMotor.disable();
+    }
+    private void eject(){
+        collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.EJECTING_VOLTAGE);
+    }
+    public boolean isOpen(){
+        return openingMotor.get() > 0;
     }
 }
 

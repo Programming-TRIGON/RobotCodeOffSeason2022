@@ -17,8 +17,10 @@ public class CollectorConstants {
     protected static final WPI_TalonSRX
             COLLECTOR_MOTOR = new WPI_TalonSRX(MOTOR_COLLECTOR_ID);
     protected static final double
-            MOTOR_COLLECTOR_VOLTAGE = 1,
-            MOTOR_OPENER_VOLTAGE = 1;
+            COLLECTING_VOLTAGE = 1,
+            OPENING_VOLTAGE = 1,
+            EJECTING_VOLTAGE = -6,
+            CLOSING_VOLTAGE = -6;
     static final double
             OPENER_CURRENT_LIMIT_PEAK_CURRENT = 10,
             OPENER_CURRENT_LIMIT_PEAK_DURATION = 0.2,
