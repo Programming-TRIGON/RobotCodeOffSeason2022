@@ -5,12 +5,7 @@
 
 package frc.trigon.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-
-public class RobotContainer
-{
-    public RobotContainer()
-    {
+public class RobotContainer {
+    public RobotContainer() {
     }
 }
