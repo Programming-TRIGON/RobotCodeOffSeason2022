@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import edu.wpi.first.wpilibj.Filesystem;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -12,12 +13,30 @@ public class JsonHandler {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String path = Filesystem.getDeployDirectory().getPath();
 
-    public static void saveToJsonFile(Object object, String path) {
+    public static void saveToJsonFile(Object object, String name) {
         String json = gson.toJson(object);
-        saveFile(JsonHandler.path+path +".tmp", "\""+object+"\"");
-        renameFile(JsonHandler.path+path, JsonHandler.path+path+".bak");
-        renameFile(JsonHandler.path+path +".tmp", JsonHandler.path+path);
-        deleteFile(JsonHandler.path + path+".bak");
+        saveFile(JsonHandler.path+name +".tmp", json);
+        renameFile(JsonHandler.path+name, JsonHandler.path+name+".bak");
+        renameFile(JsonHandler.path+name +".tmp", JsonHandler.path+name);
+        deleteFile(JsonHandler.path + name+".bak");
+    }
+    public static <T> T getObjectFromJson(String fileName, Class<T> type){
+        return gson.fromJson(getFileContent(fileName), type);
+    }
+    private static String getFileContent(String name) {
+        File file = new File(path+name);
+        StringBuilder contentAsString = new StringBuilder();
+
+        try (FileReader fileReader = new FileReader(file))
+        {
+            int contentAsNumber;
+            while ((contentAsNumber = fileReader.read()) != -1) {
+                contentAsString.append((char)contentAsNumber);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return contentAsString.toString();
     }
     private static void renameFile(String oldPath, String newPath){
         File file = new File(oldPath);

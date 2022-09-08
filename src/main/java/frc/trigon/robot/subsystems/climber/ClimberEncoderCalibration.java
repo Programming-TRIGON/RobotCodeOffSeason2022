@@ -22,7 +22,7 @@ public class ClimberEncoderCalibration extends CommandBase {
             climber.setPower(ClimberConstants.CLIMBER_CALIBRATION_POWER);
         }
         if(climber.atTop()){
-            JsonHandler.saveToJsonFile(climber.getSelectedSensorPosition(), "ClimberConstants.json");
+            JsonHandler.saveToJsonFile(climber.getSelectedSensorPosition()/2, "ClimberConstants.json");
             climber.setSelectedSensorPosition(climber.getSelectedSensorPosition()/2);
         }
     }
