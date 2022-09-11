@@ -8,6 +8,9 @@ import frc.trigon.robot.subsystems.climber.ClimberConstants.ClimberPosition;
  */
 public class FullClimb extends SequentialCommandGroup {
 
+    /**
+     * Constructs a new FullClimb command.
+     */
     public FullClimb() {
         super(
                 new ClimbToPosition(ClimberPosition.HIGH),
