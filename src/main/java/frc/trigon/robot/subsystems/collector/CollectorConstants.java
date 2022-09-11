@@ -3,18 +3,8 @@ package frc.trigon.robot.subsystems.collector;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class CollectorConstants {
-    private static final int
-            MOTOR_OPENER_ID = 0,
-            MOTOR_COLLECTOR_ID = 1;
-    private static final boolean
-            MOTOR_OPENER_INVERTED = false,
-            MOTOR_COLLECTOR_INVERTED = false;
-    protected static final WPI_TalonFX
-            OPENER_MOTOR = new WPI_TalonFX(MOTOR_OPENER_ID),
-            COLLECTOR_MOTOR = new WPI_TalonFX(MOTOR_COLLECTOR_ID);
     protected static final double
             COLLECTING_VOLTAGE = 1,
             OPENING_VOLTAGE = 1,
@@ -28,6 +18,16 @@ public class CollectorConstants {
             COLLECTOR_CURRENT_LIMIT_PEAK_CURRENT = 20,
             COLLECTOR_CURRENT_LIMIT_PEAK_DURATION = 0.8,
             COLLECTOR_CURRENT_LIMIT = 8;
+    private static final int
+
+            MOTOR_OPENER_ID = 0,
+            MOTOR_COLLECTOR_ID = 1;
+    protected static final WPI_TalonFX
+            OPENER_MOTOR = new WPI_TalonFX(MOTOR_OPENER_ID),
+            COLLECTOR_MOTOR = new WPI_TalonFX(MOTOR_COLLECTOR_ID);
+    private static final boolean
+            MOTOR_OPENER_INVERTED = false,
+            MOTOR_COLLECTOR_INVERTED = false;
 
     static {
         OPENER_MOTOR.setInverted(MOTOR_OPENER_INVERTED);
@@ -40,7 +40,7 @@ public class CollectorConstants {
                         OPENER_CURRENT_LIMIT_PEAK_DURATION
                 )
         );
-
+        
         COLLECTOR_MOTOR.configSupplyCurrentLimit(
                 new SupplyCurrentLimitConfiguration(
                         true,

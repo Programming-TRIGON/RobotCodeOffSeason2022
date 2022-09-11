@@ -2,7 +2,6 @@ package frc.trigon.robot.subsystems.collector;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Collector extends SubsystemBase {
@@ -13,31 +12,34 @@ public class Collector extends SubsystemBase {
 
     private final static Collector INSTANCE = new Collector();
 
-    public static Collector getInstance() {
-        return INSTANCE;
-    }
-
     private Collector() {
 
     }
 
-    private void stop(){
+    public static Collector getInstance() {
+        return INSTANCE;
+    }
+
+    private void stop() {
         collectingMotor.disable();
         openingMotor.disable();
     }
+
     private void collect() {
         openingMotor.set(CollectorConstants.OPENING_VOLTAGE);
         collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.COLLECTING_VOLTAGE);
-
     }
-    private void close(){
+
+    private void close() {
         openingMotor.set(CollectorConstants.CLOSING_VOLTAGE);
         collectingMotor.disable();
     }
-    private void eject(){
+
+    private void eject() {
         collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.EJECTING_VOLTAGE);
     }
-    public boolean isOpen(){
+
+    public boolean isOpen() {
         return openingMotor.get() > 0;
     }
 }
