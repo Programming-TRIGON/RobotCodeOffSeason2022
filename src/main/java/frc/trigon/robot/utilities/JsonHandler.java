@@ -10,6 +10,12 @@ public class JsonHandler {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String path = Filesystem.getDeployDirectory().getPath() + "\\";
 
+    /**
+     * Saves an object to a new or existing Json file.
+     *
+     * @param object the object to save
+     * @param name   the name of the file to save to or create
+     */
     public static void saveToJsonFile(Object object, String name) {
         saveFile(JsonHandler.path + name + ".tmp", object);
         renameFile(JsonHandler.path + name, JsonHandler.path + name + ".bak");
@@ -17,6 +23,13 @@ public class JsonHandler {
         deleteFile(JsonHandler.path + name + ".bak");
     }
 
+    /**
+     * Gets an object from a Json file.
+     *
+     * @param fileName the name of the file to get from
+     * @param type     the type of the object to get (a class)
+     * @return the object
+     */
     public static <T> T getObjectFromJson(String fileName, Class<T> type) {
         try(Reader reader = new FileReader(JsonHandler.path + fileName)) {
             return gson.fromJson(reader, type);
