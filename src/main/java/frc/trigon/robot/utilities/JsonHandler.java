@@ -23,13 +23,13 @@ public class JsonHandler {
     }
 
     /**
-     * Parsing an object from a JSON file.
+     * Parsing a JSON file to an object.
      *
      * @param fileName the name of the file to read from
      * @param type     the type of the object to parse
      * @return the parse
      */
-    public static <T> T getObjectFromJson(String fileName, Class<T> type) {
+    public static <T> T parseJsonToObject(String fileName, Class<T> type) {
         try(Reader reader = new FileReader(JsonHandler.path + fileName)) {
             return gson.fromJson(reader, type);
         } catch(IOException e) {
