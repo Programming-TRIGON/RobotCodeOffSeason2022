@@ -5,10 +5,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class CollectorConstants {
     protected static final double
-            COLLECTING_VOLTAGE = 1,
-            OPENING_VOLTAGE = 1,
-            EJECTING_VOLTAGE = -6,
-            CLOSING_VOLTAGE = -6;
+            COLLECTING_PERCENTAGE = 1,
+            OPENING_PERCENTAGE = 1,
+            EJECTING_PERCENTAGE = -1,
+            CLOSING_PERCENTAGE = -1;
     static final double
             OPENER_CURRENT_LIMIT_PEAK_CURRENT = 10,
             OPENER_CURRENT_LIMIT_PEAK_DURATION = 0.2,
