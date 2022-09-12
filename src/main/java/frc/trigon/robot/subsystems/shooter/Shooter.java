@@ -29,7 +29,7 @@ public class Shooter extends SubsystemBase {
      * @return current velocity as ticks per minute
      */
     public double getCurrentVelocity() {
-        return (Conversions.hundredMsToTickPerMin(masterMotor.getSelectedSensorVelocity()));
+        return Conversions.ticksPerHundredMsToRPM(masterMotor.getSelectedSensorVelocity());
     }
 
     /**

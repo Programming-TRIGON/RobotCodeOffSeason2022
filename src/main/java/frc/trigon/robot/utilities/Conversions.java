@@ -9,7 +9,11 @@ public class Conversions {
         return hundredMsToSec(ms) * 60;
     }
 
-    public static double hundredMsToTickPerMin(double ms) {
-        return hundredMsToMin(ms) * 2048;
+    public static double ticksToRevolutions(double ticks) {
+        return ticks / 4048;
+    }
+
+    public static double ticksPerHundredMsToRPM(double velocityInHundredMs) {
+        return hundredMsToMin(velocityInHundredMs) / ticksToRevolutions(velocityInHundredMs);
     }
 }
