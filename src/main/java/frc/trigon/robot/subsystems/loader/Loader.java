@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.trigon.robot.subsystems.loader.LoaderConstants.LoaderState;
 
 public class Loader extends SubsystemBase {
-    private WPI_TalonSRX motor = LoaderConstants.MOTOR;
+    private final WPI_TalonSRX motor = LoaderConstants.MOTOR;
 
     private LoaderState currentState;
 
