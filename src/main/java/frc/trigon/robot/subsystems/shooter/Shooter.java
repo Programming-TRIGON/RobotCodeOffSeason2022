@@ -11,7 +11,7 @@ public class Shooter extends SubsystemBase {
     // With eager singleton initialization, any static variables/fields used in the 
     // constructor must appear before the "INSTANCE" variable so that they are initialized 
     // before the constructor is called when the "INSTANCE" variable initializes.
-    WPI_TalonFX masterMotor = ShooterConstants.masterMotor;
+    WPI_TalonFX masterMotor = ShooterConstants.MASTER_MOTOR;
     private int ballCount = 0;
 
     public void setTargetVelocity(double velocity) {
@@ -25,14 +25,23 @@ public class Shooter extends SubsystemBase {
         return 0;
     }
 
+    /**
+     * @return current velocity as ticks per minute
+     */
     public double getCurrentVelocity() {
         return (Conversions.hundredMsToTickPerMin(masterMotor.getSelectedSensorVelocity()));
     }
 
+    /**
+     * @return count of balls currently inside the robot
+     */
     public int getBallCount() {
         return ballCount;
     }
 
+    /**
+     * resetting the ball count
+     */
     public void resetBallCount() {
         ballCount = 0;
     }
