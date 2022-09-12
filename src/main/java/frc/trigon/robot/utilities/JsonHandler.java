@@ -16,7 +16,7 @@ public class JsonHandler {
      * @param object the object to save
      * @param name   the name of the file to save to or create
      */
-    public static void saveToJsonFile(Object object, String name) {
+    public static void saveToJsonFile(Object object, String name) throws IOException {
         saveFile(JsonHandler.path + name + ".tmp", object);
         renameFile(JsonHandler.path + name, JsonHandler.path + name + ".bak");
         renameFile(JsonHandler.path + name + ".tmp", JsonHandler.path + name);
@@ -53,13 +53,9 @@ public class JsonHandler {
         }
     }
 
-    private static void saveFile(String path, Object text) {
-        try {
-            FileWriter fileWriter = new FileWriter(path);
-            gson.toJson(text, fileWriter);
-            fileWriter.close();
-        } catch(IOException exception) {
-            exception.printStackTrace();
-        }
+    private static void saveFile(String path, Object text) throws IOException {
+        FileWriter fileWriter = new FileWriter(path);
+        gson.toJson(text, fileWriter);
+        fileWriter.close();
     }
 }
