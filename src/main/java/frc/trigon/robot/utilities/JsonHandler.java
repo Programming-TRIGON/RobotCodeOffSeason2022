@@ -39,7 +39,7 @@ public class JsonHandler {
     }
 
     private static void safeWrite(String text, String name) throws IOException {
-        writeStringToFile(text, JsonHandler.path + name + ".tmp");
+        writeStringToFile(JsonHandler.path + name + ".tmp", text);
         renameFile(JsonHandler.path + name, JsonHandler.path + name + ".bak");
         renameFile(JsonHandler.path + name + ".tmp", JsonHandler.path + name);
         deleteFile(JsonHandler.path + name + ".bak");
