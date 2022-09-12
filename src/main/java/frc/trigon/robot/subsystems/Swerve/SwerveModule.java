@@ -88,6 +88,18 @@ public class SwerveModule {
         return difference + getDegrees();//0+0
     }
 
+    public double getRawAngleVelocity() {
+        return angleMotor.getSelectedSensorVelocity();
+    }
+
+    public double getRawDriverVelocity() {
+        return driveMotor.getSelectedSensorVelocity();
+    }
+
+    public double getRawAngleEncoderVelocity(){
+        return angleEncoder.getSelectedSensorVelocity();
+    }
+
     public double getDegrees() {
         return Conversions.magToDegrees(angleMotor.getSelectedSensorPosition());
     }
