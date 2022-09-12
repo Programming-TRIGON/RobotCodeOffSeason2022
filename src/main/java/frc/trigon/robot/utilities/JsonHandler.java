@@ -11,24 +11,23 @@ public class JsonHandler {
     private static final String path = Filesystem.getDeployDirectory().getPath() + "\\";
 
     /**
-     * Saves an object to a new or existing Json file.
+     * Parses the given object to a new or existing JSON file,
+     * using a safe way of saving. (creating a temporary file and then
+     * replacing the original file with the temporary one)
      *
      * @param object the object to save
      * @param name   the name of the file to save to or create
      */
     public static void saveToJsonFile(Object object, String name) throws IOException {
-        saveFile(JsonHandler.path + name + ".tmp", object);
-        renameFile(JsonHandler.path + name, JsonHandler.path + name + ".bak");
-        renameFile(JsonHandler.path + name + ".tmp", JsonHandler.path + name);
-        deleteFile(JsonHandler.path + name + ".bak");
+        safeWrite(object, name);
     }
 
     /**
-     * Gets an object from a Json file.
+     * Parsing an object from a JSON file.
      *
-     * @param fileName the name of the file to get from
-     * @param type     the type of the object to get (a class)
-     * @return the object
+     * @param fileName the name of the file to read from
+     * @param type     the type of the object to parse
+     * @return the parse
      */
     public static <T> T getObjectFromJson(String fileName, Class<T> type) {
         try(Reader reader = new FileReader(JsonHandler.path + fileName)) {
@@ -37,6 +36,13 @@ public class JsonHandler {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private static void safeWrite(Object object, String name) throws IOException {
+        saveFile(JsonHandler.path + name + ".tmp", object);
+        renameFile(JsonHandler.path + name, JsonHandler.path + name + ".bak");
+        renameFile(JsonHandler.path + name + ".tmp", JsonHandler.path + name);
+        deleteFile(JsonHandler.path + name + ".bak");
     }
 
     private static void renameFile(String oldPath, String newPath) {
