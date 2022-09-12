@@ -20,17 +20,17 @@ public class Collector extends SubsystemBase {
     }
 
     private void collect() {
-        openingMotor.set(CollectorConstants.OPENING_PERCENTAGE);
-        collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.COLLECTING_PERCENTAGE);
+        openingMotor.set(CollectorConstants.OPENING_POWER);
+        collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.COLLECTING_POWER);
     }
 
     private void close() {
-        openingMotor.set(CollectorConstants.CLOSING_PERCENTAGE);
+        openingMotor.set(CollectorConstants.CLOSING_POWER);
         collectingMotor.disable();
     }
 
     private void eject() {
-        collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.EJECTING_PERCENTAGE);
+        collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.EJECTING_POWER);
     }
 
     public boolean isOpen() {
