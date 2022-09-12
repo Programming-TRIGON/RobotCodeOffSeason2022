@@ -1,11 +1,16 @@
 package frc.trigon.robot.subsystems.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.trigon.robot.utilities.JsonHandler;
 
+/**
+ * This is a command for calibrating the climber encoder.
+ */
 public class ClimberEncoderCalibration extends CommandBase {
     private final Climber climber = Climber.getInstance();
 
+    /**
+     * Constructs a new ClimberEncoderCalibration command.
+     */
     public ClimberEncoderCalibration() {
         addRequirements(climber);
     }
@@ -17,13 +22,20 @@ public class ClimberEncoderCalibration extends CommandBase {
 
     @Override
     public void execute() {
-        if(climber.atBottom()){
+        if(climber.atBottom()) {
             climber.setSelectedSensorPosition(0);
             climber.setPower(ClimberConstants.CLIMBER_CALIBRATION_POWER);
         }
-        if(climber.atTop()){
-            JsonHandler.saveToJsonFile(climber.getSelectedSensorPosition()/2, "ClimberConstants.json");
-            climber.setSelectedSensorPosition(climber.getSelectedSensorPosition()/2);
+        if(climber.atTop()) {
+            ClimberConstants.LocalClimberConstants climberConstants = new ClimberConstants.LocalClimberConstants();
+            climberConstants.maxTicks = climber.getSelectedSensorPosition() / 2;
+            try {
+                ClimberConstants.maxTicks = climber.getCurrentPosition() / 2;
+                // JsonHandler.saveToJsonFile(climberConstants, "ClimberConstants.json");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            climber.setSelectedSensorPosition(climber.getSelectedSensorPosition() / 2);
         }
     }
 

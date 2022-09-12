@@ -4,13 +4,10 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import frc.trigon.robot.utilities.JsonHandler;
-
-import java.util.function.Supplier;
 
 public class ClimberConstants {
-    static Supplier<Double> MAX_TICKS = ()-> JsonHandler.getObjectFromJson("ClimberConstants.json", double.class);
     static final double ALLOWABLE_ERROR = 100;
+    static final double CLIMBER_CALIBRATION_POWER = 0.3;
     private static final boolean AUX_INVERTED = false;
     private static final int
             LEFT_MOTOR_ID = 0,
@@ -18,20 +15,14 @@ public class ClimberConstants {
     private static final boolean
             LEFT_MOTOR_INVERTED = false,
             RIGHT_MOTOR_INVERTED = false;
-    static final WPI_TalonFX
-            LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
-            RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID),
-            MASTER_MOTOR = RIGHT_MOTOR,
-            FOLLOWER_MOTOR = LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
-    static final double CLIMBER_CALIBRATION_POWER = 0.3;
-
     private static final double
-                            P = 1,
-                            I = 1,
-                            D = 1,
-                            AUX_P = 1,
-                            AUX_I = 1,
-                            AUX_D = 1;
+            P = 1,
+            I = 1,
+            D = 1,
+            AUX_P = 1,
+            AUX_I = 1,
+            AUX_D = 1;
+    static double maxTicks = 0;
 
     static {
         LEFT_MOTOR.configFactoryDefault();
@@ -58,17 +49,24 @@ public class ClimberConstants {
         MASTER_MOTOR.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.IntegratedSensor);
         MASTER_MOTOR.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.RemoteSensor0);
         MASTER_MOTOR.configSelectedFeedbackCoefficient(0.5, 0, 0);
-        MASTER_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 0,0);
+        MASTER_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 0, 0);
         MASTER_MOTOR.selectProfileSlot(0, 0);
 
         MASTER_MOTOR.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.IntegratedSensor);
         MASTER_MOTOR.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor0);
         MASTER_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.SensorDifference, 1, 0);
         MASTER_MOTOR.selectProfileSlot(1, 1);
-    }
+    }    // static final DoubleSupplier MAX_TICKS = () -> Objects.requireNonNull(JsonHandler.parseJsonToObject(
+    //        "ClimberConstants.json", LocalClimberConstants.class)).maxTicks;
+    static final WPI_TalonFX
+            LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
+            RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID),
+            MASTER_MOTOR = RIGHT_MOTOR,
+            FOLLOWER_MOTOR = LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
+
     enum ClimberPosition {
-        HIGH(MAX_TICKS.get()),
-        LOW(-MAX_TICKS.get()),
+        HIGH(maxTicks),
+        LOW(-maxTicks),
         MIDDLE(0);
 
         public final double ticks;
@@ -77,4 +75,10 @@ public class ClimberConstants {
             this.ticks = ticks;
         }
     }
+
+    public static class LocalClimberConstants {
+        public double maxTicks;
+    }
+
+
 }
