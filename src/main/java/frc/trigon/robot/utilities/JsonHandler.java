@@ -19,7 +19,7 @@ public class JsonHandler {
      * @param name   the name of the file to save to or create
      */
     public static void saveToJsonFile(Object object, String name) throws IOException {
-        safeWrite(object, name);
+        safeWrite(parseObjectToJson(object), name);
     }
 
     /**
@@ -38,8 +38,8 @@ public class JsonHandler {
         return null;
     }
 
-    private static void safeWrite(Object object, String name) throws IOException {
-        saveFile(JsonHandler.path + name + ".tmp", object);
+    private static void safeWrite(String text, String name) throws IOException {
+        writeStringToFile(text, JsonHandler.path + name + ".tmp");
         renameFile(JsonHandler.path + name, JsonHandler.path + name + ".bak");
         renameFile(JsonHandler.path + name + ".tmp", JsonHandler.path + name);
         deleteFile(JsonHandler.path + name + ".bak");
@@ -59,9 +59,13 @@ public class JsonHandler {
         }
     }
 
-    private static void saveFile(String path, Object text) throws IOException {
+    private static String parseObjectToJson(Object object) {
+        return gson.toJson(object);
+    }
+
+    private static void writeStringToFile(String path, String text) throws IOException {
         FileWriter fileWriter = new FileWriter(path);
-        gson.toJson(text, fileWriter);
+        fileWriter.write(text);
         fileWriter.close();
     }
 }
