@@ -23,6 +23,13 @@ public class ClimberConstants {
             AUX_I = 1,
             AUX_D = 1;
     static double maxTicks = 0;
+    // static final DoubleSupplier maxTicks = () -> Objects.requireNonNull(JsonHandler.parseJsonToObject(
+    //        "ClimberConstants.json", LocalClimberConstants.class)).maxTicks;
+    static final WPI_TalonFX
+            LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
+            RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID),
+            MASTER_MOTOR = RIGHT_MOTOR,
+            FOLLOWER_MOTOR = LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
 
     static {
         LEFT_MOTOR.configFactoryDefault();
@@ -56,13 +63,7 @@ public class ClimberConstants {
         MASTER_MOTOR.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor0);
         MASTER_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.SensorDifference, 1, 0);
         MASTER_MOTOR.selectProfileSlot(1, 1);
-    }    // static final DoubleSupplier MAX_TICKS = () -> Objects.requireNonNull(JsonHandler.parseJsonToObject(
-    //        "ClimberConstants.json", LocalClimberConstants.class)).maxTicks;
-    static final WPI_TalonFX
-            LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
-            RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID),
-            MASTER_MOTOR = RIGHT_MOTOR,
-            FOLLOWER_MOTOR = LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
+    }
 
     enum ClimberPosition {
         HIGH(maxTicks),
