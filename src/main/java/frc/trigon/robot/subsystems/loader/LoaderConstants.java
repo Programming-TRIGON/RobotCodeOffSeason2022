@@ -10,6 +10,11 @@ public class LoaderConstants {
     private static final int MOTOR_ID = 0;
     static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
 
+    static {
+        MOTOR.enableVoltageCompensation(true);
+        MOTOR.configVoltageCompSaturation(VOLTAGE_COMPENSATION);
+    }
+
     public static enum LoaderState {
         LOAD(LOAD_VOLTAGE),
         OFF(0),
