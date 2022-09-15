@@ -4,8 +4,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class LoaderConstants {
     private static final double
-            LOAD_VOLTAGE = 6,
-            EJECT_VOLTAGE = -6;
+            LOAD_POWER = 6,
+            EJECT_POWER = -6;
     static final double VOLTAGE_COMPENSATION = 10.5;
     private static final int MOTOR_ID = 0;
     static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
@@ -16,9 +16,9 @@ public class LoaderConstants {
     }
 
     public static enum LoaderState {
-        LOAD(LOAD_VOLTAGE),
+        LOAD(LOAD_POWER),
         OFF(0),
-        EJECT(EJECT_VOLTAGE);
+        EJECT(EJECT_POWER);
 
         final double power;
 
