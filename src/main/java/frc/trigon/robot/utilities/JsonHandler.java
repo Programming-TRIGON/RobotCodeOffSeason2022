@@ -5,8 +5,6 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
-import static frc.trigon.robot.utilities.FilesHandler.*;
-
 public class JsonHandler {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     /**
@@ -18,7 +16,7 @@ public class JsonHandler {
      * @throws IOException if the method failed to write the object to the file
      */
     public static void parseToJsonAndWrite(Object object, String name) throws IOException {
-        safeWrite(parseObjectToJson(object), DEPLOY_PATH + name);
+        FilesHandler.safeWrite(parseObjectToJson(object), FilesHandler.DEPLOY_PATH + name);
     }
 
     /**
@@ -28,9 +26,9 @@ public class JsonHandler {
      * @param type     the class to parse JSON to
      * @return the class
      */
-    public static <T> T parseJsonToObject(String fileName, Class<T> type) {
+    public static <T> T parseJsonFileToObject(String fileName, Class<T> type) {
         try {
-            return GSON.fromJson(readFile(DEPLOY_PATH + fileName), type);
+            return GSON.fromJson(FilesHandler.readFile(FilesHandler.DEPLOY_PATH + fileName), type);
         } catch(IOException e) {
             e.printStackTrace();
             return null;
