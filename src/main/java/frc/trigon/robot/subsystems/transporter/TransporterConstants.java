@@ -3,13 +3,13 @@ package frc.trigon.robot.subsystems.transporter;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class TransporterConstants {
+    static final double VOLTAGE_COMPENSATION = 10.5;
     private static final int MOTOR_ID = 0;
+    static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
     private static final double
             LOAD_VOLTAGE = 10,
             EJECT_VOLTAGE = -10;
     private static final boolean MOTOR_INVERTED = false;
-    static final double VOLTAGE_COMPENSATION = 10.5;
-    protected static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
 
     static {
         MOTOR.setInverted(MOTOR_INVERTED);
