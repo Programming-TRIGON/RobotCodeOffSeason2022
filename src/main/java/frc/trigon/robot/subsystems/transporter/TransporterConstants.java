@@ -11,7 +11,6 @@ public class TransporterConstants {
     static final double VOLTAGE_COMPENSATION = 10.5;
     protected static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
 
-
     static {
         MOTOR.setInverted(MOTOR_INVERTED);
         MOTOR.enableVoltageCompensation(true);
