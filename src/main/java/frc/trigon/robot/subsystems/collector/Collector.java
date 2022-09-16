@@ -13,9 +13,6 @@ public class Collector extends SubsystemBase {
     private Collector() {
     }
 
-    /**
-     * @return the instance of the collector motor.
-     */
     public static Collector getInstance() {
         return INSTANCE;
     }
@@ -35,7 +32,7 @@ public class Collector extends SubsystemBase {
     }
 
     /**
-     * @return the state of the openingMotor.
+     * @return whether the collector is open.
      */
     public boolean isOpen() {
         return openingMotor.get() > 0;
