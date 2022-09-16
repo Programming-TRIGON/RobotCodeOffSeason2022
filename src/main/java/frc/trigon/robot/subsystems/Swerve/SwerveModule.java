@@ -10,11 +10,11 @@ import frc.trigon.robot.utilities.Conversions;
 
 public class SwerveModule {
 
-    private WPI_TalonSRX angleEncoder;
-    private WPI_TalonFX angleMotor;
-    private WPI_TalonFX driveMotor;
+    private final WPI_TalonSRX angleEncoder;
+    private final WPI_TalonFX angleMotor;
+    private final WPI_TalonFX driveMotor;
 
-    private double encoderOffset;
+    private final double encoderOffset;
     private SwerveModuleState targetState;
 
     public SwerveModule(SwerveModuleConstants ModuleConstants) {

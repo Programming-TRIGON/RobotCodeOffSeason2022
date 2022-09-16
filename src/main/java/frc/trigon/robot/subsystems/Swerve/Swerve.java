@@ -8,10 +8,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.opencv.core.Scalar;
-
-import java.util.*;
-import java.util.stream.Stream;
 
 public class Swerve extends SubsystemBase {
 
@@ -73,6 +69,14 @@ public class Swerve extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.MAX_SPEED);
     }
 
+    public double[] getsModulesVelociteys() {
+        double[] velociteys = new double[12];
+        for(int i=0; i < velociteys.length; i++){
+            velociteys[i] = getModuleVelocity(i /4)[i%3];
+        }
+        return velociteys;
+
+    }
 
     public double[] getModuleVelocity(int swerveModuleNumber) {
         double[] velocity = {
