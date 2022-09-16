@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class CollectorConstants {
-    protected static final double
+    static final double
             COLLECTING_POWER = 0.5,
             OPENING_POWER = 0.5,
             EJECTING_POWER = -0.5,
@@ -30,7 +30,7 @@ public class CollectorConstants {
     static {
         OPENER_MOTOR.setInverted(OPENER_MOTOR_INVERTED);
         COLLECTOR_MOTOR.setInverted(COLLECTOR_MOTOR_INVERTED);
-        
+
         OPENER_MOTOR.configStatorCurrentLimit(
                 new StatorCurrentLimitConfiguration(
                         true,

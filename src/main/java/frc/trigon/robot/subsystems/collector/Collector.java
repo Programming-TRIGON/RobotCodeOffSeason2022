@@ -11,9 +11,11 @@ public class Collector extends SubsystemBase {
             collectingMotor = CollectorConstants.COLLECTOR_MOTOR;
 
     private Collector() {
-
     }
 
+    /**
+     * @return the instance of the collector motor.
+     */
     public static Collector getInstance() {
         return INSTANCE;
     }
@@ -32,6 +34,9 @@ public class Collector extends SubsystemBase {
         collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.EJECTING_POWER);
     }
 
+    /**
+     * @return the state of the openingMotor.
+     */
     public boolean isOpen() {
         return openingMotor.get() > 0;
     }
