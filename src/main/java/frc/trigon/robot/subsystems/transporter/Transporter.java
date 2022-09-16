@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.trigon.robot.utilities.Conversions;
 
-import static frc.trigon.robot.subsystems.transporter.TransporterConstants.*;
+import static frc.trigon.robot.subsystems.transporter.TransporterConstants.TransporterState;
 
 public class Transporter extends SubsystemBase {
     private final static Transporter INSTANCE = new Transporter();
@@ -25,7 +25,7 @@ public class Transporter extends SubsystemBase {
     }
 
     public void setState(TransporterState state) {
-        double compensatedPower = Conversions.voltageToCompensatedPower(state.voltage, VOLTAGE_COMPENSATION_SATURATION);
+        double compensatedPower = Conversions.voltageToCompensatedPower(state.voltage, TransporterConstants.VOLTAGE_COMPENSATION_SATURATION);
         motor.set(ControlMode.PercentOutput, compensatedPower);
         currentState = state;
     }
