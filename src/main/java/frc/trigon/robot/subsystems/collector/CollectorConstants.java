@@ -21,17 +21,17 @@ public class CollectorConstants {
             OPENER_MOTOR_ID = 0,
             COLLECTOR_MOTOR_ID = 1;
     static final WPI_TalonFX
-            OPENER_MOTOR = new WPI_TalonFX(OPENER_MOTOR_ID),
-            COLLECTOR_MOTOR = new WPI_TalonFX(COLLECTOR_MOTOR_ID);
+            OPENING_MOTOR = new WPI_TalonFX(OPENER_MOTOR_ID),
+            COLLECTION_MOTOR = new WPI_TalonFX(COLLECTOR_MOTOR_ID);
     private static final boolean
             OPENER_MOTOR_INVERTED = false,
             COLLECTOR_MOTOR_INVERTED = false;
 
     static {
-        OPENER_MOTOR.setInverted(OPENER_MOTOR_INVERTED);
-        COLLECTOR_MOTOR.setInverted(COLLECTOR_MOTOR_INVERTED);
+        OPENING_MOTOR.setInverted(OPENER_MOTOR_INVERTED);
+        COLLECTION_MOTOR.setInverted(COLLECTOR_MOTOR_INVERTED);
 
-        OPENER_MOTOR.configStatorCurrentLimit(
+        OPENING_MOTOR.configStatorCurrentLimit(
                 new StatorCurrentLimitConfiguration(
                         true,
                         OPENER_CURRENT_LIMIT,
@@ -39,7 +39,7 @@ public class CollectorConstants {
                         OPENER_CURRENT_LIMIT_PEAK_DURATION
                 )
         );
-        COLLECTOR_MOTOR.configStatorCurrentLimit(
+        COLLECTION_MOTOR.configStatorCurrentLimit(
                 new StatorCurrentLimitConfiguration(
                         true,
                         COLLECTOR_CURRENT_LIMIT,

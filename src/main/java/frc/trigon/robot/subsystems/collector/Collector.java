@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Collector extends SubsystemBase {
     private final static Collector INSTANCE = new Collector();
     private final WPI_TalonFX
-            openingMotor = CollectorConstants.OPENER_MOTOR,
-            collectingMotor = CollectorConstants.COLLECTOR_MOTOR;
+            openingMotor = CollectorConstants.OPENING_MOTOR,
+            collectionMotor = CollectorConstants.COLLECTION_MOTOR;
 
     private Collector() {
     }
@@ -19,16 +19,16 @@ public class Collector extends SubsystemBase {
 
     private void collect() {
         openingMotor.set(CollectorConstants.OPENING_POWER);
-        collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.COLLECTING_POWER);
+        collectionMotor.set(ControlMode.PercentOutput, CollectorConstants.COLLECTING_POWER);
     }
 
     private void close() {
         openingMotor.set(CollectorConstants.CLOSING_POWER);
-        collectingMotor.disable();
+        collectionMotor.disable();
     }
 
     private void eject() {
-        collectingMotor.set(ControlMode.PercentOutput, CollectorConstants.EJECTING_POWER);
+        collectionMotor.set(ControlMode.PercentOutput, CollectorConstants.EJECTING_POWER);
     }
 
     /**
@@ -39,7 +39,7 @@ public class Collector extends SubsystemBase {
     }
 
     private void stop() {
-        collectingMotor.disable();
+        collectionMotor.disable();
         openingMotor.disable();
     }
 }
