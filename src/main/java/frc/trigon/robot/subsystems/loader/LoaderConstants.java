@@ -1,29 +1,31 @@
 package frc.trigon.robot.subsystems.loader;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import frc.trigon.robot.utilities.Conversions;
 
 public class LoaderConstants {
-    static final double VOLTAGE_COMPENSATION = 10.5;
     private static final double
-            LOAD_POWER = 6,
-            EJECT_POWER = -6;
+            LOAD_VOLTAGE = 6,
+            EJECT_VOLTAGE = -6;
+    private static final boolean IS_INVERTED = false;
     private static final int MOTOR_ID = 0;
     static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
 
     static {
+        MOTOR.setInverted(IS_INVERTED);
         MOTOR.enableVoltageCompensation(true);
-        MOTOR.configVoltageCompSaturation(VOLTAGE_COMPENSATION);
+        MOTOR.configVoltageCompSaturation(Conversions.VOLTAGE_SATURATION);
     }
 
     public enum LoaderState {
-        LOAD(LOAD_POWER),
+        LOAD(LOAD_VOLTAGE),
         OFF(0),
-        EJECT(EJECT_POWER);
+        EJECT(EJECT_VOLTAGE);
 
-        final double power;
+        final double voltage;
 
         LoaderState(double voltage) {
-            this.power = voltage;
+            this.voltage = voltage;
         }
     }
 }
