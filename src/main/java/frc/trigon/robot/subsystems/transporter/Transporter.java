@@ -5,16 +5,15 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.trigon.robot.utilities.Conversions;
 
-import static frc.trigon.robot.subsystems.transporter.TransporterConstants.TransporterState;
-import static frc.trigon.robot.subsystems.transporter.TransporterConstants.VOLTAGE_COMPENSATION;
+import static frc.trigon.robot.subsystems.transporter.TransporterConstants.*;
 
 public class Transporter extends SubsystemBase {
     private final static Transporter INSTANCE = new Transporter();
-    private final WPI_TalonSRX motor;
+    private final WPI_TalonSRX motor = TransporterConstants.MOTOR;
     private TransporterState currentState;
 
     private Transporter() {
-        motor = TransporterConstants.MOTOR;
+
     }
 
     public static Transporter getInstance() {
@@ -26,8 +25,8 @@ public class Transporter extends SubsystemBase {
     }
 
     public void setState(TransporterState state) {
-        motor.set(
-                ControlMode.PercentOutput, Conversions.voltageToCompensatedPower(state.voltage, VOLTAGE_COMPENSATION));
+        double compensatedPower = Conversions.voltageToCompensatedPower(state.voltage, VOLTAGE_COMPENSATION_SATURATION);
+        motor.set(ControlMode.PercentOutput, compensatedPower);
         currentState = state;
     }
 }

@@ -3,7 +3,7 @@ package frc.trigon.robot.subsystems.transporter;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class TransporterConstants {
-    static final double VOLTAGE_COMPENSATION = 10.5;
+    static final double VOLTAGE_COMPENSATION_SATURATION = 10.5;
     private static final int MOTOR_ID = 0;
     static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
     private static final double
@@ -14,7 +14,7 @@ public class TransporterConstants {
     static {
         MOTOR.setInverted(MOTOR_INVERTED);
         MOTOR.enableVoltageCompensation(true);
-        MOTOR.configVoltageCompSaturation(VOLTAGE_COMPENSATION);
+        MOTOR.configVoltageCompSaturation(VOLTAGE_COMPENSATION_SATURATION);
     }
 
     public enum TransporterState {
