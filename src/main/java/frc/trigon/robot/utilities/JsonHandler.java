@@ -15,8 +15,8 @@ public class JsonHandler {
      * @param name   the name of the file to save to or create
      * @throws IOException if the method failed to write the object to the file
      */
-    public static void parseToJsonAndWrite(Object object, String name) throws IOException {
-        FilesHandler.safeWrite(parseObjectToJson(object), FilesHandler.DEPLOY_PATH + name);
+    public static void parseToJsonAndWrite(String name, Object object) throws IOException {
+        FilesHandler.safeWrite(FilesHandler.DEPLOY_PATH + name, parseObjectToJson(object));
     }
 
     /**

@@ -59,14 +59,15 @@ public class FilesHandler {
      * delete the .bak file.
      *
      * @param name the name of the file to create
+     * @param text the text to write in the file
      * @throws IOException if the method failed to safe write the file
      */
-    public static void safeWrite(String text, String name) throws IOException {
+    public static void safeWrite(String name, String text) throws IOException {
         writeStringToFile(name + ".tmp", text);
-        if(doesFileExist(name))
+        if(fileExist(name))
             renameFile(name, name + ".bak");
         renameFile(name + ".tmp", name);
-        if(doesFileExist(name + ".bak"))
+        if(fileExist(name + ".bak"))
             deleteFile(name + ".bak");
     }
 
@@ -81,14 +82,20 @@ public class FilesHandler {
     public static String readFile(String name) throws IOException {
         FileReader reader;
         StringBuilder fileContent = new StringBuilder();
-        reader = new FileReader(!doesFileExist(name) && doesFileExist(name + ".tmp") ? name + ".tmp" : name);
+        reader = new FileReader(!fileExist(name) && fileExist(name + ".tmp") ? name + ".tmp" : name);
         while(reader.read() != -1) {
             fileContent.append((char) reader.read());
         }
         return fileContent.toString();
     }
 
-    private static boolean doesFileExist(String name) {
+    /**
+     * Checks if a file exists by its name.
+     *
+     * @param name the name of the file
+     * @return true if the file exists, false otherwise
+     */
+    private static boolean fileExist(String name) {
         return new File(name).exists();
     }
 }
