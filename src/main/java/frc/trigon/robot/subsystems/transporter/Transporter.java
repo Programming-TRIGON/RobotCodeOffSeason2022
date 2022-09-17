@@ -17,9 +17,11 @@ public class Transporter extends SubsystemBase {
     public static Transporter getInstance() {
         return INSTANCE;
     }
+
     /**
-     *  get will return currentState
-     *  and currentState = to state
+     * get will return currentState
+     * and currentState = to state
+     *
      * @return
      */
     public TransporterState getState() {
@@ -28,6 +30,7 @@ public class Transporter extends SubsystemBase {
 
     /**
      * motor.set = to state.power
+     *
      * @param state
      */
     public void setState(TransporterState state) {
