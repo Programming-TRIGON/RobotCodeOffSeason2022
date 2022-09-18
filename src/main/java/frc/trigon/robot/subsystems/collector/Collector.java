@@ -1,6 +1,5 @@
 package frc.trigon.robot.subsystems.collector;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -19,7 +18,7 @@ public class Collector extends SubsystemBase {
 
     private void collect() {
         openingMotor.set(CollectorConstants.OPENING_POWER);
-        collectionMotor.set(ControlMode.PercentOutput, CollectorConstants.COLLECTING_POWER);
+        collectionMotor.set(CollectorConstants.COLLECTING_POWER);
     }
 
     private void close() {
@@ -28,7 +27,7 @@ public class Collector extends SubsystemBase {
     }
 
     private void eject() {
-        collectionMotor.set(ControlMode.PercentOutput, CollectorConstants.EJECTING_POWER);
+        collectionMotor.set(CollectorConstants.EJECTING_POWER);
     }
 
     /**
