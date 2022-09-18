@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class FilesHandler {
 
@@ -80,21 +82,10 @@ public class FilesHandler {
      * @throws IOException if the method failed to read the file
      */
     public static String readFile(String name) throws IOException {
-        FileReader reader;
-        StringBuilder fileContent = new StringBuilder();
-        reader = new FileReader(!fileExist(name) && fileExist(name + ".tmp") ? name + ".tmp" : name);
-        while(reader.read() != -1) {
-            fileContent.append((char) reader.read());
-        }
-        return fileContent.toString();
+        String absolutePath = !fileExist(name) && fileExist(name + ".tmp") ? name + ".tmp" : name;
+        return Files.readString(Path.of(absolutePath));
     }
 
-    /**
-     * Checks if a file exists by its name.
-     *
-     * @param name the name of the file
-     * @return true if the file exists, false otherwise
-     */
     private static boolean fileExist(String name) {
         return new File(name).exists();
     }
