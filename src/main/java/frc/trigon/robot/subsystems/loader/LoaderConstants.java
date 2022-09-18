@@ -7,14 +7,14 @@ public class LoaderConstants {
     private static final double
             LOAD_VOLTAGE = 6,
             EJECT_VOLTAGE = -6;
-    private static final boolean IS_INVERTED = false;
+    private static final boolean MOTOR_INVERTED = false;
     private static final int MOTOR_ID = 0;
     static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
 
     static {
-        MOTOR.setInverted(IS_INVERTED);
+        MOTOR.setInverted(MOTOR_INVERTED);
         MOTOR.enableVoltageCompensation(true);
-        MOTOR.configVoltageCompSaturation(Conversions.VOLTAGE_SATURATION);
+        MOTOR.configVoltageCompSaturation(Conversions.VOLTAGE_COMPENSATION_SATURATION);
     }
 
     public enum LoaderState {
