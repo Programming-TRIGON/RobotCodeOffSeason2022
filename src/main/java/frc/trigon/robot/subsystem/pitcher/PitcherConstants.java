@@ -7,4 +7,9 @@ public class PitcherConstants {
     static final double GEAR_RATIO = 10;
     private static final int MOTOR_ID = 0;
     final static WPI_TalonSRX  MOTOR = new WPI_TalonSRX(MOTOR_ID);
+    static final double P = 0.01, I = 0, D = 0;
+
+    static {
+        MOTOR.config_kP();
+    }
 }
