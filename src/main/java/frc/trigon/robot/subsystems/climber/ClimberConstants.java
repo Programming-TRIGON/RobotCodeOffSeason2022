@@ -23,7 +23,7 @@ public class ClimberConstants {
             AUX_I = 1,
             AUX_D = 1;
     static double maxTicks = 0;
-    // static final DoubleSupplier maxTicks = () -> Objects.requireNonNull(JsonHandler.parseJsonToObject(
+    // static double maxTicks = Objects.requireNonNull(JsonHandler.parseJsonFileToObject(
     //        "ClimberConstants.json", LocalClimberConstants.class)).maxTicks;
     static final WPI_TalonFX
             LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
@@ -80,6 +80,4 @@ public class ClimberConstants {
     public static class LocalClimberConstants {
         public double maxTicks;
     }
-
-
 }

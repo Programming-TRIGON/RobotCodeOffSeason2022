@@ -30,8 +30,8 @@ public class ClimberEncoderCalibration extends CommandBase {
             ClimberConstants.LocalClimberConstants climberConstants = new ClimberConstants.LocalClimberConstants();
             climberConstants.maxTicks = climber.getSelectedSensorPosition() / 2;
             try {
-                ClimberConstants.maxTicks = climber.getCurrentPosition() / 2;
                 // JsonHandler.saveToJsonFile(climberConstants, "ClimberConstants.json");
+                ClimberConstants.maxTicks = climber.getCurrentPosition() / 2;
             } catch(Exception e) {
                 e.printStackTrace();
             }
