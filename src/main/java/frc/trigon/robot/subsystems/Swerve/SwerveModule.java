@@ -9,48 +9,30 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.trigon.robot.utilities.Conversions;
 
 public class SwerveModule {
-
     private final WPI_TalonSRX angleEncoder;
     private final WPI_TalonFX angleMotor;
     private final WPI_TalonFX driveMotor;
 
-    private final double encoderOffset;
+    private double encoderOffset;
     private SwerveModuleState targetState;
 
-    public SwerveModule(SwerveModuleConstants ModuleConstants) {
-        this.angleEncoder = ModuleConstants.angleEncoder;
-        this.angleMotor = ModuleConstants.angleMotor;
-        this.driveMotor = ModuleConstants.driveMotor;
+    public SwerveModule(SwerveModuleConstants moduleConstants) {
+        this.angleEncoder = moduleConstants.angleEncoder;
+        this.angleMotor = moduleConstants.angleMotor;
+        this.driveMotor = moduleConstants.driveMotor;
 
-        this.encoderOffset = ModuleConstants.encoderOffset;
+        this.encoderOffset = moduleConstants.encoderOffset;
 
-        angleMotor.configRemoteFeedbackFilter(angleEncoder, 0);
-        angleMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
+        ChangeToOuterEncoder();
 
-        driveMotor.setSelectedSensorPosition(0);
+        setDriveMotorSensorZero();
     }
 
     public void setTargetState(SwerveModuleState targetState) {
         this.targetState = targetState;
         optimizeTargetState();
-        angleMotor.set(ControlMode.Position, Conversions.degreesToMag(targetState.angle.getDegrees()));
-        driveMotor.set(
-                ControlMode.Velocity,
-                Conversions.mpsToFalcon(
-                        targetState.speedMetersPerSecond,
-                        SwerveModuleConstants.WHEEL_CIRCUMFERENCE,
-                        SwerveModuleConstants.DRIVE_GEAR_RATIO
-                )
-        );
-
-        double velocity = Conversions.mpsToFalcon(
-                targetState.speedMetersPerSecond,
-                SwerveModuleConstants.WHEEL_CIRCUMFERENCE,
-                SwerveModuleConstants.DRIVE_GEAR_RATIO);
-        // Sets the drive motor velocity with the driveFeedforward.
-        double angle = Conversions.degreesToMag(targetState.angle.getDegrees());
-        driveMotor.set(ControlMode.Velocity, velocity);
-        angleMotor.set(ControlMode.Position, angle);
+        setAngleMotor();
+        setDriveMotor();
     }
 
     public SwerveModuleState getCurrentState() {
@@ -63,29 +45,43 @@ public class SwerveModule {
     }
 
     private void optimizeTargetState() {
-        double scoped = scope(targetState.angle.getDegrees());// -179
-        double flipped = scope(180 + targetState.angle.getDegrees()); //1
+        double scoped = scope(targetState.angle.getDegrees());
+        double flipped = scope(180 + targetState.angle.getDegrees());
         double scopeDiff = Math.abs(scoped - getDegrees());
         double flippedDiff = Math.abs(flipped - getDegrees());
-        if(scopeDiff < flippedDiff) {
+        if(scopeDiff < flippedDiff)
             targetState.angle = Rotation2d.fromDegrees(scoped);
-        } else {
+        else
             targetState.angle = Rotation2d.fromDegrees(flipped);
-            targetState.speedMetersPerSecond *= -1;
-        }
+        targetState.speedMetersPerSecond *= -1;
     }
 
-    public double scope(double targetAngle) {// 360
-        double rawCurrentAngle = getDegrees() % 360;// 0
-        double rawTargetAngle = targetAngle % 360;// 0
-        double difference = rawTargetAngle - rawCurrentAngle;// -0
-        if(difference < -180) {
+    public double scope(double targetAngle) {
+        double rawCurrentAngle = getDegrees() % 360;
+        double rawTargetAngle = targetAngle % 360;
+        double difference = rawTargetAngle - rawCurrentAngle;
+        if(difference < -180)
             difference += 360;
-        }//
-        else if(difference > 180) {
+
+        else if(difference > 180)
             difference -= 360;
-        }//
-        return difference + getDegrees();//0+0
+
+        return difference + getDegrees();
+    }
+
+    public void setAngleMotor() {
+        angleMotor.set(ControlMode.Position, Conversions.degreesToMag(targetState.angle.getDegrees()));
+    }
+
+    public void setDriveMotor() {
+        driveMotor.set(
+                ControlMode.Velocity,
+                Conversions.mpsToFalcon(
+                        targetState.speedMetersPerSecond,
+                        SwerveModuleConstants.WHEEL_CIRCUMFERENCE,
+                        SwerveModuleConstants.DRIVE_GEAR_RATIO
+                )
+        );
     }
 
     public double getRawAngleVelocity() {
@@ -96,12 +92,21 @@ public class SwerveModule {
         return driveMotor.getSelectedSensorVelocity();
     }
 
-    public double getRawAngleEncoderVelocity(){
+    public double getRawAngleEncoderVelocity() {
         return angleEncoder.getSelectedSensorVelocity();
     }
 
     public double getDegrees() {
         return Conversions.magToDegrees(angleMotor.getSelectedSensorPosition());
+    }
+
+    public void ChangeToOuterEncoder() {
+        angleMotor.configRemoteFeedbackFilter(angleEncoder, 0);
+        angleMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
+    }
+
+    public void setDriveMotorSensorZero() {
+        driveMotor.setSelectedSensorPosition(0);
     }
 }
 

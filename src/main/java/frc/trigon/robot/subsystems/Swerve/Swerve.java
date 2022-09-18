@@ -11,6 +11,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
 
+    private final static Swerve INSTANCE = new Swerve();
+
+    public static Swerve getInstance() {
+        return INSTANCE;
+    }
+
     private SwerveDriveOdometry swerveOdometry;
     private SwerveDriveKinematics kinematics;
     private SwerveModule[] swerveModules;
@@ -31,7 +37,7 @@ public class Swerve extends SubsystemBase {
         swerveModules[SwerveConstants.SwerveModules.REAR_RIGHT.id] = new SwerveModule(
                 SwerveConstants.SwerveModules.REAR_RIGHT.swerveModuleConstants);
 
-        resetGyro();
+        gyroSetZero();
     }
 
     public void selfRelativeDrive(Translation2d translation, double radiant) {
@@ -40,7 +46,6 @@ public class Swerve extends SubsystemBase {
                 translation.getY(),
                 radiant
         ));
-        setMaxSpeed(swerveModuleStates);
         setSwerveModules(swerveModuleStates);
     }
 
@@ -51,7 +56,12 @@ public class Swerve extends SubsystemBase {
                 radiant,
                 getGyroAngle()
         ));
-        setMaxSpeed(swerveModuleStates);
+        setSwerveModules(swerveModuleStates);
+    }
+
+    public void stop() {
+        SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(
+                new ChassisSpeeds(0, 0, 0));
         setSwerveModules(swerveModuleStates);
     }
 
@@ -65,17 +75,12 @@ public class Swerve extends SubsystemBase {
         return Rotation2d.fromDegrees(gyro.getYaw());
     }
 
-    private void setMaxSpeed(SwerveModuleState[] swerveModuleStates) {
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.MAX_SPEED);
-    }
-
     public double[] getsModulesVelociteys() {
         double[] velociteys = new double[12];
-        for(int i=0; i < velociteys.length; i++){
-            velociteys[i] = getModuleVelocity(i /4)[i%3];
+        for(int i = 0; i < velociteys.length; i++) {
+            velociteys[i] = getModuleVelocity(i / 4)[i % 3];
         }
         return velociteys;
-
     }
 
     public double[] getModuleVelocity(int swerveModuleNumber) {
@@ -88,18 +93,8 @@ public class Swerve extends SubsystemBase {
         return velocity;
     }
 
-    private void resetGyro() {
+    private void gyroSetZero() {
         gyro.setYaw(0);
-    }
-
-    public void stop() {
-        selfRelativeDrive(new Translation2d(0, 0), 0);
-    }
-
-    private final static Swerve INSTANCE = new Swerve();
-
-    public static Swerve getInstance() {
-        return INSTANCE;
     }
 }
 
