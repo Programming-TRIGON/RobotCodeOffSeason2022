@@ -19,19 +19,16 @@ public class Transporter extends SubsystemBase {
     }
 
     /**
-     * get will return currentState
-     * and currentState = to state
-     *
-     * @return
+     * @return currentState
      */
     public TransporterState getState() {
         return currentState;
     }
 
     /**
-     * motor.set = to state.power
+     * Set the motor power
      *
-     * @param state
+     * @param state TransporterState
      */
     public void setState(TransporterState state) {
         motor.set(state.power);
