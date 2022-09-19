@@ -5,8 +5,9 @@ public class Conversions {
 
     /**
      * Converts voltage to compensated power
+     * 
      * @param voltage the voltage
-     * @return Compensated power
+     * @return the compensated power
      */
     public static double voltageToCompensatedPower(double voltage) {
         return voltage/ VOLTAGE_COMPENSATION_SATURATION;
