@@ -49,7 +49,9 @@ public class FilesHandler {
      */
     public static void renameFile(String absolutePath, String newName) throws IOException {
         List<String> absolutePathSplit = new ArrayList<>(List.of(absolutePath.split("\\\\")));
-        newName = absolutePathSplit.remove(absolutePathSplit.size() - 1) + newName;
+        absolutePathSplit.remove(absolutePathSplit.size() - 1);
+        absolutePathSplit.add(newName);
+        newName =  String.join("\\", absolutePathSplit);
         File file = new File(absolutePath);
         if(!file.renameTo(new File(newName))) {
             throw new IOException("Failed to rename file " + absolutePath + " to " + newName);
