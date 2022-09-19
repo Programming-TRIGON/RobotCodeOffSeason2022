@@ -31,7 +31,7 @@ public class Loader extends SubsystemBase {
      * @param state the wanted state for the loader
      */
     public void setState(LoaderState state) {
-        motor.set(Conversions.voltageToCompensatedPower(state.voltage));
+        motor.set(Conversions.voltageToCompensatedPower(state.voltage, LoaderConstants.VOLTAGE_COMPENSATION_SATURATION));
         currentState = state;
     }
 }
