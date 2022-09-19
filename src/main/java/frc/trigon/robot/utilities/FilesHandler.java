@@ -48,12 +48,8 @@ public class FilesHandler {
      * @throws IOException if the method failed to rename the file
      */
     public static void renameFile(String absolutePath, String newName) throws IOException {
-        List<String> absolutePathSplit = new ArrayList<>(List.of(absolutePath.split("\\\\")));
-        absolutePathSplit.remove(absolutePathSplit.size() - 1);
-        absolutePathSplit.add(newName);
-        newName =  String.join("\\", absolutePathSplit);
         File file = new File(absolutePath);
-        if(!file.renameTo(new File(newName))) {
+        if(!file.renameTo(new File(extractPathFromAbsolutePath(absolutePath) + newName))) {
             throw new IOException("Failed to rename file " + absolutePath + " to " + newName);
         }
     }
@@ -70,11 +66,10 @@ public class FilesHandler {
      * @throws IOException if the method failed to safe write the file
      */
     public static void safeWrite(String absolutePath, String text) throws IOException {
-        String[] absolutePathSplit = absolutePath.split("\\\\");
         writeStringToFile(absolutePath + ".tmp", text);
         if(fileExist(absolutePath))
-            renameFile(absolutePath, absolutePathSplit[absolutePathSplit.length-1]+".bak");
-        renameFile(absolutePath + ".tmp", absolutePathSplit[absolutePathSplit.length-1]);
+            renameFile(absolutePath, extractNameFromAbsolutePath(absolutePath)+".bak");
+        renameFile(absolutePath + ".tmp", extractNameFromAbsolutePath(absolutePath));
         if(fileExist(absolutePath + ".bak"))
             deleteFile(absolutePath + ".bak");
     }
@@ -94,5 +89,13 @@ public class FilesHandler {
 
     private static boolean fileExist(String absolutePath) {
         return new File(absolutePath).exists();
+    }
+    private static String extractPathFromAbsolutePath(String absolutePath) {
+        List<String> absolutePathSplit = new ArrayList<>(List.of(absolutePath.split("\\\\")));
+        absolutePathSplit.remove(absolutePathSplit.size() - 1);
+        return String.join("\\", absolutePathSplit) + "\\";
+    }
+    private static String extractNameFromAbsolutePath(String absolutePath) {
+        return absolutePath.split("\\\\")[absolutePath.split("\\\\").length - 1];
     }
 }
