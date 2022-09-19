@@ -5,7 +5,7 @@ public class Conversions {
 
     /**
      * Converts voltage to compensated power
-     * 
+     *
      * @param voltage the voltage
      * @return the compensated power
      */

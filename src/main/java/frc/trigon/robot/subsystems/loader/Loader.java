@@ -19,18 +19,16 @@ public class Loader extends SubsystemBase {
     }
 
     /**
-     * Gets the state of the Loader
-     *
-     * @return the current LoaderState
+     * @return the current state of the loader
      */
     public LoaderState getState() {
         return currentState;
     }
 
     /**
-     * Sets the state of the Loader
+     * Sets the state of the loader
      *
-     * @param state the wanted LoaderState
+     * @param state the wanted state for the loader
      */
     public void setState(LoaderState state) {
         motor.set(Conversions.voltageToCompensatedPower(state.voltage));
