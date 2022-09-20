@@ -10,6 +10,8 @@ public class PitcherConstants {
     static final double P = 0.01, I = 0, D = 0;
 
     static {
-        MOTOR.config_kP();
+        MOTOR.config_kP(0,P);
+        MOTOR.config_kI(0,I);
+        MOTOR.config_kD(0,D);
     }
 }
