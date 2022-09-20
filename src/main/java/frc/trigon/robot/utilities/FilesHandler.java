@@ -90,11 +90,13 @@ public class FilesHandler {
     private static boolean fileExist(String absolutePath) {
         return new File(absolutePath).exists();
     }
+
     private static String extractPathFromAbsolutePath(String absolutePath) {
         List<String> absolutePathSplit = new ArrayList<>(List.of(absolutePath.split("\\\\")));
         absolutePathSplit.remove(absolutePathSplit.size() - 1);
         return String.join("\\", absolutePathSplit) + "\\";
     }
+
     private static String extractNameFromAbsolutePath(String absolutePath) {
         return absolutePath.split("\\\\")[absolutePath.split("\\\\").length - 1];
     }
