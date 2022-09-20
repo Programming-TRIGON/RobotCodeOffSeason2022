@@ -5,6 +5,10 @@ public class Conversions {
     /**
      * Converts voltage to compensated power
      *
+     * Talon FX/SRX and Victor SPX can be configured to adjust their outputs in response to the battery
+     * voltage measurement (in all control modes). Use the voltage compensation saturation config to
+     * determine what voltage represents 100% output.
+     *
      * @param voltage the voltage
      * @param voltageCompensationSaturation the saturation of the compensation
      * @return the compensated power
