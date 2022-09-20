@@ -1,0 +1,45 @@
+package frc.trigon.robot.subsystems.collector;
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class Collector extends SubsystemBase {
+    private final static Collector INSTANCE = new Collector();
+    private final WPI_TalonFX
+            openingMotor = CollectorConstants.OPENING_MOTOR,
+            collectionMotor = CollectorConstants.COLLECTION_MOTOR;
+
+    private Collector() {
+    }
+
+    public static Collector getInstance() {
+        return INSTANCE;
+    }
+
+    private void collect() {
+        openingMotor.set(CollectorConstants.OPENING_POWER);
+        collectionMotor.set(CollectorConstants.COLLECTING_POWER);
+    }
+
+    private void close() {
+        openingMotor.set(CollectorConstants.CLOSING_POWER);
+        collectionMotor.disable();
+    }
+
+    private void eject() {
+        collectionMotor.set(CollectorConstants.EJECTING_POWER);
+    }
+
+    /**
+     * @return whether the collector is open.
+     */
+    public boolean isOpen() {
+        return openingMotor.get() > 0;
+    }
+
+    private void stop() {
+        collectionMotor.disable();
+        openingMotor.disable();
+    }
+}
+
