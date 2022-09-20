@@ -26,7 +26,7 @@ public class Transporter extends SubsystemBase {
     }
 
     /**
-     * Set the motor power
+     * Set the motor state
      *
      * @param state TransporterState
      */
