@@ -11,7 +11,6 @@ public class Transporter extends SubsystemBase {
     private TransporterState currentState;
 
     private Transporter() {
-
     }
 
     public static Transporter getInstance() {
