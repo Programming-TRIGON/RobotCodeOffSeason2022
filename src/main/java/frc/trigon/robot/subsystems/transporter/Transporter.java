@@ -28,7 +28,7 @@ public class Transporter extends SubsystemBase {
     /**
      * Set the motor state
      *
-     * @param state TransporterState
+     * @param state the wanted state for the transporter
      */
     public void setState(TransporterState state) {
         motor.set(state.power);
