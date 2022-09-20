@@ -1,4 +1,4 @@
-package frc.trigon.robot.subsystems.Swerve;
+package frc.trigon.robot.subsystems.swerve;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;

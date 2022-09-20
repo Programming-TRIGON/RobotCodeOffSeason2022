@@ -1,4 +1,4 @@
-package frc.trigon.robot.subsystems.Swerve;
+package frc.trigon.robot.subsystems.swerve;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -88,7 +88,7 @@ public class SwerveModule {
         return angleMotor.getSelectedSensorVelocity();
     }
 
-    public double getRawDriverVelocity() {
+    public double getRawDriveVelocity() {
         return driveMotor.getSelectedSensorVelocity();
     }
 
@@ -96,7 +96,7 @@ public class SwerveModule {
         return angleEncoder.getSelectedSensorVelocity();
     }
 
-    public double getDegrees() {
+    private double getDegrees() {
         return Conversions.magToDegrees(angleMotor.getSelectedSensorPosition());
     }
 
