@@ -18,7 +18,7 @@ public class Conversions {
         return ticks / falconTicks;
     }
 
-    public static double ticksPer100Ms(double velocityInHundredMs) {
-        return hundredMsToMin(velocityInHundredMs) / falconTicksToRevolutions(velocityInHundredMs);
+    public static double falconTicksPer100MsToRpm(double velocityInHundredMs) {
+        return hundredMsToMin(velocityInHundredMs) / falconTicks;
     }
 }

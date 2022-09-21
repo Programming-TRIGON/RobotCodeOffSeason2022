@@ -7,10 +7,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.trigon.robot.utilities.Conversions;
 
 public class Shooter extends SubsystemBase {
+    private final static Shooter INSTANCE = new Shooter();
 
-    // With eager singleton initialization, any static variables/fields used in the 
-    // constructor must appear before the "INSTANCE" variable so that they are initialized 
-    // before the constructor is called when the "INSTANCE" variable initializes.
     WPI_TalonFX masterMotor = ShooterConstants.MASTER_MOTOR;
     private int ballCount = 0;
 
@@ -26,29 +24,26 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * @return current velocity as ticks per minute
+     * @return the current velocity as ticks per minute
      */
     public double getCurrentVelocity() {
-        return Conversions.ticksPer100Ms(masterMotor.getSelectedSensorVelocity());
+        return Conversions.falconTicksPer100MsToRpm(masterMotor.getSelectedSensorVelocity());
     }
 
     /**
-     * @return count of balls currently inside the robot
+     * @return the count of balls currently inside the robot
      */
     public int getBallCount() {
         return ballCount;
     }
 
     /**
-     * resetting the ball count
+     * Resets the ball count
      */
     public void resetBallCount() {
         ballCount = 0;
     }
 
-    private final static Shooter INSTANCE = new Shooter();
-
-    @SuppressWarnings("WeakerAccess")
     public static Shooter getInstance() {
         return INSTANCE;
     }
