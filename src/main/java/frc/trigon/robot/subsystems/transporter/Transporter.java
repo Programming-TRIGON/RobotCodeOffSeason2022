@@ -13,9 +13,6 @@ public class Transporter extends SubsystemBase {
     private Transporter() {
     }
 
-    /**
-     * @return the instance of the Transporter subsystem
-     */
     public static Transporter getInstance() {
         return INSTANCE;
     }
