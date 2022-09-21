@@ -7,8 +7,13 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class Limelight {
     NetworkTableEntry tv, tx, ty, ts, ta, ledMode, driverCam, pipeline, snapshot;
 
-    public Limelight(String table) {
-        NetworkTable networkTable = NetworkTableInstance.getDefault().getTable(table);
+    /**
+     * Constructs a new Limelight.
+     *
+     * @param hostName the host of the limelight
+     */
+    public Limelight(String hostName) {
+        NetworkTable networkTable = NetworkTableInstance.getDefault().getTable(hostName);
 
         tv = networkTable.getEntry("tv");
         tx = networkTable.getEntry("tx");
