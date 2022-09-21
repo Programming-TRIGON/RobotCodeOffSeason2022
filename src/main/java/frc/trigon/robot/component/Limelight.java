@@ -1,4 +1,4 @@
-package frc.trigon.robot.component.limelight;
+package frc.trigon.robot.component;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
