@@ -11,21 +11,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
     private final static Swerve INSTANCE = new Swerve();
-
-    public static Swerve getInstance() {
-        return INSTANCE;
-    }
-
     private SwerveDriveOdometry swerveOdometry;
     private SwerveDriveKinematics kinematics;
     private SwerveModule[] swerveModules = SwerveConstants.SWERVEMODULES;
     private Pigeon2 gyro;
-
     public Swerve() {
         SwerveDriveKinematics kinematics = SwerveConstants.KINEMATICS;
         gyro = SwerveConstants.gyro;
 
         zeroHeading();
+    }
+
+    public static Swerve getInstance() {
+        return INSTANCE;
     }
 
     void selfRelativeDrive(Translation2d translation, Rotation2d radiant) {

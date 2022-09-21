@@ -24,7 +24,8 @@ public class FieldRelativeSupplierDrive extends CommandBase {
 
     @Override
     public void execute() {
-        swerve.fieldRelativeDrive(new Translation2d(xPower.getAsDouble(), yPower.getAsDouble()),new Rotation2d(zPower.getAsDouble()));
+        swerve.fieldRelativeDrive(new Translation2d(xPower.getAsDouble(), yPower.getAsDouble()),
+                new Rotation2d(zPower.getAsDouble()));
     }
 
     @Override

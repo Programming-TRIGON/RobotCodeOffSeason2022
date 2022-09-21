@@ -12,7 +12,8 @@ public class SelfRelativeSupplierDrive extends CommandBase {
     private final DoubleSupplier zPower;
     private final Swerve swerve;
 
-    public SelfRelativeSupplierDrive(Swerve swerve, DoubleSupplier xPower, DoubleSupplier yPower, DoubleSupplier zPower) {
+    public SelfRelativeSupplierDrive(
+            Swerve swerve, DoubleSupplier xPower, DoubleSupplier yPower, DoubleSupplier zPower) {
         this.swerve = swerve;
         this.xPower = xPower;
         this.yPower = yPower;
@@ -23,7 +24,8 @@ public class SelfRelativeSupplierDrive extends CommandBase {
 
     @Override
     public void execute() {
-    swerve.selfRelativeDrive(new Translation2d(xPower.getAsDouble(), yPower.getAsDouble()), new Rotation2d(zPower.getAsDouble()));
+        swerve.selfRelativeDrive(
+                new Translation2d(xPower.getAsDouble(), yPower.getAsDouble()), new Rotation2d(zPower.getAsDouble()));
     }
 
     @Override

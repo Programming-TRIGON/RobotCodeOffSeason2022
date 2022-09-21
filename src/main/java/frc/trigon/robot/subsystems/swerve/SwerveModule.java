@@ -13,7 +13,7 @@ public class SwerveModule {
     private final WPI_TalonFX angleMotor;
     private final WPI_TalonFX driveMotor;
 
-    private double encoderOffset;
+    private final double encoderOffset;
     private SwerveModuleState targetState;
 
     public SwerveModule(SwerveModuleConstants moduleConstants) {
@@ -36,7 +36,7 @@ public class SwerveModule {
     }
 
     public SwerveModuleState getCurrentState() {
-        return new SwerveModuleState(getDriveMotorState(),getAngleMotorState());
+        return new SwerveModuleState(getDriveMotorState(), getAngleMotorState());
     }
 
     private void optimizeTargetState() {
@@ -79,14 +79,14 @@ public class SwerveModule {
         );
     }
 
-    private double getDriveMotorState(){
+    private double getDriveMotorState() {
         return Conversions.falconToMps(
                 Conversions.falconToRotations(driveMotor.getSelectedSensorVelocity()),
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER, SwerveModuleConstants.DRIVE_GEAR_RATIO);
     }
 
-    private Rotation2d getAngleMotorState(){
-       return Rotation2d.fromDegrees(Conversions.magToDegrees(angleMotor.getSelectedSensorPosition()));
+    private Rotation2d getAngleMotorState() {
+        return Rotation2d.fromDegrees(Conversions.magToDegrees(angleMotor.getSelectedSensorPosition()));
     }
 
     private double getDegrees() {
