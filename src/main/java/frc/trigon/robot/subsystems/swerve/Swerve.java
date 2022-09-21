@@ -24,7 +24,7 @@ public class Swerve extends SubsystemBase {
     public Swerve() {
         SwerveDriveKinematics kinematics = SwerveConstants.KINEMATICS;
         gyro = SwerveConstants.gyro;
-        
+
         zeroHeading();
     }
 
@@ -37,8 +37,9 @@ public class Swerve extends SubsystemBase {
     }
 
     void fieldRelativeDrive(Translation2d translation, Rotation2d radiant) {
-        selfRelitiveDrive(ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(),translation.getY(),radiant.getRadians(),
-                getHeading()));
+        selfRelitiveDrive(
+                ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), radiant.getRadians(),
+                        getHeading()));
     }
 
     public void stop() {
@@ -51,9 +52,6 @@ public class Swerve extends SubsystemBase {
         for(int i = 0; i < 4; i++)
             swerveModules[i].setTargetState(swerveModuleStates[i]);
     }
-
-
-
 
     private void selfRelitiveDrive(ChassisSpeeds chassisSpeeds) {
         SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);

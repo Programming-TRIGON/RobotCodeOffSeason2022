@@ -15,7 +15,8 @@ public class SwerveModuleConstants {
     public static final double WHEEL_CIRCUMFERENCE_METER = WHEEL_DIAMETER_METER * Math.PI;
     public static final double DRIVE_GEAR_RATIO = (8.14 / 1.0);
 
-    public SwerveModuleConstants(WPI_TalonSRX angleEncoder, WPI_TalonFX driveMotor, WPI_TalonFX angleMotor, double encoderOffset) {
+    public SwerveModuleConstants(
+            WPI_TalonSRX angleEncoder, WPI_TalonFX driveMotor, WPI_TalonFX angleMotor, double encoderOffset) {
         this.angleEncoder = angleEncoder;
         this.driveMotor = driveMotor;
         this.angleMotor = angleMotor;
