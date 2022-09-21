@@ -15,6 +15,7 @@ public class Swerve extends SubsystemBase {
     private SwerveDriveKinematics kinematics;
     private SwerveModule[] swerveModules = SwerveConstants.SWERVEMODULES;
     private Pigeon2 gyro;
+
     public Swerve() {
         SwerveDriveKinematics kinematics = SwerveConstants.KINEMATICS;
         gyro = SwerveConstants.gyro;
