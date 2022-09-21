@@ -11,8 +11,8 @@ public class SwerveModuleConstants {
 
     public double encoderOffset;
 
-    public static final double WHEEL_DIAMETER = 0.1;
-    public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+    public static final double WHEEL_DIAMETER_METER = 0.1;
+    public static final double WHEEL_CIRCUMFERENCE_METER = WHEEL_DIAMETER_METER * Math.PI;
     public static final double DRIVE_GEAR_RATIO = (8.14 / 1.0);
 
     public SwerveModuleConstants(WPI_TalonSRX angleEncoder, WPI_TalonFX driveMotor, WPI_TalonFX angleMotor, double encoderOffset) {

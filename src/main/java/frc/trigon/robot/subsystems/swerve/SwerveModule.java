@@ -36,12 +36,7 @@ public class SwerveModule {
     }
 
     public SwerveModuleState getCurrentState() {
-
-        return new SwerveModuleState(
-                Conversions.falconToMps(
-                        Conversions.falconToRotations(driveMotor.getSelectedSensorVelocity()),
-                        SwerveModuleConstants.WHEEL_CIRCUMFERENCE, SwerveModuleConstants.DRIVE_GEAR_RATIO),
-                Rotation2d.fromDegrees(Conversions.magToDegrees(angleMotor.getSelectedSensorPosition())));
+        return new SwerveModuleState(getDriveMotorState(),getAngleMotorState());
     }
 
     private void optimizeTargetState() {
@@ -78,24 +73,22 @@ public class SwerveModule {
                 ControlMode.Velocity,
                 Conversions.mpsToFalcon(
                         targetState.speedMetersPerSecond,
-                        SwerveModuleConstants.WHEEL_CIRCUMFERENCE,
+                        SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                         SwerveModuleConstants.DRIVE_GEAR_RATIO
                 )
         );
     }
 
-    public double getRawAngleVelocity() {
-        return angleMotor.getSelectedSensorVelocity();
+    private double getDriveMotorState(){
+        return Conversions.falconToMps(
+                Conversions.falconToRotations(driveMotor.getSelectedSensorVelocity()),
+                SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER, SwerveModuleConstants.DRIVE_GEAR_RATIO);
     }
 
-    public double getRawDriveVelocity() {
-        return driveMotor.getSelectedSensorVelocity();
+    private Rotation2d getAngleMotorState(){
+       return Rotation2d.fromDegrees(Conversions.magToDegrees(angleMotor.getSelectedSensorPosition()));
     }
-
-    public double getRawAngleEncoderVelocity() {
-        return angleEncoder.getSelectedSensorVelocity();
-    }
-
+    
     private double getDegrees() {
         return Conversions.magToDegrees(angleMotor.getSelectedSensorPosition());
     }

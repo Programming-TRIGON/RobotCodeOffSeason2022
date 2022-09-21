@@ -1,20 +1,20 @@
 package frc.trigon.robot.utilities;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 public class Conversions {
-    public static double magToDegrees(double magTicks) {
-        return magTicks / 4096f * 360;
-    }
-    public static double degreesToMag(double degrees){return  degrees / 360 * 406f;}
 
-    // cm radicus 30
-    ///public  static double degreesToMag(double degrees) {return degrees * 4096f / 4096f;}
+    private static final double maxMagTicks = 4096;
+    private static final double maxFalconTicks = 2048;
+
+    public static double magToDegrees(double magTicks) {
+        return magToRotations(magTicks) * 360;
+    }
+
+    public static double degreesToMag(double degrees) {
+        return degreesToRotations(degrees) *maxMagTicks;
+    }
+
     public static double degreesToRotations(double degrees) {
-        return degrees / 360f;
+        return degrees / 360;
     }
 
     public static double rotationToDegrees(double rotations) {
@@ -22,7 +22,11 @@ public class Conversions {
     }
 
     public static double rotationsToMag(double rotations) {
-        return rotations * 4096f;
+        return rotations * maxMagTicks;
+    }
+
+    public static double magToRotations(double magTicks) {
+        return magTicks / maxMagTicks;
     }
 
     public static double falconToSeconds(double velocity) {
@@ -30,10 +34,10 @@ public class Conversions {
     }
 
     public static double falconToRotations(double velocity) {
-        return (velocity * 10) / 2048f;
+        return falconToSeconds(velocity) / maxFalconTicks;
     }
 
-    public static double motorRotationsToSystemRotations(double rotations, double gearRatio) {
+    public static double motorRevolutionsToSystemRotations(double rotations, double gearRatio) {
         return rotations / gearRatio;
     }
 
@@ -47,17 +51,15 @@ public class Conversions {
      * @return returns the meters per sec in seconds
      **/
     public static double falconToMps(double rotations, double circumference, double gearRatio) {
-        return motorRotationsToSystemRotations(rotations, gearRatio) * circumference;
+        return motorRevolutionsToSystemRotations(rotations, gearRatio) * circumference;
     }
 
-    public static double mpsToFalcon(Double rotations , double circumference ,double gearRatio){
-        return systemRotationsToMotorRotations(rotations ,gearRatio) / circumference;
+    public static double mpsToFalcon(Double rotations, double circumference, double gearRatio) {
+        return systemRotationsToMotorRotations(rotations, gearRatio) / circumference;
     }
-
-
 
     public static double degreesToFalcon(double degrees, double gearRatio) {
-        return degrees / 360 * (gearRatio * 2048.0);
+        return degrees / 360 * (gearRatio * maxFalconTicks);
     }
 }
 
