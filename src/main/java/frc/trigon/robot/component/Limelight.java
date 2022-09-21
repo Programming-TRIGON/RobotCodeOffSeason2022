@@ -69,7 +69,7 @@ public class Limelight {
     }
 
     /**
-     * sets the DriverCamera Mode
+     * sets the DriverCamera Mode.
      *
      * @param useDriverCam true for driver camera, false for vision processing
      */
@@ -85,7 +85,7 @@ public class Limelight {
     }
 
     /**
-     * sets the led mode
+     * sets the led mode.
      *
      * @param mode (0: use the LED Mode set in the current pipeline, 1: force off, 2: force blink, 3: force on)
      */
@@ -101,7 +101,7 @@ public class Limelight {
     }
 
     /**
-     * sets the pipeline
+     * sets the pipeline.
      *
      * @param pipeline (0-9)
      */
@@ -117,7 +117,7 @@ public class Limelight {
     }
 
     /**
-     * sets the snapshot mode
+     * sets the snapshot mode.
      *
      * @param mode (0: stop, 1: 2Hz)
      */
