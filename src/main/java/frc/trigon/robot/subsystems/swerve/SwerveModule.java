@@ -88,7 +88,7 @@ public class SwerveModule {
     private Rotation2d getAngleMotorState(){
        return Rotation2d.fromDegrees(Conversions.magToDegrees(angleMotor.getSelectedSensorPosition()));
     }
-    
+
     private double getDegrees() {
         return Conversions.magToDegrees(angleMotor.getSelectedSensorPosition());
     }

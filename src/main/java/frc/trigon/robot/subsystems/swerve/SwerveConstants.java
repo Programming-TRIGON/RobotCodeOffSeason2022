@@ -3,34 +3,37 @@ package frc.trigon.robot.subsystems.swerve;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 public class SwerveConstants {
 
-    public static SwerveModule[] swerveModules;
+    static SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(SwerveConstants.LOCATIONS);
+    ;
 
-    static SwerveDriveKinematics kinematics = new SwerveDriveKinematics(SwerveConstants.LOCATIONS);;
-
-    public static final double MAX_SPEED = 3;
+    public static final double MAX_SPEED_M = 3;
 
     private static final double SIDE_LENGTH_METERS = 0.5;
     private static final double HALF_SIDE_LENGTH_METERS = 0.25;
 
-    private static final Translation2d FRONT_LEFT_LOCATION = new Translation2d(
+    private static final Translation2d FRONT_LEFT_MODULE_LOCATION = new Translation2d(
             HALF_SIDE_LENGTH_METERS,
             HALF_SIDE_LENGTH_METERS);
-    private static final Translation2d FRONT_RIGHT_LOCATION = new Translation2d(
+    private static final Translation2d FRONT_RIGHT_MODULE_LOCATION = new Translation2d(
             HALF_SIDE_LENGTH_METERS,
             -HALF_SIDE_LENGTH_METERS);
-    private static final Translation2d REAR_LEFT_LOCATION = new Translation2d(
+    private static final Translation2d REAR_LEFT_MODULE_LOCATION = new Translation2d(
             -HALF_SIDE_LENGTH_METERS,
             HALF_SIDE_LENGTH_METERS);
-    private static final Translation2d REAR_RIGHT_LOCATION = new Translation2d(
+    private static final Translation2d REAR_RIGHT_MODULE_LOCATION = new Translation2d(
             -HALF_SIDE_LENGTH_METERS,
             -HALF_SIDE_LENGTH_METERS);
     public static final Translation2d[] LOCATIONS = {
-            FRONT_LEFT_LOCATION, FRONT_RIGHT_LOCATION, REAR_LEFT_LOCATION, REAR_RIGHT_LOCATION
+            SwerveModules.fromId(0).Location,
+            SwerveModules.fromId(1).Location,
+            SwerveModules.fromId(2).Location,
+            SwerveModules.fromId(3).Location
     };
 
     private static final int PIGEON_ID = 12;
@@ -57,27 +60,31 @@ public class SwerveConstants {
     private static final double REAR_RIGHT_ENCODER_OFFSET = 0;
 
     private static final int FRONT_LEFT_ID = 0;
-    private static final SwerveModuleConstants FRONT_LEFT_SWERVE_MODULE_CONSTANTS = new SwerveModuleConstants(
-            FRONT_LEFT_ANGLE_ENCODER, FRONT_LEFT_DRIVE_MOTOR, FRONT_LEFT_ANGLE_MOTOR, FRONT_LEFT_ENCODER_OFFSET
-    );
+    private static final int FRONT_RIGHT_ID = 1;
+    private static final int REAR_LEFT_ID = 2;
+    private static final int REAR_RIGHT_ID = 3;
 
-    private static final int FRONT_RIGHT_ID = 0;
+    private static final SwerveModuleConstants FRONT_LEFT_SWERVE_MODULE_CONSTANTS = new SwerveModuleConstants(
+            FRONT_LEFT_ANGLE_ENCODER, FRONT_LEFT_DRIVE_MOTOR, FRONT_LEFT_ANGLE_MOTOR, FRONT_LEFT_ENCODER_OFFSET);
     private static final SwerveModuleConstants FRONT_RIGHT_SWERVE_MODULE_CONSTANTS = new SwerveModuleConstants(
             FRONT_RIGHT_ANGLE_ENCODER, FRONT_RIGHT_DRIVE_MOTOR, FRONT_RIGHT_ANGLE_MOTOR, FRONT_RIGHT_ENCODER_OFFSET);
-
-    private static final int REAR_LEFT_ID = 0;
     private static final SwerveModuleConstants REAR_LEFT_SWERVE_MODULE_CONSTANTS = new SwerveModuleConstants(
             REAR_LEFT_ANGLE_ENCODER, REAR_LEFT_DRIVE_MOTOR, REAR_LEFT_ANGLE_MOTOR, RIGHT_LEFT_ENCODER_OFFSET);
-
-    private static final int REAR_RIGHT_ID = 0;
     private static final SwerveModuleConstants REAR_RIGHT_SWERVE_MODULE_CONSTANTS = new SwerveModuleConstants(
             REAR_RIGHT_ANGLE_ENCODER, REAR_RIGHT_DRIVE_MOTOR, REAR_RIGHT_ANGLE_MOTOR, REAR_RIGHT_ENCODER_OFFSET);
 
+    public static SwerveModule[] SWERVEMODULES = {
+            new SwerveModule(SwerveConstants.SwerveModules.fromId(0).swerveModuleConstants),
+            new SwerveModule(SwerveConstants.SwerveModules.fromId(1).swerveModuleConstants),
+            new SwerveModule(SwerveConstants.SwerveModules.fromId(2).swerveModuleConstants),
+            new SwerveModule(SwerveConstants.SwerveModules.fromId(3).swerveModuleConstants)
+    };
+
     public enum SwerveModules {
-        FRONT_LEFT(FRONT_LEFT_ID, FRONT_LEFT_SWERVE_MODULE_CONSTANTS, REAR_LEFT_LOCATION),
-        FRONT_RIGHT(FRONT_RIGHT_ID, FRONT_RIGHT_SWERVE_MODULE_CONSTANTS, FRONT_RIGHT_LOCATION),
-        REAR_LEFT(REAR_LEFT_ID, REAR_LEFT_SWERVE_MODULE_CONSTANTS, REAR_LEFT_LOCATION),
-        REAR_RIGHT(REAR_RIGHT_ID, REAR_RIGHT_SWERVE_MODULE_CONSTANTS, REAR_RIGHT_LOCATION),
+        FRONT_LEFT(FRONT_LEFT_ID, FRONT_LEFT_SWERVE_MODULE_CONSTANTS, REAR_LEFT_MODULE_LOCATION),
+        FRONT_RIGHT(FRONT_RIGHT_ID, FRONT_RIGHT_SWERVE_MODULE_CONSTANTS, FRONT_RIGHT_MODULE_LOCATION),
+        REAR_LEFT(REAR_LEFT_ID, REAR_LEFT_SWERVE_MODULE_CONSTANTS, REAR_LEFT_MODULE_LOCATION),
+        REAR_RIGHT(REAR_RIGHT_ID, REAR_RIGHT_SWERVE_MODULE_CONSTANTS, REAR_RIGHT_MODULE_LOCATION),
         ;
 
         int id;
@@ -89,20 +96,17 @@ public class SwerveConstants {
             this.swerveModuleConstants = swerveModuleConstants;
             this.Location = location;
         }
+
+        public static SwerveModules fromId(int id) {
+            if(id == SwerveModules.FRONT_LEFT.id)
+                return SwerveModules.FRONT_LEFT;
+            if(id == SwerveModules.FRONT_RIGHT.id)
+                return SwerveModules.FRONT_RIGHT;
+            if(id == SwerveModules.REAR_LEFT.id)
+                return SwerveModules.REAR_LEFT;
+            if(id == SwerveModules.REAR_RIGHT.id)
+                return SwerveModules.REAR_RIGHT;
+            return null;
+        }
     }
-
-    static {
-        SwerveModule[] swerveModules;
-        swerveModules = new SwerveModule[4];
-        swerveModules[SwerveConstants.SwerveModules.FRONT_LEFT.id] = new SwerveModule(
-                SwerveConstants.SwerveModules.FRONT_LEFT.swerveModuleConstants);
-        swerveModules[SwerveConstants.SwerveModules.FRONT_RIGHT.id] = new SwerveModule(
-                SwerveConstants.SwerveModules.REAR_RIGHT.swerveModuleConstants);
-        swerveModules[SwerveConstants.SwerveModules.REAR_LEFT.id] = new SwerveModule(
-                SwerveConstants.SwerveModules.REAR_LEFT.swerveModuleConstants);
-        swerveModules[SwerveConstants.SwerveModules.REAR_RIGHT.id] = new SwerveModule(
-                SwerveConstants.SwerveModules.REAR_RIGHT.swerveModuleConstants);
-    }
-
-
 }

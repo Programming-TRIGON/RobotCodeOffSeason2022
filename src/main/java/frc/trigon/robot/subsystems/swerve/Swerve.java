@@ -18,23 +18,27 @@ public class Swerve extends SubsystemBase {
 
     private SwerveDriveOdometry swerveOdometry;
     private SwerveDriveKinematics kinematics;
-    private SwerveModule[] swerveModules;
+    private SwerveModule[] swerveModules = SwerveConstants.SWERVEMODULES;
     private Pigeon2 gyro;
 
     public Swerve() {
+        SwerveDriveKinematics kinematics = SwerveConstants.KINEMATICS;
         gyro = SwerveConstants.gyro;
-        SwerveDriveKinematics kinematics = SwerveConstants.kinematics;
-
-        getModules();
-        gyroSetZero();
+        
+        zeroHeading();
     }
 
     void selfRelativeDrive(Translation2d translation, Rotation2d radiant) {
-        selfRelitive(selfRelitiveChassisSpeeds(translation,radiant));
+        selfRelitiveDrive(new ChassisSpeeds(
+                translation.getX(),
+                translation.getY(),
+                radiant.getRadians()
+        ));
     }
 
     void fieldRelativeDrive(Translation2d translation, Rotation2d radiant) {
-        selfRelitive(fieldRelitiveChassisSpeeds(translation, radiant));
+        selfRelitiveDrive(ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(),translation.getY(),radiant.getRadians(),
+                getHeading()));
     }
 
     public void stop() {
@@ -49,38 +53,18 @@ public class Swerve extends SubsystemBase {
     }
 
 
-    private void getModules() {
-        swerveModules = new SwerveModule[4];
-        for(int i = 0; i < swerveModules.length; i++)
-            swerveModules[i] = SwerveConstants.swerveModules[i];
-    }
 
-    private void selfRelitive(ChassisSpeeds chassisSpeeds) {
+
+    private void selfRelitiveDrive(ChassisSpeeds chassisSpeeds) {
         SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);
     }
 
-    private ChassisSpeeds fieldRelitiveChassisSpeeds(Translation2d translation, Rotation2d radiant) {
-        return  ChassisSpeeds.fromFieldRelativeSpeeds(
-                translation.getX(),
-                translation.getY(),
-                radiant.getRadians(),
-                getGyroAngle());
-    }
-
-    private ChassisSpeeds selfRelitiveChassisSpeeds(Translation2d translation, Rotation2d radiant) {
-        return new ChassisSpeeds(
-                translation.getX(),
-                translation.getY(),
-                radiant.getRadians()
-        );
-
-    }
-    private void gyroSetZero() {
+    private void zeroHeading() {
         gyro.setYaw(0);
     }
 
-    private Rotation2d getGyroAngle() {
+    private Rotation2d getHeading() {
         return Rotation2d.fromDegrees(gyro.getYaw());
     }
 }
