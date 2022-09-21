@@ -18,11 +18,13 @@ public class PitcherConstants {
         MOTOR.config_kD(0,D);
 
         MOTOR.setInverted(INVERTED);
+        MOTOR.setSelectedSensorPosition(MOTOR.getSelectedSensorPosition() - TICKS_OFFSET );
 
         MOTOR.configForwardSoftLimitEnable(true);
         MOTOR.configForwardSoftLimitThreshold(MAX_TICKS);
         MOTOR.configReverseSoftLimitEnable(true);
         MOTOR.configReverseSoftLimitThreshold(MIN_TICKS);
-        
+
+
     }
 }
