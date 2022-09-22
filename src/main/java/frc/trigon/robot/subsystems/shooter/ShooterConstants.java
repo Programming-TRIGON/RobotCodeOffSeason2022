@@ -14,7 +14,7 @@ public class ShooterConstants {
             P = 0,
             I = 0,
             D = 0,
-            F = 0;
+            V = 0;
 
     static final double S = 0;
 
@@ -37,6 +37,6 @@ public class ShooterConstants {
 
         MASTER_MOTOR.config_kD(0, D);
 
-        MASTER_MOTOR.config_kF(0, F);
+        MASTER_MOTOR.config_kF(0, V);
     }
 }
