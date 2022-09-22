@@ -18,7 +18,9 @@ public class Transporter extends SubsystemBase {
     }
 
     /**
-     * @return the current state of the transporterState
+     * Sets the state of the transporter
+     * 
+     * @return the current state of the transporter
      */
     public TransporterState getState() {
         return currentState;
