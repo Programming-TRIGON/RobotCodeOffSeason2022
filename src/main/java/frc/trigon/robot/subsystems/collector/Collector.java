@@ -44,12 +44,18 @@ public class Collector extends SubsystemBase {
         openingMotor.disable();
     }
 
+    /**
+     * @return command of collect and close.
+     */
     public Command getCollectCommand() {
         return new StartEndCommand(this::collect, this::close, this);
     }
 
+    /**
+     * @return command of eject and close.
+     */
     public Command getEjectCommand() {
-        return new StartEndCommand(this::eject, this::eject, this);
+        return new StartEndCommand(this::eject, this::close, this);
     }
 }
 
