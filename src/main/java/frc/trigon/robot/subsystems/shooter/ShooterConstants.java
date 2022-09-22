@@ -14,9 +14,9 @@ public class ShooterConstants {
             P = 0,
             I = 0,
             D = 0,
-            F = 0,
-            S = 0,
-            V = 0;
+            F = 0;
+
+    static final double S = 0;
 
     static final WPI_TalonFX
             LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
@@ -26,11 +26,17 @@ public class ShooterConstants {
 
     static {
         FOLLOWER_MOTOR.follow(MASTER_MOTOR);
+
         MASTER_MOTOR.enableVoltageCompensation(true);
+
         MASTER_MOTOR.configVoltageCompSaturation(VOLTAGE_COMPENSATION);
+
         MASTER_MOTOR.config_kP(0, P);
+
         MASTER_MOTOR.config_kI(0, I);
+
         MASTER_MOTOR.config_kD(0, D);
+
         MASTER_MOTOR.config_kD(0, F);
     }
 }
