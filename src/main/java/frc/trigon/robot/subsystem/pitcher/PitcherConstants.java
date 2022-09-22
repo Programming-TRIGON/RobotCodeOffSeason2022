@@ -6,7 +6,8 @@ import com.ctre.phoenix.sensors.CANCoder;
 import java.util.Set;
 
 public class PitcherConstants {
-    static final int MIN_TICKS = 0, MAX_TICKS =4000,TICKS_OFFSET = 0;
+    static final int FORWARD_SWITCH_ID = 0, REVERSE_SWITCH_ID = 0;
+    static final int MIN_TICKS = 0, MAX_TICKS = 4000,TICKS_OFFSET = 0;
     static final double GEAR_RATIO = 10;
     private static final int MOTOR_ID = 0;
     final static WPI_TalonSRX  MOTOR = new WPI_TalonSRX(MOTOR_ID);
@@ -20,10 +21,6 @@ public class PitcherConstants {
         MOTOR.setInverted(INVERTED);
         MOTOR.setSelectedSensorPosition(MOTOR.getSelectedSensorPosition() - TICKS_OFFSET );
 
-        MOTOR.configForwardSoftLimitEnable(true);
-        MOTOR.configForwardSoftLimitThreshold(MAX_TICKS);
-        MOTOR.configReverseSoftLimitEnable(true);
-        MOTOR.configReverseSoftLimitThreshold(MIN_TICKS);
 
 
     }
