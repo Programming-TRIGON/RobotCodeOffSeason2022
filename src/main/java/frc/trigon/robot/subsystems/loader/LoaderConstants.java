@@ -20,8 +20,8 @@ public class LoaderConstants {
 
     public enum LoaderState {
         LOAD(LOAD_VOLTAGE),
-        OFF(0),
-        EJECT(EJECT_VOLTAGE);
+        EJECT(EJECT_VOLTAGE),
+        OFF(0);
 
         final double voltage;
 
