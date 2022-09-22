@@ -37,6 +37,6 @@ public class ShooterConstants {
 
         MASTER_MOTOR.config_kD(0, D);
 
-        MASTER_MOTOR.config_kD(0, F);
+        MASTER_MOTOR.config_kF(0, F);
     }
 }
