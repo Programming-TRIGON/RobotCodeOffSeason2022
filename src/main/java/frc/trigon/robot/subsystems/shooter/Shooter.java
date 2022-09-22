@@ -51,5 +51,10 @@ public class Shooter extends SubsystemBase {
     private void resetBallCount() {
         ballCount = 0;
     }
+
+    private boolean atTarget()
+    {
+        return getTargetVelocity() == getCurrentVelocity();
+    }
 }
 
