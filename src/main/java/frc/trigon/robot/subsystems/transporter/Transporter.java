@@ -19,7 +19,7 @@ public class Transporter extends SubsystemBase {
 
     /**
      * Sets the state of the transporter
-     * 
+     *
      * @return the current state of the transporter
      */
     public TransporterState getState() {
@@ -27,7 +27,7 @@ public class Transporter extends SubsystemBase {
     }
 
     /**
-     * Set the motor state.
+     * Sets the state of the transporter
      *
      * @param state the wanted state for the transporter
      */
