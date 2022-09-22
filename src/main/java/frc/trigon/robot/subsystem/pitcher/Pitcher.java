@@ -2,6 +2,7 @@ package frc.trigon.robot.subsystem.pitcher;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.trigon.robot.utilities.Conversions;
 
 public class Pitcher extends SubsystemBase {
     private final WPI_TalonSRX motor;
@@ -19,7 +20,12 @@ public class Pitcher extends SubsystemBase {
     public void setPosition() {
 
     }
-
+        private double getCorrectedTicks() {
+            if(motor.getSelectedSensorPosition() < PitcherConstants.MIN_TICKS) {
+                return motor.getSelectedSensorPosition() + Conversions.MAG_TICKS - PitcherConstants.MIN_TICKS;
+            }
+            return motor.getSelectedSensorPosition() - PitcherConstants.MIN_TICKS;
+        }
     public double ticksToDegrees(double ticks) {
         double rotations = ticks / 4096;
         double degrees = rotations * 360;
