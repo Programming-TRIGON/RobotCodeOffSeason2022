@@ -42,9 +42,13 @@ public class Swerve extends SubsystemBase {
     }
 
     public void stop() {
-        SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(
-                new ChassisSpeeds(0, 0, 0));
-        setTargetModuleStates(swerveModuleStates);
+        for(int i = 0; i < swerveModules.length; i++) {
+            stopModule(i);
+        }
+    }
+
+    public void stopModule(int id) {
+        swerveModules[id].stopModule();
     }
 
     private void setTargetModuleStates(SwerveModuleState[] swerveModuleStates) {

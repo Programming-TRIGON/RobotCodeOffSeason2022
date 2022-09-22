@@ -101,5 +101,10 @@ public class SwerveModule {
     public void setDriveMotorSensorZero() {
         driveMotor.setSelectedSensorPosition(0);
     }
+
+    public void stopModule(){
+        driveMotor.disable();
+        angleMotor.disable();
+    }
 }
 

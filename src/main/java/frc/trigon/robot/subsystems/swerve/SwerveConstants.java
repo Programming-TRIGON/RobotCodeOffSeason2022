@@ -7,7 +7,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 public class SwerveConstants {
-
     public static final double MAX_SPEED_M = 3;
     public static final Translation2d[] LOCATIONS = {
             SwerveModules.fromId(0).Location,
