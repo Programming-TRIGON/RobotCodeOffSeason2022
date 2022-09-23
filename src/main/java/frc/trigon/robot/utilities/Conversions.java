@@ -10,8 +10,8 @@ public class Conversions {
      * The compensated power is the power resulting from turning the voltage off and on without stopping.
      * It's basically the voltage divided by the saturation of the compensation.
      *
-     * @param voltage the voltage
-     * @param voltageCompensationSaturation the saturation of the compensation
+     * @param voltage the voltage of the loader
+     * @param voltageCompensationSaturation the saturation of the voltage compensation
      * @return the compensated power
      */
     public static double voltageToCompensatedPower(double voltage, double voltageCompensationSaturation) {
