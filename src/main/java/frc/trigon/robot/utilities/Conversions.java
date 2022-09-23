@@ -3,7 +3,7 @@ package frc.trigon.robot.utilities;
 public class Conversions {
 
     /**
-     * Converts voltage to compensated power
+     * Converts voltage to compensated power.
      *
      * The voltage compensation saturation will determine what voltage represents 100% output.
      *

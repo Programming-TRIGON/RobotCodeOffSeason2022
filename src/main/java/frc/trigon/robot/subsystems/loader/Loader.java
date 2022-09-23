@@ -26,7 +26,7 @@ public class Loader extends SubsystemBase {
     }
 
     /**
-     * Sets the state of the loader
+     * Sets the state of the loader.
      *
      * @param state the wanted state for the loader
      */
