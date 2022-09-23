@@ -5,15 +5,16 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Limelight {
+
     NetworkTableEntry tv, tx, ty, ts, ta, ledMode, driverCam, pipeline, snapshot;
 
     /**
      * Constructs a new Limelight.
      *
-     * @param hostName the host of the limelight
+     * @param hostname the name of the Limelight
      */
-    public Limelight(String hostName) {
-        NetworkTable networkTable = NetworkTableInstance.getDefault().getTable(hostName);
+    public Limelight(String hostname) {
+        NetworkTable networkTable = NetworkTableInstance.getDefault().getTable(hostname);
 
         tv = networkTable.getEntry("tv");
         tx = networkTable.getEntry("tx");
@@ -62,14 +63,14 @@ public class Limelight {
     }
 
     /**
-     * @return true if the driverCam is used, false if the visionCam is used
+     * @return true if the driver cam is used, false if the visionCam is used
      */
-    public boolean driverCam() {
+    public boolean isDriverCam() {
         return driverCam.getDouble(0) == 1;
     }
 
     /**
-     * sets the DriverCamera Mode.
+     * Sets the driver camera Mode.
      *
      * @param useDriverCam true for driver camera, false for vision processing
      */
@@ -78,19 +79,19 @@ public class Limelight {
     }
 
     /**
-     * @return led mode (0: use the LED Mode set in the current pipeline, 1: force off, 2: force blink, 3: force on)
+     * @return a LedMode
      */
-    public double getLedMode() {
-        return ledMode.getDouble(0);
+    public LedMode getLedMode() {
+        return LedMode.getLedModeFromValue(ledMode.getDouble(0));
     }
 
     /**
-     * sets the led mode.
+     * Sets the led mode.
      *
-     * @param mode (0: use the LED Mode set in the current pipeline, 1: force off, 2: force blink, 3: force on)
+     * @param mode the wanted LedMode
      */
-    public void setLedMode(int mode) {
-        ledMode.setNumber(mode);
+    public void setLedMode(LedMode mode) {
+        ledMode.setNumber(mode.index);
     }
 
     /**
@@ -101,7 +102,7 @@ public class Limelight {
     }
 
     /**
-     * sets the pipeline.
+     * Sets the pipeline.
      *
      * @param pipeline (0-9)
      */
@@ -110,18 +111,37 @@ public class Limelight {
     }
 
     /**
-     * @return snapshot mode (0: stop, 1: 2Hz)
+     * Takes a snapshot.
      */
-    public double getSnapshot() {
-        return snapshot.getDouble(0);
+    public void takeSnapshot() {
+        snapshot.setNumber(1);
     }
 
-    /**
-     * sets the snapshot mode.
-     *
-     * @param mode (0: stop, 1: 2Hz)
-     */
-    public void setSnapshot(int mode) {
-        snapshot.setNumber(mode);
+    public enum LedMode {
+        USE_LED_MODE(0),
+        FORCE_OFF(1),
+        FORCE_BLINK(2),
+        FORCE_ON(3);
+
+        public final int index;
+
+        LedMode(int index) {
+            this.index = index;
+        }
+
+        /**
+         * Returns what LedMode has the given value.
+         *
+         * @param value the value of the LedMode
+         * @return the LedMode with the given value. (If there is no LedMode with that value, returns null)
+         */
+        public static LedMode getLedModeFromValue(double value) {
+            for(LedMode currentMode : values()) {
+                if(currentMode.index == value) {
+                    return currentMode;
+                }
+            }
+            return null;
+        }
     }
 }
