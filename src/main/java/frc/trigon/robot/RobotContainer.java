@@ -5,7 +5,11 @@
 
 package frc.trigon.robot;
 
+import frc.trigon.robot.subsystem.pitcher.Pitcher;
+
 public class RobotContainer {
     public RobotContainer() {
+        //TODO: remove this
+        System.out.println(Pitcher.getInstance());
     }
 }
