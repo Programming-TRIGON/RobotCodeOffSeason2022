@@ -12,12 +12,15 @@ public class LoaderConstants {
     private static final int MOTOR_ID = 0;
     static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
 
+    // Setting the motor inverted, enabling the voltage compensation and configuring the voltage
+    // compensation saturation.
     static {
         MOTOR.setInverted(MOTOR_INVERTED);
         MOTOR.enableVoltageCompensation(true);
         MOTOR.configVoltageCompSaturation(VOLTAGE_COMPENSATION_SATURATION);
     }
 
+    //setting the voltage of each of the loader states.
     public enum LoaderState {
         LOAD(LOAD_VOLTAGE),
         EJECT(EJECT_VOLTAGE),

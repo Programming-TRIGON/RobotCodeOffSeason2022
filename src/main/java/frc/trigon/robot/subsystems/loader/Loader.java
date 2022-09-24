@@ -35,4 +35,3 @@ public class Loader extends SubsystemBase {
         currentState = state;
     }
 }
-
