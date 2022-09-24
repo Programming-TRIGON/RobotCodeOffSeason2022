@@ -15,6 +15,7 @@ public class LoaderConstants {
     // Setting the motor inverted, enabling the voltage compensation and configuring the voltage
     // compensation saturation.
     static {
+        
         MOTOR.setInverted(MOTOR_INVERTED);
         MOTOR.enableVoltageCompensation(true);
         MOTOR.configVoltageCompSaturation(VOLTAGE_COMPENSATION_SATURATION);
