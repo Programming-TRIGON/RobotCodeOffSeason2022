@@ -6,6 +6,7 @@ import frc.trigon.robot.utilities.Conversions;
 
 import static frc.trigon.robot.subsystems.loader.LoaderConstants.LoaderState;
 
+//opening a function and adding new features in addition to the features of SubsystemBase
 public class Loader extends SubsystemBase {
     private final static Loader INSTANCE = new Loader();
     private final WPI_TalonSRX motor = LoaderConstants.MOTOR;
