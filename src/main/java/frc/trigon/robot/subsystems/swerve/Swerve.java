@@ -5,20 +5,19 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
     private final static Swerve INSTANCE = new Swerve();
-    private SwerveDriveOdometry swerveOdometry;
     private SwerveDriveKinematics kinematics;
-    private SwerveModule[] swerveModules = SwerveConstants.SWERVEMODULES;
+    private SwerveModule[] swerveModules = SwerveConstants.SWERVE_MODULES;
     private Pigeon2 gyro;
+    private ChassisSpeeds chassisSpeeds;
 
     public Swerve() {
-        SwerveDriveKinematics kinematics = SwerveConstants.KINEMATICS;
         gyro = SwerveConstants.gyro;
+        SwerveDriveKinematics kinematics = SwerveConstants.KINEMATICS;
 
         zeroHeading();
     }
@@ -27,18 +26,21 @@ public class Swerve extends SubsystemBase {
         return INSTANCE;
     }
 
-    void selfRelativeDrive(Translation2d translation, Rotation2d radiant) {
-        selfRelitiveDrive(new ChassisSpeeds(
+    void selfRelativeDrive(Translation2d translation, Rotation2d rotation) {
+        chassisSpeeds = new ChassisSpeeds(
                 translation.getX(),
                 translation.getY(),
-                radiant.getRadians()
-        ));
+                rotation.getRadians());
+        relitiveDrive(chassisSpeeds);
     }
 
-    void fieldRelativeDrive(Translation2d translation, Rotation2d radiant) {
-        selfRelitiveDrive(
-                ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), radiant.getRadians(),
-                        getHeading()));
+    void fieldRelativeDrive(Translation2d translation, Rotation2d rotation) {
+        chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                translation.getX(),
+                translation.getY(),
+                rotation.getRadians(),
+                getHeading());
+        relitiveDrive(chassisSpeeds);
     }
 
     public void stop() {
@@ -56,7 +58,7 @@ public class Swerve extends SubsystemBase {
             swerveModules[i].setTargetState(swerveModuleStates[i]);
     }
 
-    private void selfRelitiveDrive(ChassisSpeeds chassisSpeeds) {
+    private void relitiveDrive(ChassisSpeeds chassisSpeeds) {
         SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);
     }

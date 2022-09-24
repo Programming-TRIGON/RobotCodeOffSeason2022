@@ -20,12 +20,9 @@ public class SwerveModule {
         this.angleEncoder = moduleConstants.angleEncoder;
         this.angleMotor = moduleConstants.angleMotor;
         this.driveMotor = moduleConstants.driveMotor;
-
         this.encoderOffset = moduleConstants.encoderOffset;
 
-        ChangeToOuterEncoder();
-
-        setDriveMotorSensorZero();
+        configRemoteSensor();
     }
 
     public void setTargetState(SwerveModuleState targetState) {
@@ -65,13 +62,13 @@ public class SwerveModule {
     }
 
     public void setAngleMotor() {
-        angleMotor.set(ControlMode.Position, Conversions.degreesToMag(targetState.angle.getDegrees()));
+        angleMotor.set(ControlMode.Position, Conversions.degreesToMagTicks(targetState.angle.getDegrees()));
     }
 
     public void setDriveMotor() {
         driveMotor.set(
                 ControlMode.Velocity,
-                Conversions.mpsToFalcon(
+                Conversions.mpsToFalconTicks(
                         targetState.speedMetersPerSecond,
                         SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                         SwerveModuleConstants.DRIVE_GEAR_RATIO
@@ -80,29 +77,26 @@ public class SwerveModule {
     }
 
     private double getDriveMotorState() {
-        return Conversions.falconToMps(
-                Conversions.falconToRotations(driveMotor.getSelectedSensorVelocity()),
+        return Conversions.falconRevolutionsToMps(
+                Conversions.falconTicksToRevolutions(driveMotor.getSelectedSensorVelocity()),
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER, SwerveModuleConstants.DRIVE_GEAR_RATIO);
     }
 
     private Rotation2d getAngleMotorState() {
-        return Rotation2d.fromDegrees(Conversions.magToDegrees(angleMotor.getSelectedSensorPosition()));
+        return Rotation2d.fromDegrees(Conversions.magTicksToDegrees(angleMotor.getSelectedSensorPosition()));
     }
 
     private double getDegrees() {
-        return Conversions.magToDegrees(angleMotor.getSelectedSensorPosition());
+        return Conversions.magTicksToDegrees(angleMotor.getSelectedSensorPosition());
     }
 
-    public void ChangeToOuterEncoder() {
+    public void configRemoteSensor() {
         angleMotor.configRemoteFeedbackFilter(angleEncoder, 0);
         angleMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
     }
 
-    public void setDriveMotorSensorZero() {
-        driveMotor.setSelectedSensorPosition(0);
-    }
 
-    public void stopModule(){
+    public void stopModule() {
         driveMotor.disable();
         angleMotor.disable();
     }
