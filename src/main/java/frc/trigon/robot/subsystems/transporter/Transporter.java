@@ -1,7 +1,11 @@
 package frc.trigon.robot.subsystems.transporter;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import javax.xml.stream.events.Comment;
 
 import static frc.trigon.robot.subsystems.transporter.TransporterConstants.TransporterState;
 
@@ -32,6 +36,20 @@ public class Transporter extends SubsystemBase {
     private void setState(TransporterState state) {
         motor.set(state.power);
         currentState = state;
+    }
+    public Command getLodeCommand() {
+        return new StartEndCommand(
+                () -> setState(TransporterState.LOAD),
+                () -> setState(TransporterState.OFF),
+                this
+        );
+    }
+      public Command getEjectCommand(){
+            return new StartEndCommand(
+                    ()-> setState(TransporterState.EJECT),
+                    ()-> setState(TransporterState.OFF),
+                    this
+            );
     }
 }
 
