@@ -22,18 +22,18 @@ public class SwerveModule {
         this.driveMotor = moduleConstants.driveMotor;
         this.encoderOffset = moduleConstants.encoderOffset;
 
+        angleMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
         configRemoteSensor();
     }
 
     public void setTargetState(SwerveModuleState targetState) {
         this.targetState = targetState;
         optimizeTargetState();
-        setAngleMotor();
-        setDriveMotor();
+        setMotors();
     }
 
     public SwerveModuleState getCurrentState() {
-        return new SwerveModuleState(getDriveMotorState(), getAngleMotorState());
+        return new SwerveModuleState(getDriveMotorState(), getAngleMotor());
     }
 
     private void optimizeTargetState() {
@@ -43,15 +43,17 @@ public class SwerveModule {
         double flippedDiff = Math.abs(flipped - getDegrees());
         if(scopeDiff < flippedDiff)
             targetState.angle = Rotation2d.fromDegrees(scoped);
-        else
+        else {
             targetState.angle = Rotation2d.fromDegrees(flipped);
-        targetState.speedMetersPerSecond *= -1;
+            targetState.speedMetersPerSecond *= -1;
+        }
     }
 
     public double scope(double targetAngle) {
         double rawCurrentAngle = getDegrees() % 360;
         double rawTargetAngle = targetAngle % 360;
         double difference = rawTargetAngle - rawCurrentAngle;
+
         if(difference < -180)
             difference += 360;
 
@@ -61,40 +63,47 @@ public class SwerveModule {
         return difference + getDegrees();
     }
 
+    public void setMotors() {
+        setAngleMotor();
+        setDriveMotor();
+    }
+
     public void setAngleMotor() {
-        angleMotor.set(ControlMode.Position, Conversions.degreesToMagTicks(targetState.angle.getDegrees()));
+        double setAngleTicks = Conversions.degreesToMagTicks(targetState.angle.getDegrees());
+        angleMotor.set(ControlMode.Position, setAngleTicks);
     }
 
     public void setDriveMotor() {
-        driveMotor.set(
-                ControlMode.Velocity,
-                Conversions.mpsToFalconTicks(
-                        targetState.speedMetersPerSecond,
-                        SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
-                        SwerveModuleConstants.DRIVE_GEAR_RATIO
-                )
+        double setDriveTicks = Conversions.mpsToFalconTicks(
+                targetState.speedMetersPerSecond,
+                SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
+                SwerveModuleConstants.DRIVE_GEAR_RATIO
         );
+        driveMotor.set(ControlMode.Velocity, setDriveTicks);
     }
 
     private double getDriveMotorState() {
+        double getDriveTicks = driveMotor.getSelectedSensorVelocity();
         return Conversions.falconRevolutionsToMps(
-                Conversions.falconTicksToRevolutions(driveMotor.getSelectedSensorVelocity()),
-                SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER, SwerveModuleConstants.DRIVE_GEAR_RATIO);
+                Conversions.falconTicksToRevolutions(getDriveTicks),
+                SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
+                SwerveModuleConstants.DRIVE_GEAR_RATIO);
     }
 
-    private Rotation2d getAngleMotorState() {
-        return Rotation2d.fromDegrees(Conversions.magTicksToDegrees(angleMotor.getSelectedSensorPosition()));
+    private Rotation2d getAngleMotor() {
+        double getAngleTicks = Conversions.magTicksToDegrees(angleMotor.getSelectedSensorPosition());
+        return Rotation2d.fromDegrees(getAngleTicks);
     }
 
     private double getDegrees() {
-        return Conversions.magTicksToDegrees(angleMotor.getSelectedSensorPosition());
+        double getDegreesTicks = angleMotor.getSelectedSensorPosition();
+        return Conversions.magTicksToDegrees(getDegreesTicks);
     }
 
-    public void configRemoteSensor() {
+    private void configRemoteSensor() {
         angleMotor.configRemoteFeedbackFilter(angleEncoder, 0);
         angleMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
     }
-
 
     public void stopModule() {
         driveMotor.disable();

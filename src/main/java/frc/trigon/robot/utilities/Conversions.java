@@ -1,18 +1,18 @@
 package frc.trigon.robot.utilities;
 
 public class Conversions {
-    private static final double magTicks = 4096;
-    private static final double falconTicks = 2048;
+    private static final double MAG_TICKS = 4096;
+    private static final double FALCON_TICKS = 2048;
 
     public static double magTicksToDegrees(double magTicks) {
-        return magTicksToRotations(magTicks) * 360;
+        return magTicksToRevolutions(magTicks) * 360;
     }
 
     public static double degreesToMagTicks(double degrees) {
-        return degreesToRotations(degrees) * magTicks;
+        return degreesToRevolutions(degrees) * MAG_TICKS;
     }
 
-    public static double degreesToRotations(double degrees) {
+    public static double degreesToRevolutions(double degrees) {
         return degrees / 360;
     }
 
@@ -21,26 +21,26 @@ public class Conversions {
     }
 
     public static double revolutionsToMag(double rotations) {
-        return rotations * magTicks;
+        return rotations * MAG_TICKS;
     }
 
-    public static double magTicksToRotations(double MagTicks) {
-        return MagTicks / magTicks;
+    public static double magTicksToRevolutions(double MagTicks) {
+        return MagTicks / MAG_TICKS;
     }
 
-    public static double falconTicksToSeconds(double MagTicks) {
+    public static double mpmsToMps(double MagTicks) {
         return MagTicks * 10;
     }
 
-    public static double falconTicksToRevolutions(double velocity) {
-        return falconTicksToSeconds(velocity) / falconTicks;
+    public static double falconTicksToRevolutions(double ticks) {
+        return mpmsToMps(ticks) / FALCON_TICKS;
     }
 
     public static double motorRevolutionsToSystemRevolutions(double revolutions, double gearRatio) {
         return revolutions / gearRatio;
     }
 
-    public static double systemRotationsToMotorRotations(double rotations, double gearRatio) {
+    public static double systemRevolutionsToMotorRevolutions(double rotations, double gearRatio) {
         return rotations * gearRatio;
     }
 
@@ -54,11 +54,11 @@ public class Conversions {
     }
 
     public static double mpsToFalconTicks(Double rotations, double circumference, double gearRatio) {
-        return systemRotationsToMotorRotations(rotations, gearRatio) / circumference;
+        return systemRevolutionsToMotorRevolutions(rotations, gearRatio) / circumference;
     }
 
     public static double degreesToFalcon(double degrees) {
-        return degreesToRotations(degrees) * falconTicks;
+        return degreesToRevolutions(degrees) * FALCON_TICKS;
     }
 }
 

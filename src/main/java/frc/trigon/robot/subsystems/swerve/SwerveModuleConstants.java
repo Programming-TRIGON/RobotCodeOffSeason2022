@@ -1,6 +1,5 @@
 package frc.trigon.robot.subsystems.swerve;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -18,7 +17,6 @@ public class SwerveModuleConstants {
         this.angleEncoder = angleEncoder;
         this.driveMotor = driveMotor;
         this.angleMotor = angleMotor;
-        angleMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
         this.encoderOffset = encoderOffset;
     }
 }
