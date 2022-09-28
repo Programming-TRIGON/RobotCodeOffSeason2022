@@ -1,6 +1,8 @@
 package frc.trigon.robot.subsystems.transporter;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.trigon.robot.subsystems.transporter.TransporterConstants.TransporterState;
@@ -32,6 +34,28 @@ public class Transporter extends SubsystemBase {
     private void setState(TransporterState state) {
         motor.set(state.power);
         currentState = state;
+    }
+
+    /**
+     * @return a command that makes the transporter load when it starts, and turns it off when it ends.
+     */
+    public Command getLoadCommand() {
+        return new StartEndCommand(
+                () -> setState(TransporterState.LOAD),
+                () -> setState(TransporterState.OFF),
+                this
+        );
+    }
+
+    /**
+     * @return a command that makes the transporter eject when it starts, and turns it off when it ends.
+     */
+    public Command getEjectCommand() {
+        return new StartEndCommand(
+                () -> setState(TransporterState.EJECT),
+                () -> setState(TransporterState.OFF),
+                this
+        );
     }
 }
 
