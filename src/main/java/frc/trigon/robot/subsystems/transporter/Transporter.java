@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import javax.xml.stream.events.Comment;
-
 import static frc.trigon.robot.subsystems.transporter.TransporterConstants.TransporterState;
 
 public class Transporter extends SubsystemBase {
@@ -37,6 +35,7 @@ public class Transporter extends SubsystemBase {
         motor.set(state.power);
         currentState = state;
     }
+
     public Command getLodeCommand() {
         return new StartEndCommand(
                 () -> setState(TransporterState.LOAD),
@@ -44,12 +43,13 @@ public class Transporter extends SubsystemBase {
                 this
         );
     }
-      public Command getEjectCommand(){
-            return new StartEndCommand(
-                    ()-> setState(TransporterState.EJECT),
-                    ()-> setState(TransporterState.OFF),
-                    this
-            );
+
+    public Command getEjectCommand() {
+        return new StartEndCommand(
+                () -> setState(TransporterState.EJECT),
+                () -> setState(TransporterState.OFF),
+                this
+        );
     }
 }
 
