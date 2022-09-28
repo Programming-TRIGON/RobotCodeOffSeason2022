@@ -17,27 +17,27 @@ public class Swerve extends SubsystemBase {
         return INSTANCE;
     }
 
-    /****
+    /**
+     * Drives swerve relitive to itself.
+     *
      * @param translation of the wanted robot postions of x and y.
      * @param rotation the wanted postion angle of the robot given in pie.
-     *
-     * robot drives relitive to itself.
-     ****/
+     **/
     void selfRelativeDrive(Translation2d translation, Rotation2d rotation) {
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(
                 translation.getX(),
                 translation.getY(),
                 rotation.getRadians()
         );
-        relativeDrive(chassisSpeeds);
+        selfRelative(chassisSpeeds);
     }
 
-    /****
-     * @param translation of the wanted robot postions of x and y.
-     * @param rotation the wanted postion angle of the robot given in pie.
+    /**
+     * Drives swerve reltive to the field.
      *
-     * robot drives reltive to the driver.
-     ****/
+     * @param translation disired speed in meters in the two axes.
+     * @param rotation sets the angle of the robot in radioants.
+     **/
     void fieldRelativeDrive(Translation2d translation, Rotation2d rotation) {
         ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                 translation.getX(),
@@ -45,9 +45,9 @@ public class Swerve extends SubsystemBase {
                 rotation.getRadians(),
                 getHeading()
         );
-        relativeDrive(chassisSpeeds);
+        selfRelative(chassisSpeeds);
     }
-    //stops the robot from moving.
+    //stops the swerve motors from moving.
     public void stop() {
         for(int id = 0; id < SwerveConstants.SWERVE_MODULES.length; id++)
             SwerveConstants.SWERVE_MODULES[id].stopModule();
@@ -58,7 +58,7 @@ public class Swerve extends SubsystemBase {
             SwerveConstants.SWERVE_MODULES[i].setTargetState(swerveModuleStates[i]);
     }
 
-    private void relativeDrive(ChassisSpeeds chassisSpeeds) {
+    private void selfRelative(ChassisSpeeds chassisSpeeds) {
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);
     }

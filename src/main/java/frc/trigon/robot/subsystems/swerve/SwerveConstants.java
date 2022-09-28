@@ -10,24 +10,25 @@ public class SwerveConstants {
     public static final double MAX_SPEED_METERS_PER_SECOND = 3;
 
     private static final double SIDE_LENGTH_METERS = 0.5;
-    private static final double SIDE_LENGTH_METERS_HALVED = SIDE_LENGTH_METERS / 2;
+    private static final double DISTANCE_FROM_CENTER_OF_BASE = SIDE_LENGTH_METERS / 2;
 
     private static final Translation2d FRONT_LEFT_MODULE_LOCATION = new Translation2d(
-            SIDE_LENGTH_METERS_HALVED,
-            SIDE_LENGTH_METERS_HALVED
+            DISTANCE_FROM_CENTER_OF_BASE,
+            DISTANCE_FROM_CENTER_OF_BASE
     );
     private static final Translation2d FRONT_RIGHT_MODULE_LOCATION = new Translation2d(
-            SIDE_LENGTH_METERS_HALVED,
-            -SIDE_LENGTH_METERS_HALVED
+            DISTANCE_FROM_CENTER_OF_BASE,
+            -DISTANCE_FROM_CENTER_OF_BASE
     );
     private static final Translation2d REAR_LEFT_MODULE_LOCATION = new Translation2d(
-            -SIDE_LENGTH_METERS_HALVED,
-            SIDE_LENGTH_METERS_HALVED
+            -DISTANCE_FROM_CENTER_OF_BASE,
+            DISTANCE_FROM_CENTER_OF_BASE
     );
     private static final Translation2d REAR_RIGHT_MODULE_LOCATION = new Translation2d(
-            -SIDE_LENGTH_METERS_HALVED,
-            -SIDE_LENGTH_METERS_HALVED
+            -DISTANCE_FROM_CENTER_OF_BASE,
+            -DISTANCE_FROM_CENTER_OF_BASE
     );
+
     private static final int PIGEON_ID = 12;
     public static final Pigeon2 gyro = new Pigeon2(PIGEON_ID);
 
@@ -91,14 +92,14 @@ public class SwerveConstants {
             new SwerveModule(SwerveConstants.SwerveModules.fromId(3).swerveModuleConstants)
     };
 
-    static SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(SwerveConstants.LOCATIONS);
-
     public static final Translation2d[] LOCATIONS = {
             SwerveModules.fromId(0).Location,
             SwerveModules.fromId(1).Location,
             SwerveModules.fromId(2).Location,
             SwerveModules.fromId(3).Location
     };
+
+    static SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(LOCATIONS);
 
     public enum SwerveModules {
         FRONT_LEFT(FRONT_LEFT_ID, FRONT_LEFT_SWERVE_MODULE_CONSTANTS, FRONT_LEFT_MODULE_LOCATION),

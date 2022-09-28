@@ -84,7 +84,7 @@ public class SwerveModule {
 
     private double getDriveMotorState() {
         double getDriveTicks = driveMotor.getSelectedSensorVelocity();
-        return Conversions.falconRevolutionsToMps(
+        return Conversions.revolutionsToMps(
                 Conversions.falconTicksToRevolutions(getDriveTicks),
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                 SwerveModuleConstants.DRIVE_GEAR_RATIO);

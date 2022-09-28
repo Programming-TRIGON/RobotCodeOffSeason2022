@@ -28,12 +28,12 @@ public class Conversions {
         return magTicks / MAG_TICKS;
     }
 
-    public static double mpmsToMps(double magTicks ) {
-        return magTicks  * 10;
+    public static double hundredMsToSeconds(double hundredMs ) {
+        return hundredMs * 10;
     }
 
     public static double falconTicksToRevolutions(double ticks) {
-        return mpmsToMps(ticks) / FALCON_TICKS;
+        return hundredMsToSeconds(ticks) / FALCON_TICKS;
     }
 
     public static double motorRevolutionsToSystemRevolutions(double revolutions, double gearRatio) {
@@ -45,11 +45,11 @@ public class Conversions {
     }
 
     /**
-     * @param revolutions the rotations of the motor per seconds
+     * @param revolutions the revolutions of the motor per seconds
      * @param circumference of the wheel
      * @return returns the meters per seconds
      **/
-    public static double falconRevolutionsToMps(double revolutions, double circumference, double gearRatio) {
+    public static double revolutionsToMps(double revolutions, double circumference, double gearRatio) {
         return motorRevolutionsToSystemRevolutions(revolutions, gearRatio) * circumference;
     }
 
