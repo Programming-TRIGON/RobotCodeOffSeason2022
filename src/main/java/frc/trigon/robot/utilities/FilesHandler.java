@@ -7,8 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FilesHandler {
     public static final String DEPLOY_PATH = Filesystem.getDeployDirectory().getPath() + "\\";
@@ -21,9 +19,8 @@ public class FilesHandler {
      */
     public static void deleteFile(String absolutePath) throws IOException {
         File file = new File(absolutePath);
-        if(!file.delete()) {
+        if(!file.delete())
             throw new IOException("Failed to delete the file \"" + absolutePath + "\".");
-        }
     }
 
     /**
@@ -48,9 +45,9 @@ public class FilesHandler {
      */
     public static void renameFile(String absolutePath, String newName) throws IOException {
         File file = new File(absolutePath);
-        if(!file.renameTo(new File(extractPathFromAbsolutePath(absolutePath) + newName))) {
+        String filePath = extractPathFromAbsolutePath(absolutePath);
+        if(!file.renameTo(new File(filePath + newName)))
             throw new IOException("Failed to rename file " + absolutePath + " to " + newName);
-        }
     }
 
     /**
@@ -93,9 +90,7 @@ public class FilesHandler {
     }
 
     private static String extractPathFromAbsolutePath(String absolutePath) {
-        List<String> absolutePathSplit = new ArrayList<>(List.of(absolutePath.split("\\\\")));
-        absolutePathSplit.remove(absolutePathSplit.size() - 1);
-        return String.join("\\", absolutePathSplit) + "\\";
+        return absolutePath.substring(0, absolutePath.lastIndexOf("\\") + 1);
     }
 
     private static String extractNameFromAbsolutePath(String absolutePath) {
