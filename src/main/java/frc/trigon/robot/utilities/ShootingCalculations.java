@@ -1,46 +1,94 @@
 package frc.trigon.robot.utilities;
 
 import edu.wpi.first.math.geometry.Translation2d;
+
 import java.util.ArrayList;
 
+/**
+ * This class is used to calculate the shooting angle and distance for the shooter.
+ */
 public class ShootingCalculations {
-    static ArrayList<Waypoint> waypoints = new ArrayList<>();
+    private static final ArrayList<Waypoint> waypoints = new ArrayList<>();
 
+    /**
+     * Gets the velocity needed for the shooter to shoot from a distance.
+     *
+     * @param distance The distance from the target
+     * @return the velocity needed for the shooter
+     */
     public static double getShootingVelocityFromDistance(double distance) {
-        for(int i = 0; i < waypoints.size(); i++) {
-           if(isPointSmaller(distance, i)){
-               Translation2d firsPoint = new Translation2d(waypoints.get(i).distance, waypoints.get(i).velocity);
-               Translation2d secondPoint = new Translation2d(waypoints.get(i-1).distance, waypoints.get(i-1).velocity);
-               return calculateBetweenTranslations(firsPoint, secondPoint, distance);
-           }
-        }
-        return 0;
+        Waypoint[] waypointsFromDistance = getWaypointsFromDistance(distance);
+        if(waypointsFromDistance == null)
+            return 0;
+        Translation2d
+                firstPoint = new Translation2d(waypointsFromDistance[0].distance, waypointsFromDistance[0].velocity),
+                secondPoint = new Translation2d(waypointsFromDistance[1].distance, waypointsFromDistance[1].velocity);
+        return calculateBetweenTranslations(firstPoint, secondPoint, distance);
     }
 
-    public static double getShootingAngelFromDistance(double distance) {
-        for(int i = 0; i < distance; i++) {
-            if(isPointSmaller(distance, i)){
-                Translation2d firsPoint = new Translation2d(waypoints.get(i).distance, waypoints.get(i).angle);
-                Translation2d secondPoint = new Translation2d(waypoints.get(i-1).distance, waypoints.get(i-1).angle);
-                return calculateBetweenTranslations(firsPoint, secondPoint, distance);
-            }
-        }
-        return 0;
+    /**
+     * Gets the angle needed for the shooter to shoot from a distance.
+     *
+     * @param distance The distance from the target
+     * @return the angle needed for the shooter
+     */
+    public static double getShootingAngleFromDistance(double distance) {
+        Waypoint[] waypointsFromDistance = getWaypointsFromDistance(distance);
+        if(waypointsFromDistance == null)
+            return 0;
+        Translation2d
+                firstPoint = new Translation2d(waypointsFromDistance[0].distance, waypointsFromDistance[0].angle),
+                secondPoint = new Translation2d(waypointsFromDistance[1].distance, waypointsFromDistance[1].angle);
+        return calculateBetweenTranslations(firstPoint, secondPoint, distance);
     }
 
+    /**
+     * Calculates the value between two translations.
+     *
+     * @param firstPoint  The first point
+     * @param secondPoint The second point
+     * @param pointToKnow The point to know the value of (between the first and second points)
+     * @return the value between the two points
+     */
     public static double calculateBetweenTranslations(
             Translation2d firstPoint, Translation2d secondPoint, double pointToKnow) {
         double m = (firstPoint.getY() - secondPoint.getY()) / (firstPoint.getX() - secondPoint.getX());
         return m * pointToKnow - m * firstPoint.getX() + firstPoint.getY();
     }
 
-    public static boolean isPointSmaller(double point, int i){
-        return point < waypoints.get(i).distance;
+    /**
+     * Checks if the given point is smaller than the point in the array point in the array.
+     *
+     * @param point the point to check
+     * @param index the index of a point in the array
+     * @return whether the given point is smaller than the point in the array
+     */
+    public static boolean isPointSmaller(double point, int index) {
+        return point < waypoints.get(index).distance;
     }
 
+    /**
+     * Adds a waypoint to the waypoints list.
+     *
+     * @param distance the distance for the waypoint
+     * @param velocity the velocity for the waypoint
+     * @param angle    the angle for the waypoint
+     */
     public static void addWaypoint(double distance, double velocity, double angle) {
         Waypoint toAdd = new Waypoint(distance, velocity, angle);
         waypoints.add(toAdd);
+    }
+
+    private static Waypoint[] getWaypointsFromDistance(double distance) {
+        Waypoint[] toReturn = new Waypoint[2];
+        for(int i = 0; i < waypoints.size(); i++) {
+            if(isPointSmaller(distance, i)) {
+                toReturn[0] = waypoints.get(i);
+                toReturn[1] = waypoints.get(i - 1);
+                return toReturn;
+            }
+        }
+        return null;
     }
 
     private static class Waypoint {
