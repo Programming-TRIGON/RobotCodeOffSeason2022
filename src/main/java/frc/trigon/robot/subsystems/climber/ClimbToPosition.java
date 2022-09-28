@@ -12,9 +12,9 @@ public class ClimbToPosition extends CommandBase {
 
     /**
      * Constructs a new ClimbToPosition command.
+     *
      * @param position the position on the gear
      */
-
     public ClimbToPosition(ClimberConstants.ClimberPosition position) {
         this.position = position;
 

@@ -35,7 +35,7 @@ public class Climber extends SubsystemBase {
     /**
      * Returns whether the climber is in the target position within the allowable error.
      *
-     * @return true if the climber is in the target position
+     * @return true if the climber is in the target position, false otherwise
      */
     boolean inTargetPosition() {
         if(!masterMotor.getControlMode().equals(ControlMode.Position))
@@ -47,7 +47,7 @@ public class Climber extends SubsystemBase {
      * @return the current position from -1 (lowest) to 1 (highest)
      */
     double getCurrentPosition() {
-        return masterMotor.getSelectedSensorPosition() / ClimberConstants.MAX_TICKS.getAsDouble();
+        return masterMotor.getSelectedSensorPosition() / ClimberConstants.maxTicks/*.getAsDouble()*/;
     }
 
     /**
@@ -58,7 +58,7 @@ public class Climber extends SubsystemBase {
     }
 
     /**
-     * Sets the power for the climber motors with voltage.
+     * Sets the power for the climber motors (in voltage).
      *
      * @param power the amount of power (voltage)
      */
@@ -68,8 +68,6 @@ public class Climber extends SubsystemBase {
     }
 
     /**
-     * get the current position of the climber.
-     *
      * @return the current position of the climber in ticks
      */
     double getSelectedSensorPosition() {
@@ -77,7 +75,7 @@ public class Climber extends SubsystemBase {
     }
 
     /**
-     * set the current position of the climber.
+     * Sets the current position of the climber.
      *
      * @param position the current position of the climber in ticks
      */
