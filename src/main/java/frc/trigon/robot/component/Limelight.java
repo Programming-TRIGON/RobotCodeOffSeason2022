@@ -49,7 +49,7 @@ public class Limelight {
     }
 
     /**
-     * @return target area (0% of image to 100% of image)
+     * @return target's area (0% of image to 100% of image)
      */
     public double getTa() {
         return ta.getDouble(0);
