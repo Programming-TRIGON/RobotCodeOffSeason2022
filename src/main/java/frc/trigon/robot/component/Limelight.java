@@ -6,7 +6,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Limelight {
 
-    NetworkTableEntry tv, tx, ty, ts, ta, ledMode, driverCam, pipeline, snapshot;
+    private final NetworkTableEntry tv, tx, ty, ts, ta, ledMode, driverCam, pipeline, snapshot;
 
     /**
      * Constructs a new Limelight.
@@ -28,21 +28,21 @@ public class Limelight {
     }
 
     /**
-     * @return vertical offset from crosshair to target (-20.5 degrees to 20.5 degrees)
+     * @return vertical offset from the crosshair to the target (-20.5 degrees to 20.5 degrees)
      */
     public double getTy() {
         return ty.getDouble(0);
     }
 
     /**
-     * @return horizontal offset from crosshair to target (-27 degrees to 27 degrees)
+     * @return horizontal offset from the crosshair to the target (-27 degrees to 27 degrees)
      */
     public double getTx() {
         return tx.getDouble(0);
     }
 
     /**
-     * @return target skew or rotation (-90 degrees to 0 degrees)
+     * @return target skew (-90 degrees to 0 degrees)
      */
     public double getTs() {
         return ts.getDouble(0);
@@ -63,14 +63,14 @@ public class Limelight {
     }
 
     /**
-     * @return true if the driver cam is used, false if the visionCam is used
+     * @return true if the driver cam is used, false if the vision cam is used
      */
     public boolean isDriverCam() {
         return driverCam.getDouble(0) == 1;
     }
 
     /**
-     * Sets the driver camera Mode.
+     * Sets the driver camera mode.
      *
      * @param useDriverCam true for driver camera, false for vision processing
      */
@@ -79,7 +79,7 @@ public class Limelight {
     }
 
     /**
-     * @return a LedMode
+     * @return the current LedMode
      */
     public LedMode getLedMode() {
         return LedMode.getLedModeFromValue(ledMode.getDouble(0));
@@ -95,7 +95,7 @@ public class Limelight {
     }
 
     /**
-     * @return current pipeline
+     * @return the current pipeline
      */
     public double getPipeline() {
         return pipeline.getDouble(0);
@@ -111,7 +111,7 @@ public class Limelight {
     }
 
     /**
-     * Takes a snapshot.
+     * Takes a snapshot (to test your vision pipelines on stored Snapshots).
      */
     public void takeSnapshot() {
         snapshot.setNumber(1);
