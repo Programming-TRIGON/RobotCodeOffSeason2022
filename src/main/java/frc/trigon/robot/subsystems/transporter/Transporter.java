@@ -36,7 +36,7 @@ public class Transporter extends SubsystemBase {
         currentState = state;
     }
 
-    public Command getLodeCommand() {
+    public Command getLoadCommand() {
         return new StartEndCommand(
                 () -> setState(TransporterState.LOAD),
                 () -> setState(TransporterState.OFF),
