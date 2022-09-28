@@ -16,20 +16,20 @@ public class Conversions {
         return degrees / 360;
     }
 
-    public static double revolutionsToDegrees(double rotations) {
-        return rotations * 360;
+    public static double revolutionsToDegrees(double revolutions) {
+        return revolutions * 360;
     }
 
-    public static double revolutionsToMag(double rotations) {
-        return rotations * MAG_TICKS;
+    public static double revolutionsToMagTicks(double revolutions) {
+        return revolutions * MAG_TICKS;
     }
 
-    public static double magTicksToRevolutions(double MagTicks) {
-        return MagTicks / MAG_TICKS;
+    public static double magTicksToRevolutions(double magTicks) {
+        return magTicks / MAG_TICKS;
     }
 
-    public static double mpmsToMps(double MagTicks) {
-        return MagTicks * 10;
+    public static double mpmsToMps(double magTicks ) {
+        return magTicks  * 10;
     }
 
     public static double falconTicksToRevolutions(double ticks) {
@@ -40,24 +40,24 @@ public class Conversions {
         return revolutions / gearRatio;
     }
 
-    public static double systemRevolutionsToMotorRevolutions(double rotations, double gearRatio) {
-        return rotations * gearRatio;
+    public static double systemRevolutionsToMotorRevolutions(double revolutions, double gearRatio) {
+        return revolutions * gearRatio;
     }
 
     /**
-     * @param rotations     the rotations of the motor per seconds
+     * @param revolutions the rotations of the motor per seconds
      * @param circumference of the wheel
      * @return returns the meters per seconds
      **/
-    public static double falconRevolutionsToMps(double rotations, double circumference, double gearRatio) {
-        return motorRevolutionsToSystemRevolutions(rotations, gearRatio) * circumference;
+    public static double falconRevolutionsToMps(double revolutions, double circumference, double gearRatio) {
+        return motorRevolutionsToSystemRevolutions(revolutions, gearRatio) * circumference;
     }
 
-    public static double mpsToFalconTicks(Double rotations, double circumference, double gearRatio) {
-        return systemRevolutionsToMotorRevolutions(rotations, gearRatio) / circumference;
+    public static double mpsToFalconTicks(Double revolutions, double circumference, double gearRatio) {
+        return systemRevolutionsToMotorRevolutions(revolutions, gearRatio) / circumference;
     }
 
-    public static double degreesToFalcon(double degrees) {
+    public static double degreesToFalconTicks(double degrees) {
         return degreesToRevolutions(degrees) * FALCON_TICKS;
     }
 }
