@@ -20,8 +20,8 @@ public class Swerve extends SubsystemBase {
     /**
      * Drives swerve relitive to itself.
      *
-     * @param translation of the wanted robot postions of x and y.
-     * @param rotation the wanted postion angle of the robot given in pie.
+     *  @param translation disired speed in meters in the two axes.
+     *   @param rotation sets the angle of the robot in radioants.
      **/
     void selfRelativeDrive(Translation2d translation, Rotation2d rotation) {
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(
