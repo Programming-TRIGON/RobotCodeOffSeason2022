@@ -42,7 +42,7 @@ public class Limelight {
     }
 
     /**
-     * @return target skew (-90 degrees to 0 degrees)
+     * @return target's skew (-90 degrees to 0 degrees)
      */
     public double getTs() {
         return ts.getDouble(0);
