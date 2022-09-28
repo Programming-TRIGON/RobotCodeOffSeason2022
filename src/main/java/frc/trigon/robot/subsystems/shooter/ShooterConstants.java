@@ -13,10 +13,12 @@ public class ShooterConstants {
     private static final double VOLTAGE_SATURATION = 10;
 
     private static final double
-            P = 0,
-            I = 0,
+            P = 0.12,
+            I = 0.00002,
             D = 0,
-            V = 0;
+            V = 0.0522;
+
+    public static final double S = 0.03;
 
     private static final WPI_TalonFX
             LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),

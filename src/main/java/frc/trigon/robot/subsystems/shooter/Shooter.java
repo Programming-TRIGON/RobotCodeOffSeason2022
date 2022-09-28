@@ -28,7 +28,7 @@ public class Shooter extends SubsystemBase {
     }
 
     private void setTargetVelocity(double velocity) {
-        masterMotor.set(ControlMode.Velocity, velocity);
+        masterMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, ShooterConstants.S);
     }
 
     /**
@@ -54,6 +54,11 @@ public class Shooter extends SubsystemBase {
 
     private boolean atTarget() {
         return getTargetVelocity() == getCurrentVelocity();
+    }
+
+    private double currentError()
+    {
+        return getTargetVelocity()-getCurrentVelocity();
     }
 }
 
