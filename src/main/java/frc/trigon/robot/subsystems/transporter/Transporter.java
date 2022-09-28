@@ -36,6 +36,9 @@ public class Transporter extends SubsystemBase {
         currentState = state;
     }
 
+    /**
+     * @return a command that makes the transporter load when it starts, and turns it off when it ends.
+     */
     public Command getLoadCommand() {
         return new StartEndCommand(
                 () -> setState(TransporterState.LOAD),
@@ -44,6 +47,9 @@ public class Transporter extends SubsystemBase {
         );
     }
 
+    /**
+     * @return a command that makes the transporter eject when it starts, and turns it off when it ends.
+     */
     public Command getEjectCommand() {
         return new StartEndCommand(
                 () -> setState(TransporterState.EJECT),
