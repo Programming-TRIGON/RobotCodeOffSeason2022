@@ -5,7 +5,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Limelight {
-
     private final NetworkTableEntry tv, tx, ty, ts, ta, ledMode, driverCam, pipeline, snapshot;
 
     /**
@@ -111,7 +110,7 @@ public class Limelight {
     }
 
     /**
-     * Takes a snapshot (to test your vision pipelines on stored Snapshots).
+     * Takes a snapshot (To test your vision pipelines on stored snapshots).
      */
     public void takeSnapshot() {
         snapshot.setNumber(1);
