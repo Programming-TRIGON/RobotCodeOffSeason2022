@@ -24,11 +24,11 @@ public class FilesHandler {
     }
 
     /**
-     * Writes the given String to a file.
+     * Writes the given string to a file.
      *
      * @param absolutePath the files absolute path
      * @param str          the string to write to the file
-     * @throws IOException if the method failed to write the string to the file.
+     * @throws IOException if the method failed to write the string to the file
      */
     public static void writeStringToFile(String absolutePath, String str) throws IOException {
         FileWriter fileWriter = new FileWriter(absolutePath);
@@ -40,7 +40,7 @@ public class FilesHandler {
      * Renames a file.
      *
      * @param absolutePath the absolute path of the file to rename
-     * @param newName      the new name of the desired name
+     * @param newName      the new desired name
      * @throws IOException if the method failed to rename the file
      */
     public static void renameFile(String absolutePath, String newName) throws IOException {
@@ -72,7 +72,7 @@ public class FilesHandler {
 
     /**
      * Reads a file and returns its content as a string.
-     * If the files does not exist, it will check for the .tmp file.
+     * If the files does not exist, it will check for a .tmp file.
      *
      * @param absolutePath the absolute path of the file to read
      * @return the file content

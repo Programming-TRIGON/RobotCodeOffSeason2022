@@ -7,12 +7,13 @@ import java.io.IOException;
 
 public class JsonHandler {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
     /**
-     * Parses the given object to JSON and writing to a JSON file,
+     * Parses the given object to JSON and writes it to a JSON file,
      * using a safe way of writing.
      *
      * @param object the object to save
-     * @param name   the name of the file to save to or create
+     * @param name   the name of the file to write to
      * @throws IOException if the method failed to write the object to the file
      */
     public static void parseToJsonAndWrite(String name, Object object) throws IOException {
@@ -24,7 +25,7 @@ public class JsonHandler {
      *
      * @param fileName the name of the file to read
      * @param type     the class to parse JSON to
-     * @return the class
+     * @return the parsed JSON as the class
      */
     public static <T> T parseJsonFileToObject(String fileName, Class<T> type) {
         try {
