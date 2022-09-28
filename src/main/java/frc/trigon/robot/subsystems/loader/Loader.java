@@ -18,9 +18,18 @@ public class Loader extends SubsystemBase {
         return INSTANCE;
     }
 
+    /**
+     * @return the current state of the loader
+     */
     public LoaderState getState() {
         return currentState;
     }
+
+    /**
+     * Sets the state of the loader.
+     *
+     * @param state the wanted state for the loader
+     */
 
     public void setState(LoaderState state) {
         double voltageCompensationSaturation = LoaderConstants.VOLTAGE_COMPENSATION_SATURATION;
