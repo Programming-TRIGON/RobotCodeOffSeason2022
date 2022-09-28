@@ -27,14 +27,14 @@ public class Limelight {
     }
 
     /**
-     * @return vertical offset from the crosshair to the target (-20.5 degrees to 20.5 degrees)
+     * @return the vertical offset from the crosshair to the target (-20.5 degrees to 20.5 degrees)
      */
     public double getTy() {
         return ty.getDouble(0);
     }
 
     /**
-     * @return horizontal offset from the crosshair to the target (-27 degrees to 27 degrees)
+     * @return the horizontal offset from the crosshair to the target (-27 degrees to 27 degrees)
      */
     public double getTx() {
         return tx.getDouble(0);
@@ -94,7 +94,7 @@ public class Limelight {
     }
 
     /**
-     * @return the current pipeline
+     * @return the current pipeline (0-9)
      */
     public double getPipeline() {
         return pipeline.getDouble(0);
