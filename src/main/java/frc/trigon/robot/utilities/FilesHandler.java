@@ -64,8 +64,8 @@ public class FilesHandler {
     public static void safeWrite(String absolutePath, String str) throws IOException {
         writeStringToFile(absolutePath + ".tmp", str);
         if(fileExists(absolutePath))
-            renameFile(absolutePath, extractNameFromAbsolutePath(absolutePath) + ".bak");
-        renameFile(absolutePath + ".tmp", extractNameFromAbsolutePath(absolutePath));
+            renameFile(absolutePath, extractFileNameFromAbsolutePath(absolutePath) + ".bak");
+        renameFile(absolutePath + ".tmp", extractFileNameFromAbsolutePath(absolutePath));
         if(fileExists(absolutePath + ".bak"))
             deleteFile(absolutePath + ".bak");
     }
@@ -93,7 +93,7 @@ public class FilesHandler {
         return absolutePath.substring(0, absolutePath.lastIndexOf("\\") + 1);
     }
 
-    private static String extractNameFromAbsolutePath(String absolutePath) {
-        return absolutePath.split("\\\\")[absolutePath.split("\\\\").length - 1];
+    private static String extractFileNameFromAbsolutePath(String absolutePath) {
+        return absolutePath.substring(absolutePath.lastIndexOf("\\") + 1);
     }
 }
