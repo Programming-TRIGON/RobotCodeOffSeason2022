@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilesHandler {
-
     public static final String DEPLOY_PATH = Filesystem.getDeployDirectory().getPath() + "\\";
 
     /**
