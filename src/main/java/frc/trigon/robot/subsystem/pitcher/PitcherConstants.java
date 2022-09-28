@@ -9,9 +9,10 @@ public class PitcherConstants {
     private static final int MOTOR_ID = 3;
     final static WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
     private static final double
-            P = 0.01,
+            P = 3,
             I = 0,
-            D = 0;
+            D = 0,
+            PEAK_OUTPUT = 0.2;
     private static final boolean
             INVERTED = true,
             SENSOR_PHASE = false;
@@ -30,5 +31,6 @@ public class PitcherConstants {
         MOTOR.config_kP(0, P);
         MOTOR.config_kI(0, I);
         MOTOR.config_kD(0, D);
+        MOTOR.configClosedLoopPeakOutput(0, PEAK_OUTPUT);
     }
 }
