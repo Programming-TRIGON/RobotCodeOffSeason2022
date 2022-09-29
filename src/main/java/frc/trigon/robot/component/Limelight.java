@@ -110,7 +110,7 @@ public class Limelight {
     }
 
     /**
-     * Takes a snapshot (To test your vision pipelines on stored snapshots).
+     * Takes a snapshot (To test the vision pipelines on stored snapshots).
      */
     public void takeSnapshot() {
         snapshot.setNumber(1);
