@@ -1,6 +1,8 @@
 package frc.trigon.robot.subsystems.collector;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Collector extends SubsystemBase {
@@ -21,7 +23,7 @@ public class Collector extends SubsystemBase {
         collectionMotor.set(CollectorConstants.COLLECTING_POWER);
     }
 
-    private void close() {
+    public void close() {
         openingMotor.set(CollectorConstants.CLOSING_POWER);
         collectionMotor.disable();
     }
@@ -37,9 +39,23 @@ public class Collector extends SubsystemBase {
         return openingMotor.get() > 0;
     }
 
-    private void stop() {
+    public void stop() {
         collectionMotor.disable();
         openingMotor.disable();
+    }
+
+    /**
+     * @return a command that collects, and closes the collector when it ends.
+     */
+    public Command getCollectCommand() {
+        return new StartEndCommand(this::collect, this::close, this);
+    }
+
+    /**
+     * @return a command that ejects, and closes the collector when it ends.
+     */
+    public Command getEjectCommand() {
+        return new StartEndCommand(this::eject, this::close, this);
     }
 }
 
