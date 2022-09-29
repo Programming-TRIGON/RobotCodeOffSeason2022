@@ -14,7 +14,7 @@ public class FilesHandler {
     /**
      * Deletes the given file.
      *
-     * @param absolutePath the files absolute path
+     * @param absolutePath the file's absolute path
      * @throws IOException if the method failed to delete the specified file
      */
     public static void deleteFile(String absolutePath) throws IOException {
@@ -26,7 +26,7 @@ public class FilesHandler {
     /**
      * Writes the given string to a file.
      *
-     * @param absolutePath the files absolute path
+     * @param absolutePath the file's absolute path
      * @param str          the string to write to the file
      * @throws IOException if the method failed to write the string to the file
      */
@@ -45,8 +45,8 @@ public class FilesHandler {
      */
     public static void renameFile(String absolutePath, String newName) throws IOException {
         File file = new File(absolutePath);
-        String filePath = extractPathFromAbsolutePath(absolutePath);
-        if(!file.renameTo(new File(filePath + newName)))
+        String newAbsolutePath = extractPathFromAbsolutePath(absolutePath);
+        if(!file.renameTo(new File(newAbsolutePath + newName)))
             throw new IOException("Failed to rename file " + absolutePath + " to " + newName);
     }
 
@@ -72,10 +72,10 @@ public class FilesHandler {
 
     /**
      * Reads a file and returns its content as a string.
-     * If the files does not exist, it will check for a .tmp file.
+     * If the file does not exist, it will check for a .tmp file.
      *
      * @param absolutePath the absolute path of the file to read
-     * @return the file content
+     * @return the file contents
      * @throws IOException if the method failed to read the file
      */
     public static String readFile(String absolutePath) throws IOException {
