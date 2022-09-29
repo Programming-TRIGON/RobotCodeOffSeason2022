@@ -3,7 +3,6 @@ package frc.trigon.robot.subsystems.shooter;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class ShooterConstants {
-
     private static final int
             LEFT_MOTOR_ID = 3,
             RIGHT_MOTOR_ID = 4;
@@ -16,9 +15,9 @@ public class ShooterConstants {
             P = 0.12,
             I = 0.00002,
             D = 0,
-            V = 0.0522;
-
-    public static final double S = 0.03;
+            V = 0.0522,
+            MAX_I = 1300000;
+    static final double S = 0.03;
 
     private static final WPI_TalonFX
             LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
@@ -43,5 +42,7 @@ public class ShooterConstants {
         MASTER_MOTOR.config_kI(0, I);
         MASTER_MOTOR.config_kD(0, D);
         MASTER_MOTOR.config_kF(0, V);
+
+        MASTER_MOTOR.configMaxIntegralAccumulator(0,MAX_I);
     }
 }

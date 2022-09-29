@@ -6,16 +6,12 @@ public class Conversions {
             SEC_PER_MIN = 60,
             FALCON_TICKS = 2048;
 
-    public static double hundredMsToSec(double ms) {
-        return ms * HUNDRED_MS_PER_SEC;
+    public static double hundredMsToSec(double hundredMs) {
+        return hundredMs / HUNDRED_MS_PER_SEC;
     }
 
-    public static double hundredMsToMin(double ms) {
-        return hundredMsToSec(ms) * SEC_PER_MIN;
-    }
-
-    public static double falconTicksToRevolutions(double ticks) {
-        return ticks / FALCON_TICKS;
+    public static double hundredMsToMin(double hundredMs) {
+        return hundredMsToSec(hundredMs) / SEC_PER_MIN;
     }
 
     public static double falconTicksPer100MsToRpm(double ticksPer100Ms) {
