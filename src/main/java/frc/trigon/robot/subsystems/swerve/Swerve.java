@@ -20,7 +20,7 @@ public class Swerve extends SubsystemBase {
     /**
      * Drives the swerve with the given velocities, relative to the robot.
      *
-     *  @param translation desired speed in meters in the the target x and y velocity.
+     *  @param translation the target x and y velocity.
      *  @param rotation desired angle of the robot in radioants.
      * @param isOpenLoop determine if it uses velocities or percent output for the drive motor.
      **/
@@ -36,7 +36,7 @@ public class Swerve extends SubsystemBase {
     /**
      * Drives the swerve with the given velocities, relative to the field.
      *
-     * @param translation desired speed in meters in the target x and y velocity.
+     * @param translation the target x and y velocity.
      * @param rotation desired angle of the robot in radioants.
      * @param isOpenLoop determine if it uses velocities or percent output for the drive motor.
      **/

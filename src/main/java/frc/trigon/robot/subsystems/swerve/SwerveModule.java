@@ -29,11 +29,15 @@ public class SwerveModule {
     public void setTargetState(SwerveModuleState targetState,boolean isOpenLoop) {
         this.targetState = targetState;
         optimizeTargetState();
-        setMotorsToStates(isOpenLoop);
+        setMotorsToStates(
+                isOpenLoop,
+                targetState.angle.getDegrees(),
+                targetState.speedMetersPerSecond
+        );
     }
 
     public SwerveModuleState getCurrentState() {
-        return new SwerveModuleState(getDriveMotor(), getAngleMotorAngle());
+        return new SwerveModuleState(getVelocity(), getModuleAngle());
     }
 
     private void optimizeTargetState() {
@@ -63,46 +67,47 @@ public class SwerveModule {
         return difference + getDegrees();
     }
 
-    public void setMotorsToStates(boolean isOpenLoop) {
-        setAngleMotorPosition();
-        setDriveMotor(isOpenLoop);
+    public void setMotorsToStates(boolean isOpenLoop ,double targetAngle ,double targetVelocity) {
+        setTargetAngle(targetAngle);
+        setTargetDriveVelocity(isOpenLoop ,targetVelocity);
     }
 
-    public void setAngleMotorPosition() {
-        double angleTicks = Conversions.degreesToMagTicks(targetState.angle.getDegrees());
-        angleMotor.set(ControlMode.Position, angleTicks);
+    public void setTargetAngle(double targetAngle) {
+        double targetAnglePosition = Conversions.degreesToMagTicks(targetAngle);
+        angleMotor.set(ControlMode.Position, targetAnglePosition);
     }
 
-    public void setDriveMotor(boolean isOpenLoop){
+    public void setTargetDriveVelocity(boolean isOpenLoop , double targetVelocity){
         if(isOpenLoop)
-            setDriveMotorPercentOutput();
-        else setDriveMotorVelocity();
+            setTargetDriveMotorPower(targetVelocity);
+        else setTargetDriveMotorVelocity(targetVelocity);
 
     }
-    public void setDriveMotorPercentOutput(){
-        double driveTicks = targetState.speedMetersPerSecond;
-        driveMotor.set(ControlMode.PercentOutput , driveTicks);
+    public void setTargetDriveMotorPower(double targetPower){
+        double Power = targetPower / SwerveConstants.MAX_SPEED_METERS_PER_SECOND;
+        driveMotor.set(ControlMode.PercentOutput , Power);
     }
-    public void setDriveMotorVelocity() {
-        double driveTicks = Conversions.systemRevolutionsToFalconTicks(
-                targetState.speedMetersPerSecond,
+    public void setTargetDriveMotorVelocity(double targetVelocity) {
+        double driveMotorVelocity = Conversions.systemRevolutionsToFalconTicks(
+                targetVelocity,
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                 SwerveModuleConstants.DRIVE_GEAR_RATIO
         );
-        driveMotor.set(ControlMode.Velocity, driveTicks);
+        driveMotor.set(ControlMode.Velocity, driveMotorVelocity);
     }
 
-    private double getDriveMotor() {
-        double driveTicks = driveMotor.getSelectedSensorVelocity();
+    private double getVelocity() {
+        double driveMotorVelocity = driveMotor.getSelectedSensorVelocity();
         return Conversions.revolutionsToMeters(
-                Conversions.falconTicksToRevolutions(driveTicks),
+                Conversions.falconTicksToRevolutions(driveMotorVelocity),
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
-                SwerveModuleConstants.DRIVE_GEAR_RATIO);
+                SwerveModuleConstants.DRIVE_GEAR_RATIO
+        );
     }
 
-    private Rotation2d getAngleMotorAngle() {
-        double getAngleTicks = Conversions.magTicksToDegrees(angleMotor.getSelectedSensorPosition());
-        return Rotation2d.fromDegrees(getAngleTicks);
+    private Rotation2d getModuleAngle() {
+        double getAngleDegrees = Conversions.magTicksToDegrees(angleMotor.getSelectedSensorPosition());
+        return Rotation2d.fromDegrees(getAngleDegrees);
     }
 
     private double getDegrees() {
