@@ -26,10 +26,10 @@ public class SwerveModule {
         configRemoteSensor();
     }
 
-    public void setTargetState(SwerveModuleState targetState) {
+    public void setTargetState(SwerveModuleState targetState,boolean isOpenLoop) {
         this.targetState = targetState;
         optimizeTargetState();
-        setMotorsToPositions();
+        setMotorsToPositions(isOpenLoop);
     }
 
     public SwerveModuleState getCurrentState() {
@@ -63,9 +63,9 @@ public class SwerveModule {
         return difference + getDegrees();
     }
 
-    public void setMotorsToPositions() {
+    public void setMotorsToPositions(boolean isOpenLoop) {
         setAngleMotorPosition();
-        setDriveMotorVelocity();
+        setDriveMotor(isOpenLoop);
     }
 
     public void setAngleMotorPosition() {
@@ -73,14 +73,23 @@ public class SwerveModule {
         angleMotor.set(ControlMode.Position, angleTicks);
     }
 
+    public void setDriveMotor(boolean isOpenLoop){
+        if(isOpenLoop)
+            setDriveMotorPercentOutput();
+        else setDriveMotorVelocity();
+
+    }
+    public void setDriveMotorPercentOutput(){
+        double driveTicks = targetState.speedMetersPerSecond;
+        driveMotor.set(ControlMode.PercentOutput , driveTicks);
+    }
     public void setDriveMotorVelocity() {
         double driveTicks = Conversions.mpsToFalconTicks(
                 targetState.speedMetersPerSecond,
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                 SwerveModuleConstants.DRIVE_GEAR_RATIO
         );
-        driveMotor.set(ControlMode.Velocity, driveTicks
-        );
+        driveMotor.set(ControlMode.Velocity, driveTicks);
     }
 
     private double getDriveMotor() {

@@ -21,15 +21,16 @@ public class Swerve extends SubsystemBase {
      * Drives the swerve relative to itself.
      *
      *  @param translation desired speed in meters in the the target x and y velocity.
-     *   @param rotation goes to the angle of the robot in radioants.
+     *  @param rotation goes to the angle of the robot in radioants.
+     * @param isOpenLoop determine if it uses velocities or percent output for the drive motor.
      **/
-    void selfRelativeDrive(Translation2d translation, Rotation2d rotation) {
+    void selfRelativeDrive(Translation2d translation, Rotation2d rotation, boolean isOpenLoop) {
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(
                 translation.getX(),
                 translation.getY(),
                 rotation.getRadians()
         );
-        selfRelativeDrive(chassisSpeeds);
+        selfRelativeDrive(chassisSpeeds, isOpenLoop);
     }
 
     /**
@@ -37,15 +38,16 @@ public class Swerve extends SubsystemBase {
      *
      * @param translation desired speed in meters in the target x and y velocity.
      * @param rotation goes to the angle of the robot in radioants.
+     * @param isOpenLoop determine if it uses velocities or percent output for the drive motor.
      **/
-    void fieldRelativeDrive(Translation2d translation, Rotation2d rotation) {
+    void fieldRelativeDrive(Translation2d translation, Rotation2d rotation, boolean isOpenLoop) {
         ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                 translation.getX(),
                 translation.getY(),
                 rotation.getRadians(),
                 getHeading()
         );
-        selfRelativeDrive(chassisSpeeds);
+        selfRelativeDrive(chassisSpeeds ,  isOpenLoop);
     }
 
     /**
@@ -56,14 +58,14 @@ public class Swerve extends SubsystemBase {
             SwerveConstants.SWERVE_MODULES[id].stopModule();
     }
 
-    private void setTargetModuleStates(SwerveModuleState[] swerveModuleStates) {
+    private void setTargetModuleStates(SwerveModuleState[] swerveModuleStates , boolean isOpenLoop){
         for(int i = 0; i < 4; i++)
-            SwerveConstants.SWERVE_MODULES[i].setTargetState(swerveModuleStates[i]);
+            SwerveConstants.SWERVE_MODULES[i].setTargetState(swerveModuleStates[i],isOpenLoop);
     }
 
-    private void selfRelativeDrive(ChassisSpeeds chassisSpeeds) {
+    private void selfRelativeDrive(ChassisSpeeds chassisSpeeds ,boolean isOpenLoop) {
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-        setTargetModuleStates(swerveModuleStates);
+        setTargetModuleStates(swerveModuleStates, isOpenLoop );
     }
 
     void zeroHeading() {
