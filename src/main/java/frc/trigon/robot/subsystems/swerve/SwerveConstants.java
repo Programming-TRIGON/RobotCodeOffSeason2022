@@ -63,21 +63,18 @@ public class SwerveConstants {
             FRONT_LEFT_ANGLE_MOTOR,
             FRONT_LEFT_ENCODER_OFFSET
     );
-
     private static final SwerveModuleConstants FRONT_RIGHT_SWERVE_MODULE_CONSTANTS = new SwerveModuleConstants(
             FRONT_RIGHT_ANGLE_ENCODER,
             FRONT_RIGHT_DRIVE_MOTOR,
             FRONT_RIGHT_ANGLE_MOTOR,
             FRONT_RIGHT_ENCODER_OFFSET
     );
-
     private static final SwerveModuleConstants REAR_LEFT_SWERVE_MODULE_CONSTANTS = new SwerveModuleConstants(
             REAR_LEFT_ANGLE_ENCODER,
             REAR_LEFT_DRIVE_MOTOR,
             REAR_LEFT_ANGLE_MOTOR,
             RIGHT_LEFT_ENCODER_OFFSET
     );
-
     private static final SwerveModuleConstants REAR_RIGHT_SWERVE_MODULE_CONSTANTS = new SwerveModuleConstants(
             REAR_RIGHT_ANGLE_ENCODER,
             REAR_RIGHT_DRIVE_MOTOR,

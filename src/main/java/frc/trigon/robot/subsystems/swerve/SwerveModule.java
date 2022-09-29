@@ -22,17 +22,16 @@ public class SwerveModule {
         this.driveMotor = moduleConstants.driveMotor;
         this.encoderOffset = moduleConstants.encoderOffset;
 
-        angleMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
         configRemoteSensor();
     }
 
-    public void setTargetState(SwerveModuleState targetState,boolean isOpenLoop) {
+    public void setTargetState(SwerveModuleState targetState, boolean isOpenLoop) {
         this.targetState = targetState;
         optimizeTargetState();
-        setMotorsToStates(
-                isOpenLoop,
+        setTargetAngleAndVelocity(
+                targetState.speedMetersPerSecond,
                 targetState.angle.getDegrees(),
-                targetState.speedMetersPerSecond
+                isOpenLoop
         );
     }
 
@@ -53,7 +52,7 @@ public class SwerveModule {
         }
     }
 
-    public double scope(double targetAngle) {
+    private double scope(double targetAngle) {
         double rawCurrentAngle = getDegrees() % 360;
         double rawTargetAngle = targetAngle % 360;
         double difference = rawTargetAngle - rawCurrentAngle;
@@ -67,9 +66,9 @@ public class SwerveModule {
         return difference + getDegrees();
     }
 
-    public void setMotorsToStates(boolean isOpenLoop ,double targetAngle ,double targetVelocity) {
+    public void setTargetAngleAndVelocity(double targetAngle, double velocity, boolean isOpenLoop) {
         setTargetAngle(targetAngle);
-        setTargetDriveVelocity(isOpenLoop ,targetVelocity);
+        setTargetDriveVelocity(isOpenLoop, velocity);
     }
 
     public void setTargetAngle(double targetAngle) {
@@ -77,19 +76,21 @@ public class SwerveModule {
         angleMotor.set(ControlMode.Position, targetAnglePosition);
     }
 
-    public void setTargetDriveVelocity(boolean isOpenLoop , double targetVelocity){
+    public void setTargetDriveVelocity(boolean isOpenLoop, double velocity) {
         if(isOpenLoop)
-            setTargetDriveMotorPower(targetVelocity);
-        else setTargetDriveMotorVelocity(targetVelocity);
+            setDrivePower(velocity);
+        else
+            setTargetDriveVelocity(velocity);
+    }
 
+    public void setDrivePower(double power) {
+        double targetPower = power / SwerveConstants.MAX_SPEED_METERS_PER_SECOND;
+        driveMotor.set(ControlMode.PercentOutput, targetPower);
     }
-    public void setTargetDriveMotorPower(double targetPower){
-        double Power = targetPower / SwerveConstants.MAX_SPEED_METERS_PER_SECOND;
-        driveMotor.set(ControlMode.PercentOutput , Power);
-    }
-    public void setTargetDriveMotorVelocity(double targetVelocity) {
+
+    public void setTargetDriveVelocity(double velocity) {
         double driveMotorVelocity = Conversions.systemRevolutionsToFalconTicks(
-                targetVelocity,
+                velocity,
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                 SwerveModuleConstants.DRIVE_GEAR_RATIO
         );
@@ -120,7 +121,7 @@ public class SwerveModule {
         angleMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
     }
 
-    public void stopModule() {
+    public void stop() {
         driveMotor.disable();
         angleMotor.disable();
     }

@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
+    public boolean isOpenLoop;
     private final static Swerve INSTANCE = new Swerve();
 
     public Swerve() {
@@ -20,52 +21,56 @@ public class Swerve extends SubsystemBase {
     /**
      * Drives the swerve with the given velocities, relative to the robot.
      *
-     *  @param translation the target x and y velocity.
-     *  @param rotation desired angle of the robot in radioants.
-     * @param isOpenLoop determine if it uses velocities or percent output for the drive motor.
+     * @param translation the target x and y velocities in mps.
+     * @param rotation    target velocity in thata in radiants per second.
+     * @param isOpenLoop  determines if it uses PID or percent output for the drive motor
      **/
-    void selfRelativeDrive(Translation2d translation, Rotation2d rotation, boolean isOpenLoop) {
+    void selfRelativeDrive(Translation2d translation, Rotation2d rotation) {
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(
                 translation.getX(),
                 translation.getY(),
                 rotation.getRadians()
         );
-        selfRelativeDrive(chassisSpeeds, isOpenLoop);
+        selfRelativeDrive(chassisSpeeds);
     }
 
     /**
      * Drives the swerve with the given velocities, relative to the field.
      *
-     * @param translation the target x and y velocity.
-     * @param rotation desired angle of the robot in radioants.
-     * @param isOpenLoop determine if it uses velocities or percent output for the drive motor.
+     * @param translation the target x and y velocities in mps.
+     * @param rotation    target velocity in thata in radiants per second.
+     * @param isOpenLoop  determines if it uses PID or percent output for the drive motor.
      **/
-    void fieldRelativeDrive(Translation2d translation, Rotation2d rotation, boolean isOpenLoop) {
+    void fieldRelativeDrive(Translation2d translation, Rotation2d rotation) {
         ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                 translation.getX(),
                 translation.getY(),
                 rotation.getRadians(),
                 getHeading()
         );
-        selfRelativeDrive(chassisSpeeds ,  isOpenLoop);
+        selfRelativeDrive(chassisSpeeds);
+    }
+
+    public void setOpenLoop(boolean isOpenLoop) {
+        this.isOpenLoop = isOpenLoop;
     }
 
     /**
-     * Stops the swerve motors from moving.
+     * Stops the swerve's motors from moving.
      **/
     public void stop() {
         for(int id = 0; id < SwerveConstants.SWERVE_MODULES.length; id++)
-            SwerveConstants.SWERVE_MODULES[id].stopModule();
+            SwerveConstants.SWERVE_MODULES[id].stop();
     }
 
-    private void setTargetModuleStates(SwerveModuleState[] swerveModuleStates , boolean isOpenLoop){
+    private void setTargetModuleStates(SwerveModuleState[] swerveModuleStates, boolean isOpenLoop) {
         for(int i = 0; i < 4; i++)
-            SwerveConstants.SWERVE_MODULES[i].setTargetState(swerveModuleStates[i],isOpenLoop);
+            SwerveConstants.SWERVE_MODULES[i].setTargetState(swerveModuleStates[i], isOpenLoop);
     }
 
-    private void selfRelativeDrive(ChassisSpeeds chassisSpeeds ,boolean isOpenLoop) {
+    private void selfRelativeDrive(ChassisSpeeds chassisSpeeds) {
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-        setTargetModuleStates(swerveModuleStates, isOpenLoop );
+        setTargetModuleStates(swerveModuleStates, isOpenLoop);
     }
 
     void zeroHeading() {
