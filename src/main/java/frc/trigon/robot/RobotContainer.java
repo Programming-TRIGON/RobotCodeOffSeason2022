@@ -5,7 +5,17 @@
 
 package frc.trigon.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
+
 public class RobotContainer {
+
+    XboxController controller;
+
     public RobotContainer() {
+        controller = new XboxController(0);
+    }
+
+    private void bindCommends() {
+        
     }
 }
