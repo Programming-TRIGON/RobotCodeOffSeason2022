@@ -33,9 +33,7 @@ public class Climber extends SubsystemBase {
     }
 
     /**
-     * Returns whether the climber is in the target position within the allowable error.
-     *
-     * @return true if the climber is in the target position, false otherwise
+     * @return true if the climber is in the target position within the allowable error, false otherwise
      */
     boolean inTargetPosition() {
         if(!masterMotor.getControlMode().equals(ControlMode.Position))
@@ -97,5 +95,3 @@ public class Climber extends SubsystemBase {
         return masterMotor.isRevLimitSwitchClosed() + followerMotor.isRevLimitSwitchClosed() == 2;
     }
 }
-
-
