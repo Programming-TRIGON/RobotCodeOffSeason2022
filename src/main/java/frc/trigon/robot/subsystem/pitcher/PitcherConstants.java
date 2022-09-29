@@ -12,7 +12,8 @@ public class PitcherConstants {
             P = 3,
             I = 0,
             D = 0,
-            PEAK_OUTPUT = 0.2;
+            PEAK_OUTPUT = 0.2,
+            allowableError = 3;
     private static final boolean
             INVERTED = true,
             SENSOR_PHASE = false;
@@ -32,5 +33,6 @@ public class PitcherConstants {
         MOTOR.config_kI(0, I);
         MOTOR.config_kD(0, D);
         MOTOR.configClosedLoopPeakOutput(0, PEAK_OUTPUT);
+        MOTOR.configAllowableClosedloopError(0, allowableError);
     }
 }
