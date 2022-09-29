@@ -23,10 +23,9 @@ public class Shooter extends SubsystemBase {
     public static Shooter getInstance() {
         return INSTANCE;
     }
-
     /**
      *
-     * @return target velocity
+     * @return the target velocity
      */
     private double getTargetVelocity() {
         if(!masterMotor.getControlMode().equals(ControlMode.Velocity)) {
@@ -34,17 +33,16 @@ public class Shooter extends SubsystemBase {
         }
         return masterMotor.getClosedLoopTarget();
     }
-
     /**
      *
-     * @param velocity target velocity
+     * @param velocity the target velocity
      */
     private void setTargetVelocity(double velocity) {
         masterMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, ShooterConstants.S);
     }
 
     /**
-     * Stop the motors
+     * Stops the motors
      */
     private void stop()
     {
@@ -59,7 +57,7 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * @return the number of balls that has been shot
+     * @return the number of balls that have been shot
      */
     private int getBallCount() {
         return ballCount;
@@ -71,19 +69,17 @@ public class Shooter extends SubsystemBase {
     private void resetBallCount() {
         ballCount = 0;
     }
-
     /**
      *
      * @return the current error from the target velocity
      */
-    private double getCurrentError() {
+    private double getError() {
         return masterMotor.getClosedLoopError();
     }
-
     /**
      *
-     * @param desiredVelocity the velocity the motors need to get to.
-     * @return an execute command that calls the setTargetVelocity function to set the motors to the targeted velocity
+     * @param desiredVelocity the target velocity.
+     * @return an execute command that get the motors to the target velocity
      */
     public Command getPrimeShooterCommand(DoubleSupplier desiredVelocity) {
         return new RunCommand(() -> setTargetVelocity(desiredVelocity.getAsDouble()), this)
