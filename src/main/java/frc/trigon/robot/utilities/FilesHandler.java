@@ -39,14 +39,14 @@ public class FilesHandler {
     /**
      * Renames a file.
      *
-     * @param absolutePath the absolute path of the file to rename
+     * @param absolutePath the file's absolute path
      * @param newName      the new desired name
      * @throws IOException if the method failed to rename the file
      */
     public static void renameFile(String absolutePath, String newName) throws IOException {
         File file = new File(absolutePath);
-        String newAbsolutePath = extractPathFromAbsolutePath(absolutePath);
-        if(!file.renameTo(new File(newAbsolutePath + newName)))
+        String newAbsolutePath = extractPathFromAbsolutePath(absolutePath) + newName;
+        if(!file.renameTo(new File(newAbsolutePath)))
             throw new IOException("Failed to rename file " + absolutePath + " to " + newName);
     }
 
@@ -57,7 +57,7 @@ public class FilesHandler {
      * rename the temporary file to the desired name,
      * and delete the .bak file.
      *
-     * @param absolutePath the absolute path of the file to write to
+     * @param absolutePath the file's absolute path
      * @param str          the string to write to the file
      * @throws IOException if the method failed to safe write the file
      */
@@ -74,7 +74,7 @@ public class FilesHandler {
      * Reads a file and returns its content as a string.
      * If the file does not exist, it will check for a .tmp file.
      *
-     * @param absolutePath the absolute path of the file to read
+     * @param absolutePath the file's absolute path
      * @return the file contents
      * @throws IOException if the method failed to read the file
      */
