@@ -29,11 +29,11 @@ public class SwerveModule {
     public void setTargetState(SwerveModuleState targetState) {
         this.targetState = targetState;
         optimizeTargetState();
-        setMotors();
+        setMotorsToPositions();
     }
 
     public SwerveModuleState getCurrentState() {
-        return new SwerveModuleState(getDriveMotorState(), getAngleMotor());
+        return new SwerveModuleState(getDriveMotor(), getAngleMotorAngle());
     }
 
     private void optimizeTargetState() {
@@ -63,34 +63,36 @@ public class SwerveModule {
         return difference + getDegrees();
     }
 
-    public void setMotors() {
-        setAngleMotor();
-        setDriveMotor();
+    public void setMotorsToPositions() {
+        setAngleMotorPosition();
+        setDriveMotorVelocity();
     }
 
-    public void setAngleMotor() {
-        double setAngleTicks = Conversions.degreesToMagTicks(targetState.angle.getDegrees());
-        angleMotor.set(ControlMode.Position, setAngleTicks);
+    public void setAngleMotorPosition() {
+        double angleTicks = Conversions.degreesToMagTicks(targetState.angle.getDegrees());
+        angleMotor.set(ControlMode.Position, angleTicks);
     }
 
-    public void setDriveMotor() {
-        double setDriveTicks = Conversions.mpsToFalconTicks(
+    public void setDriveMotorVelocity() {
+        double driveTicks = Conversions.mpsToFalconTicks(
                 targetState.speedMetersPerSecond,
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                 SwerveModuleConstants.DRIVE_GEAR_RATIO
         );
-        driveMotor.set(ControlMode.Velocity, setDriveTicks);
+        driveMotor.set(ControlMode.Velocity, driveTicks
+        );
     }
 
-    private double getDriveMotorState() {
-        double getDriveTicks = driveMotor.getSelectedSensorVelocity();
+    private double getDriveMotor() {
+        double driveTicks = driveMotor.getSelectedSensorVelocity();
         return Conversions.revolutionsToMps(
-                Conversions.falconTicksToRevolutions(getDriveTicks),
+                Conversions.falconTicksToRevolutions(driveTicks),
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
-                SwerveModuleConstants.DRIVE_GEAR_RATIO);
+                SwerveModuleConstants.DRIVE_GEAR_RATIO
+        );
     }
 
-    private Rotation2d getAngleMotor() {
+    private Rotation2d getAngleMotorAngle() {
         double getAngleTicks = Conversions.magTicksToDegrees(angleMotor.getSelectedSensorPosition());
         return Rotation2d.fromDegrees(getAngleTicks);
     }

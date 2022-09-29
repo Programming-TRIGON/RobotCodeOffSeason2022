@@ -92,7 +92,7 @@ public class SwerveConstants {
             new SwerveModule(SwerveConstants.SwerveModules.fromId(3).swerveModuleConstants)
     };
 
-    public static final Translation2d[] LOCATIONS = {
+    protected static final Translation2d[] LOCATIONS = {
             SwerveModules.fromId(0).Location,
             SwerveModules.fromId(1).Location,
             SwerveModules.fromId(2).Location,
