@@ -45,14 +45,14 @@ public class Collector extends SubsystemBase {
     }
 
     /**
-     * @return command of collect and close.
+     * @return a command that collects and when its end closes.
      */
     public Command getCollectCommand() {
         return new StartEndCommand(this::collect, this::close, this);
     }
 
     /**
-     * @return command of eject and close.
+     * @return a command that ejects and when its end closes.
      */
     public Command getEjectCommand() {
         return new StartEndCommand(this::eject, this::close, this);
