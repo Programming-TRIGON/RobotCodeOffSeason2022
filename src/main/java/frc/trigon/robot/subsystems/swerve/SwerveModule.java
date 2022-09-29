@@ -29,7 +29,7 @@ public class SwerveModule {
     public void setTargetState(SwerveModuleState targetState,boolean isOpenLoop) {
         this.targetState = targetState;
         optimizeTargetState();
-        setMotorsToPositions(isOpenLoop);
+        setMotorsToStates(isOpenLoop);
     }
 
     public SwerveModuleState getCurrentState() {
@@ -63,7 +63,7 @@ public class SwerveModule {
         return difference + getDegrees();
     }
 
-    public void setMotorsToPositions(boolean isOpenLoop) {
+    public void setMotorsToStates(boolean isOpenLoop) {
         setAngleMotorPosition();
         setDriveMotor(isOpenLoop);
     }
@@ -84,7 +84,7 @@ public class SwerveModule {
         driveMotor.set(ControlMode.PercentOutput , driveTicks);
     }
     public void setDriveMotorVelocity() {
-        double driveTicks = Conversions.mpsToFalconTicks(
+        double driveTicks = Conversions.systemRevolutionsToFalconTicks(
                 targetState.speedMetersPerSecond,
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                 SwerveModuleConstants.DRIVE_GEAR_RATIO
@@ -94,11 +94,10 @@ public class SwerveModule {
 
     private double getDriveMotor() {
         double driveTicks = driveMotor.getSelectedSensorVelocity();
-        return Conversions.revolutionsToMps(
+        return Conversions.revolutionsToMeters(
                 Conversions.falconTicksToRevolutions(driveTicks),
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
-                SwerveModuleConstants.DRIVE_GEAR_RATIO
-        );
+                SwerveModuleConstants.DRIVE_GEAR_RATIO);
     }
 
     private Rotation2d getAngleMotorAngle() {

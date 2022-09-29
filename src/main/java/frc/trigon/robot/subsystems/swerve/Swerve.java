@@ -18,10 +18,10 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
-     * Drives the swerve relative to itself.
+     * Drives the swerve with the given velocities, relative to the robot.
      *
      *  @param translation desired speed in meters in the the target x and y velocity.
-     *  @param rotation goes to the angle of the robot in radioants.
+     *  @param rotation desired angle of the robot in radioants.
      * @param isOpenLoop determine if it uses velocities or percent output for the drive motor.
      **/
     void selfRelativeDrive(Translation2d translation, Rotation2d rotation, boolean isOpenLoop) {
@@ -34,10 +34,10 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
-     * Drives the swerve relative to the field.
+     * Drives the swerve with the given velocities, relative to the field.
      *
      * @param translation desired speed in meters in the target x and y velocity.
-     * @param rotation goes to the angle of the robot in radioants.
+     * @param rotation desired angle of the robot in radioants.
      * @param isOpenLoop determine if it uses velocities or percent output for the drive motor.
      **/
     void fieldRelativeDrive(Translation2d translation, Rotation2d rotation, boolean isOpenLoop) {
@@ -51,7 +51,7 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
-     * stops the swerve motors from moving.
+     * Stops the swerve motors from moving.
      **/
     public void stop() {
         for(int id = 0; id < SwerveConstants.SWERVE_MODULES.length; id++)

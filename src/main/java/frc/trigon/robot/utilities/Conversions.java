@@ -49,11 +49,11 @@ public class Conversions {
      * @param circumference of the wheel
      * @return returns the meters per seconds
      **/
-    public static double revolutionsToMps(double revolutions, double circumference, double gearRatio) {
+    public static double revolutionsToMeters(double revolutions, double circumference, double gearRatio) {
         return motorRevolutionsToSystemRevolutions(revolutions, gearRatio) * circumference;
     }
 
-    public static double mpsToFalconTicks(Double revolutions, double circumference, double gearRatio) {
+    public static double systemRevolutionsToFalconTicks(Double revolutions, double circumference, double gearRatio) {
         return systemRevolutionsToMotorRevolutions(revolutions, gearRatio) / circumference;
     }
 
