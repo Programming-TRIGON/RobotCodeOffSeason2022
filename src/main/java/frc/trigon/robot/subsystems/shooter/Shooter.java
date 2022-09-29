@@ -26,7 +26,7 @@ public class Shooter extends SubsystemBase {
 
     /**
      *
-     * @return the targeted velocity if the motor control mode is velocity, else return 0
+     * @return target velocity
      */
     private double getTargetVelocity() {
         if(!masterMotor.getControlMode().equals(ControlMode.Velocity)) {
@@ -37,29 +37,29 @@ public class Shooter extends SubsystemBase {
 
     /**
      *
-     * @param velocity the velocity the motors need to get to
+     * @param velocity target velocity
      */
     private void setTargetVelocity(double velocity) {
         masterMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, ShooterConstants.S);
     }
 
     /**
-     * stop the motors
+     * Stop the motors
      */
-    private void stopMotor()
+    private void stop()
     {
         masterMotor.stopMotor();
     }
 
     /**
-     * @return the current velocity as RPM
+     * @return the current velocity in RPM
      */
     private double getCurrentVelocity() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getSelectedSensorVelocity());
     }
 
     /**
-     * @return the count of balls currently inside the robot
+     * @return the number of balls that has been shot
      */
     private int getBallCount() {
         return ballCount;
@@ -77,7 +77,7 @@ public class Shooter extends SubsystemBase {
      * @return the current error from the target velocity
      */
     private double getCurrentError() {
-        return getTargetVelocity() - getCurrentVelocity();
+        return masterMotor.getClosedLoopError();
     }
 
     /**
@@ -87,7 +87,7 @@ public class Shooter extends SubsystemBase {
      */
     public Command getPrimeShooterCommand(DoubleSupplier desiredVelocity) {
         return new RunCommand(() -> setTargetVelocity(desiredVelocity.getAsDouble()), this)
-                .andThen(this::stopMotor);
+                .andThen(this::stop);
     }
 
 }
