@@ -6,9 +6,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.trigon.robot.utilities.Conversions;
 
-public class SwerveModule {
+public class SwerveModule implements Sendable {
     private final WPI_TalonSRX angleEncoder;
     private final WPI_TalonFX angleMotor;
     private final WPI_TalonFX driveMotor;
@@ -121,6 +123,14 @@ public class SwerveModule {
     public void stop() {
         driveMotor.disable();
         angleMotor.disable();
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("angle", this::getDegrees, null);
+        builder.addDoubleProperty("velocity", this::getCurrentVelocity, null);
+        builder.addDoubleProperty("targetAngle", () -> targetState.angle.getDegrees(), this::setTargetAngle);
+        builder.addDoubleProperty("targetVelocity", () -> targetState.speedMetersPerSecond, this::setTargetVelocity);
     }
 }
 
