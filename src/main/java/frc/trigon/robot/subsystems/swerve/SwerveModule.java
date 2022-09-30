@@ -36,7 +36,7 @@ public class SwerveModule {
     }
 
     public SwerveModuleState getCurrentState() {
-        return new SwerveModuleState(getVelocity(), getModuleAngle());
+        return new SwerveModuleState(getCurrentVelocity(), getModuleAngle());
     }
 
     private void optimizeTargetState() {
@@ -66,7 +66,7 @@ public class SwerveModule {
 
     public void setTargetAngleAndVelocity(double targetAngle, double velocity, boolean isOpenLoop) {
         setTargetAngle(targetAngle);
-        setTargetDriveVelocity(isOpenLoop, velocity);
+        setTargetVelocity(isOpenLoop, velocity);
     }
 
     public void setTargetAngle(double targetAngle) {
@@ -74,11 +74,11 @@ public class SwerveModule {
         angleMotor.set(ControlMode.Position, targetAnglePosition + encoderOffset);
     }
 
-    public void setTargetDriveVelocity(boolean isOpenLoop, double velocity) {
+    public void setTargetVelocity(boolean isOpenLoop, double velocity) {
         if(isOpenLoop)
             setDrivePower(velocity);
         else
-            setTargetDriveVelocity(velocity);
+            setTargetVelocity(velocity);
     }
 
     public void setDrivePower(double power) {
@@ -86,7 +86,7 @@ public class SwerveModule {
         driveMotor.set(ControlMode.PercentOutput, targetPower);
     }
 
-    public void setTargetDriveVelocity(double velocity) {
+    public void setTargetVelocity(double velocity) {
         double driveMotorVelocity = Conversions.systemRevolutionsToFalconTicks(
                 velocity,
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
@@ -95,7 +95,7 @@ public class SwerveModule {
         driveMotor.set(ControlMode.Velocity, driveMotorVelocity);
     }
 
-    private double getVelocity() {
+    private double getCurrentVelocity() {
         double driveMotorVelocity = driveMotor.getSelectedSensorVelocity();
         return Conversions.revolutionsToMeters(
                 Conversions.falconTicksToRevolutions(driveMotorVelocity),
