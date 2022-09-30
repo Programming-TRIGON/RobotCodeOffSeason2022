@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
+
     public boolean isOpenLoop;
     private final static Swerve INSTANCE = new Swerve();
 
@@ -21,9 +22,8 @@ public class Swerve extends SubsystemBase {
     /**
      * Drives the swerve with the given velocities, relative to the robot.
      *
-     * @param translation the target x and y velocities in mps.
-     * @param rotation    target velocity in thata in radiants per second.
-     * @param isOpenLoop  determines if it uses PID or percent output for the drive motor
+     * @param translation the target x and y velocities in mps
+     * @param rotation    target velocity in thata in Radians per second
      **/
     void selfRelativeDrive(Translation2d translation, Rotation2d rotation) {
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(
@@ -37,9 +37,8 @@ public class Swerve extends SubsystemBase {
     /**
      * Drives the swerve with the given velocities, relative to the field.
      *
-     * @param translation the target x and y velocities in mps.
-     * @param rotation    target velocity in thata in radiants per second.
-     * @param isOpenLoop  determines if it uses PID or percent output for the drive motor.
+     * @param translation the target x and y velocities in mps
+     * @param rotation    target velocity in thata in radians per second
      **/
     void fieldRelativeDrive(Translation2d translation, Rotation2d rotation) {
         ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -51,13 +50,18 @@ public class Swerve extends SubsystemBase {
         selfRelativeDrive(chassisSpeeds);
     }
 
-    public void setOpenLoop(boolean isOpenLoop) {
+    /**
+     * determines if it uses PID or percent output for the drive motor.
+     *
+     * @param isOpenLoop is open loop or cloesd
+     */
+    public void openLoop(boolean isOpenLoop) {
         this.isOpenLoop = isOpenLoop;
     }
 
     /**
      * Stops the swerve's motors from moving.
-     **/
+     */
     public void stop() {
         for(int id = 0; id < SwerveConstants.SWERVE_MODULES.length; id++)
             SwerveConstants.SWERVE_MODULES[id].stop();
