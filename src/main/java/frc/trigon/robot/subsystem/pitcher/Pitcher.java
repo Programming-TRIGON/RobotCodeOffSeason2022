@@ -13,12 +13,14 @@ public class Pitcher extends SubsystemBase {
         return INSTANCE;
     }
 
-    public void setPosition(double degrees) {
-        motor.set(ControlMode.Position, Conversions.degreesToMagTicks(degrees));
+    public void setTargetAngle(double degrees) {
+        double ticks = Conversions.degreesToMagTicks(degrees);
+        motor.set(ControlMode.Position, ticks);
     }
 
     public double getDegrees() {
-        double motorAngle = Conversions.magTicksToDegrees(motor.getSelectedSensorPosition());
+        double ticks = motor.getSelectedSensorPosition() - PitcherConstants.MIN_TICKS;
+        double motorAngle = Conversions.magTicksToDegrees(ticks);
         return Conversions.motorPositionToSystemPosition(motorAngle, PitcherConstants.GEAR_RATIO);
     }
 }
