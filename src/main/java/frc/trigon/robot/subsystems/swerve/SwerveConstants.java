@@ -32,24 +32,40 @@ public class SwerveConstants {
     private static final int PIGEON_ID = 12;
     public static final Pigeon2 gyro = new Pigeon2(PIGEON_ID);
 
-    private static final WPI_TalonSRX FRONT_LEFT_ANGLE_ENCODER = new WPI_TalonSRX(0);
-    private static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(1);
-    private static final WPI_TalonFX FRONT_LEFT_ANGLE_MOTOR = new WPI_TalonFX(2);
+    private static final int FRONT_LEFT_ANGLE_ENCODER_MOTOR_ID = 0;
+    private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
+    private static final int FRONT_LEFT_ANGLE_MOTOR_ID = 2;
+
+    private static final int FRONT_RIGHT_ANGLE_ENCODER_MOTOR_ID = 3;
+    private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 4;
+    private static final int FRONT_RIGHT_ANGLE_MOTOR_ID = 5;
+
+    private static final int REAR_LEFT_ANGLE_ENCODER_MOTOR_ID = 6;
+    private static final int REAR_LEFT_DRIVE_MOTOR_ID = 7;
+    private static final int REAR_LEFT_ANGLE_MOTOR_ID = 8;
+
+    private static final int REAR_RIGHT_ANGLE_ENCODER_MOTOR_ID = 9;
+    private static final int REAR_RIGHT_DRIVE_MOTOR_ID = 10;
+    private static final int REAR_RIGHT_ANGLE_MOTOR_ID = 11;
+
+    private static final WPI_TalonSRX FRONT_LEFT_ANGLE_ENCODER = new WPI_TalonSRX(FRONT_LEFT_ANGLE_ENCODER_MOTOR_ID);
+    private static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(FRONT_LEFT_DRIVE_MOTOR_ID);
+    private static final WPI_TalonFX FRONT_LEFT_ANGLE_MOTOR = new WPI_TalonFX(FRONT_LEFT_ANGLE_MOTOR_ID);
     private static final double FRONT_LEFT_ENCODER_OFFSET = 0;
 
-    private static final WPI_TalonSRX FRONT_RIGHT_ANGLE_ENCODER = new WPI_TalonSRX(3);
-    private static final WPI_TalonFX FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(4);
-    private static final WPI_TalonFX FRONT_RIGHT_ANGLE_MOTOR = new WPI_TalonFX(5);
+    private static final WPI_TalonSRX FRONT_RIGHT_ANGLE_ENCODER = new WPI_TalonSRX(FRONT_RIGHT_ANGLE_ENCODER_MOTOR_ID);
+    private static final WPI_TalonFX FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(FRONT_RIGHT_DRIVE_MOTOR_ID);
+    private static final WPI_TalonFX FRONT_RIGHT_ANGLE_MOTOR = new WPI_TalonFX(FRONT_RIGHT_ANGLE_MOTOR_ID);
     private static final double FRONT_RIGHT_ENCODER_OFFSET = 0;
 
-    private static final WPI_TalonSRX REAR_LEFT_ANGLE_ENCODER = new WPI_TalonSRX(6);
-    private static final WPI_TalonFX REAR_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
-    private static final WPI_TalonFX REAR_LEFT_ANGLE_MOTOR = new WPI_TalonFX(8);
+    private static final WPI_TalonSRX REAR_LEFT_ANGLE_ENCODER = new WPI_TalonSRX(REAR_LEFT_ANGLE_ENCODER_MOTOR_ID);
+    private static final WPI_TalonFX REAR_LEFT_DRIVE_MOTOR = new WPI_TalonFX(REAR_LEFT_DRIVE_MOTOR_ID);
+    private static final WPI_TalonFX REAR_LEFT_ANGLE_MOTOR = new WPI_TalonFX(REAR_LEFT_ANGLE_MOTOR_ID);
     private static final double RIGHT_LEFT_ENCODER_OFFSET = 0;
 
-    private static final WPI_TalonSRX REAR_RIGHT_ANGLE_ENCODER = new WPI_TalonSRX(9);
-    private static final WPI_TalonFX REAR_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(10);
-    private static final WPI_TalonFX REAR_RIGHT_ANGLE_MOTOR = new WPI_TalonFX(11);
+    private static final WPI_TalonSRX REAR_RIGHT_ANGLE_ENCODER = new WPI_TalonSRX(REAR_RIGHT_ANGLE_ENCODER_MOTOR_ID);
+    private static final WPI_TalonFX REAR_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(REAR_RIGHT_DRIVE_MOTOR_ID);
+    private static final WPI_TalonFX REAR_RIGHT_ANGLE_MOTOR = new WPI_TalonFX(REAR_RIGHT_ANGLE_MOTOR_ID);
     private static final double REAR_RIGHT_ENCODER_OFFSET = 0;
 
     private static final int FRONT_LEFT_ID = 0;

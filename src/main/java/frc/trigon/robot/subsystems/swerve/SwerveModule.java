@@ -56,10 +56,8 @@ public class SwerveModule {
         double rawCurrentAngle = getDegrees() % 360;
         double rawTargetAngle = targetAngle % 360;
         double difference = rawTargetAngle - rawCurrentAngle;
-
         if(difference < -180)
             difference += 360;
-
         else if(difference > 180)
             difference -= 360;
 

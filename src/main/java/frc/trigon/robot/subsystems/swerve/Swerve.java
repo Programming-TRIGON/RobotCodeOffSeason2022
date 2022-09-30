@@ -7,8 +7,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
-
     public boolean isOpenLoop;
+
     private final static Swerve INSTANCE = new Swerve();
 
     public Swerve() {
@@ -51,7 +51,7 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
-     * determines if it uses PID or percent output for the drive motor.
+     * Determines whether to use PID or percent output for the drive motor.
      *
      * @param isOpenLoop is open loop or cloesd
      */
@@ -60,28 +60,28 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
-     * Stops the swerve's motors from moving.
+     * Stops the swerve's motors.
      */
     public void stop() {
         for(int id = 0; id < SwerveConstants.SWERVE_MODULES.length; id++)
             SwerveConstants.SWERVE_MODULES[id].stop();
     }
 
-    private void setTargetModuleStates(SwerveModuleState[] swerveModuleStates, boolean isOpenLoop) {
+    private void setTargetModuleStates(SwerveModuleState[] swerveModuleStates) {
         for(int i = 0; i < 4; i++)
             SwerveConstants.SWERVE_MODULES[i].setTargetState(swerveModuleStates[i], isOpenLoop);
     }
 
     private void selfRelativeDrive(ChassisSpeeds chassisSpeeds) {
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-        setTargetModuleStates(swerveModuleStates, isOpenLoop);
+        setTargetModuleStates(swerveModuleStates);
     }
 
     void zeroHeading() {
-        SwerveConstants.gyro.setYaw(0);
+        setHeading(0);
     }
 
-    private Rotation2d getHeading() {
+    Rotation2d getHeading() {
         return Rotation2d.fromDegrees(SwerveConstants.gyro.getYaw());
     }
 
