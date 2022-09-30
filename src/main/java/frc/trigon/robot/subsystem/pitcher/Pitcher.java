@@ -15,10 +15,15 @@ public class Pitcher extends SubsystemBase {
 
     public void setTargetAngle(double degrees) {
         double ticks = Conversions.degreesToMagTicks(degrees);
-        motor.set(ControlMode.Position, ticks);
+        motor.set(ControlMode.Position, ticks + PitcherConstants.MIN_TICKS);
     }
 
-    public double getDegrees() {
+    public double getError() {
+        double error = motor.getClosedLoopError();
+        return Conversions.magTicksToDegrees(error);
+    }
+
+    public double getAngle() {
         double ticks = motor.getSelectedSensorPosition() - PitcherConstants.MIN_TICKS;
         double motorAngle = Conversions.magTicksToDegrees(ticks);
         return Conversions.motorPositionToSystemPosition(motorAngle, PitcherConstants.GEAR_RATIO);

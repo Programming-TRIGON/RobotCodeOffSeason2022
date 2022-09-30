@@ -4,7 +4,9 @@ import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class PitcherConstants {
-    static final int MIN_TICKS = -3284, MAX_TICKS = -1563;
+    static final int
+            MIN_TICKS = -3284,
+            MAX_TICKS = -1563;
     static final double GEAR_RATIO = 10;
     private static final int MOTOR_ID = 3;
     final static WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
