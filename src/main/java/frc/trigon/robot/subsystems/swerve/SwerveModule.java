@@ -73,7 +73,7 @@ public class SwerveModule {
 
     public void setTargetAngle(double targetAngle) {
         double targetAnglePosition = Conversions.degreesToMagTicks(targetAngle);
-        angleMotor.set(ControlMode.Position, targetAnglePosition);
+        angleMotor.set(ControlMode.Position, targetAnglePosition + encoderOffset);
     }
 
     public void setTargetDriveVelocity(boolean isOpenLoop, double velocity) {
@@ -107,12 +107,11 @@ public class SwerveModule {
     }
 
     private Rotation2d getModuleAngle() {
-        double getAngleDegrees = Conversions.magTicksToDegrees(angleMotor.getSelectedSensorPosition());
-        return Rotation2d.fromDegrees(getAngleDegrees);
+        return Rotation2d.fromDegrees(getDegrees());
     }
 
     private double getDegrees() {
-        double getDegreesTicks = angleMotor.getSelectedSensorPosition();
+        double getDegreesTicks = angleMotor.getSelectedSensorPosition() - encoderOffset;
         return Conversions.magTicksToDegrees(getDegreesTicks);
     }
 
