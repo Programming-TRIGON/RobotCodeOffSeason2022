@@ -32,8 +32,7 @@ public class Loader extends SubsystemBase {
      */
 
     public void setState(LoaderState state) {
-        double voltageCompensationSaturation = LoaderConstants.VOLTAGE_COMPENSATION_SATURATION;
-        motor.set(Conversions.voltageToCompensatedPower(state.voltage, voltageCompensationSaturation));
+        motor.set(Conversions.voltageToCompensatedPower(state.voltage, LoaderConstants.VOLTAGE_COMPENSATION_SATURATION));
         currentState = state;
     }
 }
