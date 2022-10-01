@@ -2,6 +2,7 @@ package frc.trigon.robot.subsystems.swerve;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,7 +17,7 @@ public class SwerveModule implements Sendable {
     private final WPI_TalonFX driveMotor;
 
     private final double encoderOffset;
-    private SwerveModuleState targetState;
+    private SwerveModuleState targetState = new SwerveModuleState();
 
     public SwerveModule(SwerveModuleConstants moduleConstants) {
         this.angleEncoder = moduleConstants.angleEncoder;
@@ -31,8 +32,8 @@ public class SwerveModule implements Sendable {
         this.targetState = targetState;
         optimizeTargetState();
         setTargetAngleAndVelocity(
-                targetState.speedMetersPerSecond,
                 targetState.angle.getDegrees(),
+                targetState.speedMetersPerSecond,
                 isOpenLoop
         );
     }
@@ -46,9 +47,14 @@ public class SwerveModule implements Sendable {
         double flipped = scope(180 + targetState.angle.getDegrees());
         double scopeDiff = Math.abs(scoped - getDegrees());
         double flippedDiff = Math.abs(flipped - getDegrees());
+
         if(scopeDiff < flippedDiff)
             targetState.angle = Rotation2d.fromDegrees(scoped);
         else {
+            if(driveMotor.getDeviceID() == 1) {
+                System.out.println(
+                        "curr: " + getDegrees() + "\t scoped: " + scoped + "\t flipped" + flipped + "\t scopeDiff" + scopeDiff + "\t flippedDiff" + flippedDiff + "\t time: " + System.currentTimeMillis());
+            }
             targetState.angle = Rotation2d.fromDegrees(flipped);
             targetState.speedMetersPerSecond *= -1;
         }
@@ -62,6 +68,11 @@ public class SwerveModule implements Sendable {
             difference += 360;
         else if(difference > 180)
             difference -= 360;
+        if(driveMotor.getDeviceID() == 1) {
+            //            System.out.println(
+            //                    "rca: " + rawCurrentAngle + "\t rta: " + rawTargetAngle + "\t diff: " + difference
+            //                    + "\t res: " + (difference + getDegrees()));
+        }
 
         return difference + getDegrees();
     }
@@ -116,6 +127,8 @@ public class SwerveModule implements Sendable {
     }
 
     private void configRemoteSensor() {
+        angleEncoder.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute.toFeedbackDevice());
+        angleEncoder.configFeedbackNotContinuous(false, 0);
         angleMotor.configRemoteFeedbackFilter(angleEncoder, 0);
         angleMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
     }
@@ -131,6 +144,7 @@ public class SwerveModule implements Sendable {
         builder.addDoubleProperty("velocity", this::getCurrentVelocity, null);
         builder.addDoubleProperty("targetAngle", () -> targetState.angle.getDegrees(), this::setTargetAngle);
         builder.addDoubleProperty("targetVelocity", () -> targetState.speedMetersPerSecond, this::setTargetVelocity);
+        builder.addDoubleProperty("rawAngleTicks", angleMotor::getSelectedSensorPosition, null);
     }
 }
 

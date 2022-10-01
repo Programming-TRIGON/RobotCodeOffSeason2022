@@ -12,7 +12,7 @@ public class Swerve extends SubsystemBase {
 
     private final static Swerve INSTANCE = new Swerve();
 
-    public Swerve() {
+    private Swerve() {
         zeroHeading();
         putOnDashboard();
     }
@@ -33,6 +33,7 @@ public class Swerve extends SubsystemBase {
                 translation.getY(),
                 rotation.getRadians()
         );
+
         selfRelativeDrive(chassisSpeeds);
     }
 
@@ -49,10 +50,19 @@ public class Swerve extends SubsystemBase {
                 rotation.getRadians(),
                 getHeading()
         );
+
         selfRelativeDrive(chassisSpeeds);
     }
 
     private void selfRelativeDrive(ChassisSpeeds chassisSpeeds) {
+        if(isStill(chassisSpeeds)) {
+            SmartDashboard.putBoolean("still", true);
+            stop();
+            return;
+        }
+        SmartDashboard.putBoolean("still", false);
+
+        SmartDashboard.putNumber("xspeed", chassisSpeeds.vxMetersPerSecond);
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);
     }
@@ -62,8 +72,8 @@ public class Swerve extends SubsystemBase {
      *
      * @param isOpenLoop is open loop or cloesd
      */
-    public void openLoop(boolean isOpenLoop) {
-        this.isOpenLoop = isOpenLoop;
+    public void setOpenLoop(boolean openLoop) {
+        this.isOpenLoop = openLoop;
     }
 
     /**
@@ -91,10 +101,17 @@ public class Swerve extends SubsystemBase {
         SwerveConstants.gyro.setYaw(yaw);
     }
 
+    private boolean isStill(ChassisSpeeds chassisSpeeds) {
+        return
+                Math.abs(chassisSpeeds.vxMetersPerSecond) < SwerveConstants.DEAD_BAND_DRIVE_DEADBAND &&
+                        Math.abs(chassisSpeeds.vyMetersPerSecond) < SwerveConstants.DEAD_BAND_DRIVE_DEADBAND &&
+                        Math.abs(chassisSpeeds.omegaRadiansPerSecond) < SwerveConstants.DEAD_BAND_DRIVE_DEADBAND;
+    }
+
     private void putOnDashboard() {
         for(int i = 0; i < SwerveConstants.SWERVE_MODULES.length; i++) {
             SmartDashboard.putData(
-                    "Swerve/" + SwerveConstants.SwerveModules.fromId(i).name(),
+                    "Swerve/" + SwerveModuleConstants.SwerveModules.fromId(i).name(),
                     SwerveConstants.SWERVE_MODULES[i]
             );
         }
