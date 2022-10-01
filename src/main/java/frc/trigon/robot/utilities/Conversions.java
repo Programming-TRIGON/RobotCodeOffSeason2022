@@ -8,7 +8,7 @@ public class Conversions {
         * The voltage compensation saturation will determine what voltage represents 100% output.
         *
         * The compensated power is the power resulting from turning the voltage off and on without stopping.
-        * It's basically the voltage divided by the saturation of the compensation.
+        * It's the voltage divided by the saturation of the compensation.
         *
         * @param voltage the voltage
         * @param voltageCompensationSaturation the saturation of the compensation
