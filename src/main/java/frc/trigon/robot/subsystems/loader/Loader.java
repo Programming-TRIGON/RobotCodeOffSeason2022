@@ -28,7 +28,7 @@ public class Loader extends SubsystemBase {
     /**
      * Sets the state of the loader.
      *
-     * @param state the wanted state for the loader
+     * @param state the wanted state for the loader out of the three possible states: LOAD, EJECT and OFF.
      */
 
     public void setState(LoaderState state) {
