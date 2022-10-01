@@ -15,6 +15,6 @@ public class Conversions {
         * @return the compensated power
         */
         public static double voltageToCompensatedPower(double voltage, double voltageCompensationSaturation) {
-        return voltage/voltageCompensationSaturation;
+            return voltage/voltageCompensationSaturation;
     }
 }
