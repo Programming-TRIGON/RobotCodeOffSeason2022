@@ -4,8 +4,11 @@ import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class PitcherConstants {
-    private static final int MOTOR_ID = 3;
     static final double GEAR_RATIO = 10;
+    static final int
+            MIN_TICKS = -3284,
+            MAX_TICKS = -1563;
+    private static final int MOTOR_ID = 3;
     final static WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
     private static final double
             P = 3,
@@ -16,9 +19,6 @@ public class PitcherConstants {
     private static final boolean
             INVERTED = true,
             SENSOR_PHASE = false;
-    static final int
-            MIN_TICKS = -3284,
-            MAX_TICKS = -1563;
 
     static {
         MOTOR.configFactoryDefault();
