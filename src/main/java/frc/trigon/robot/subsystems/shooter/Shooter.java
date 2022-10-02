@@ -25,13 +25,13 @@ public class Shooter extends SubsystemBase {
     }
     /**
      *
-     * @return the target velocity
+     * @return the target velocity as RPM
      */
     private double getTargetVelocity() {
         if(!masterMotor.getControlMode().equals(ControlMode.Velocity)) {
             return 0;
         }
-        return masterMotor.getClosedLoopTarget();
+        return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopTarget());
     }
     /**
      *
