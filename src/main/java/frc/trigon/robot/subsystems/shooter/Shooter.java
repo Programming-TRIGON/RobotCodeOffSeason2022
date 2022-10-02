@@ -14,7 +14,7 @@ import java.util.function.DoubleSupplier;
 public class Shooter extends SubsystemBase {
     private final static Shooter INSTANCE = new Shooter();
 
-    private WPI_TalonFX masterMotor = ShooterConstants.MASTER_MOTOR;
+    private final WPI_TalonFX masterMotor = ShooterConstants.MASTER_MOTOR;
     private int ballCount = 0;
 
     private Shooter() {
@@ -35,12 +35,11 @@ public class Shooter extends SubsystemBase {
     }
     /**
      *
-     * @param velocity the target velocity
+     * @param velocity target motor velocity
      */
     private void setTargetVelocity(double velocity) {
         masterMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, ShooterConstants.S);
     }
-
     /**
      * Stops the motors
      */
@@ -48,21 +47,18 @@ public class Shooter extends SubsystemBase {
     {
         masterMotor.stopMotor();
     }
-
     /**
      * @return the current velocity in RPM
      */
     private double getCurrentVelocity() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getSelectedSensorVelocity());
     }
-
     /**
      * @return the number of balls that have been shot
      */
     private int getBallCount() {
         return ballCount;
     }
-
     /**
      * Resets the ball count
      */
