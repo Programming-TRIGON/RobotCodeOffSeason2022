@@ -67,18 +67,18 @@ public class Shooter extends SubsystemBase {
     }
     /**
      *
-     * @return the current error from the target velocity
+     * @return the current closed loop error value as RPM
      */
     private double getError() {
-        return masterMotor.getClosedLoopError();
+        return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopError());
     }
     /**
      *
-     * @param desiredVelocity the target velocity.
-     * @return an execute command that get the motors to the target velocity
+     * @param targetVelocity the target velocity.
+     * @return an execute command that get the shooter to the targetVelocity
      */
-    public Command getPrimeShooterCommand(DoubleSupplier desiredVelocity) {
-        return new RunCommand(() -> setTargetVelocity(desiredVelocity.getAsDouble()), this)
+    public Command getPrimeShooterCommand(DoubleSupplier targetVelocity) {
+        return new RunCommand(() -> setTargetVelocity(targetVelocity.getAsDouble()), this)
                 .andThen(this::stop);
     }
 
