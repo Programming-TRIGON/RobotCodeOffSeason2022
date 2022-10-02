@@ -23,8 +23,8 @@ public class Shooter extends SubsystemBase {
     public static Shooter getInstance() {
         return INSTANCE;
     }
+
     /**
-     *
      * @return the target velocity as RPM
      */
     private double getTargetVelocity() {
@@ -33,47 +33,50 @@ public class Shooter extends SubsystemBase {
         }
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopTarget());
     }
+
     /**
-     *
      * @param velocity target motor velocity
      */
     private void setTargetVelocity(double velocity) {
         masterMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, ShooterConstants.S);
     }
+
     /**
      * Stops the motors
      */
-    private void stop()
-    {
+    private void stop() {
         masterMotor.stopMotor();
     }
+
     /**
      * @return the current velocity in RPM
      */
     private double getCurrentVelocity() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getSelectedSensorVelocity());
     }
+
     /**
      * @return the number of balls that have been shot
      */
     private int getBallCount() {
         return ballCount;
     }
+
     /**
      * Resets the ball count
      */
     private void resetBallCount() {
         ballCount = 0;
     }
+
     /**
-     *
      * @return the current closed loop error value as RPM
      */
     private double getError() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopError());
     }
+
     /**
-     *
      * @param targetVelocity the target velocity.
      * @return an execute command that get the shooter to the targetVelocity
      */
@@ -81,6 +84,5 @@ public class Shooter extends SubsystemBase {
         return new RunCommand(() -> setTargetVelocity(targetVelocity.getAsDouble()), this)
                 .andThen(this::stop);
     }
-
 }
 
