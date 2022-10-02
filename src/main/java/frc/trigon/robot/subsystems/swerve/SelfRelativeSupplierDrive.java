@@ -9,30 +9,35 @@ import java.util.function.DoubleSupplier;
 public class SelfRelativeSupplierDrive extends CommandBase {
     private final DoubleSupplier xPower;
     private final DoubleSupplier yPower;
-    private final DoubleSupplier zPower;
-    private final Swerve swerve;
+    private final DoubleSupplier rotPower;
 
+    /**
+     * drives the swerve relative to the field.
+     *
+     * @param xPower   the forwards velocity in meters per second.
+     * @param yPower   the leftwards velocity in meters per second.
+     * @param rotPower the rotational velocity in radians per second.
+     */
     public SelfRelativeSupplierDrive(
-            Swerve swerve, DoubleSupplier xPower, DoubleSupplier yPower, DoubleSupplier zPower) {
-        this.swerve = swerve;
+            DoubleSupplier xPower, DoubleSupplier yPower, DoubleSupplier rotPower) {
         this.xPower = xPower;
         this.yPower = yPower;
-        this.zPower = zPower;
+        this.rotPower = rotPower;
 
-        addRequirements(swerve);
+        addRequirements(Swerve.getInstance());
     }
 
     @Override
     public void execute() {
-        swerve.selfRelativeDrive(
+        Swerve.getInstance().selfRelativeDrive(
                 new Translation2d(
                         xPower.getAsDouble() * SwerveConstants.MAX_SPEED_METERS_PER_SECOND,
                         yPower.getAsDouble() * SwerveConstants.MAX_SPEED_METERS_PER_SECOND),
-                new Rotation2d(zPower.getAsDouble() * SwerveConstants.MAX_SPEED_METERS_PER_SECOND));
+                new Rotation2d(rotPower.getAsDouble() * SwerveConstants.MAX_SPEED_METERS_PER_SECOND));
     }
 
     @Override
     public void end(boolean interrupted) {
-        swerve.stop();
+        Swerve.getInstance().stop();
     }
 }

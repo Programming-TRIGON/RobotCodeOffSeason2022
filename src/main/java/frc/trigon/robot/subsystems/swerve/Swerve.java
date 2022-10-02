@@ -60,9 +60,7 @@ public class Swerve extends SubsystemBase {
             stop();
             return;
         }
-        SmartDashboard.putBoolean("still", false);
 
-        SmartDashboard.putNumber("xspeed", chassisSpeeds.vxMetersPerSecond);
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);
     }

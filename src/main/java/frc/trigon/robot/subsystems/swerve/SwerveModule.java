@@ -51,10 +51,6 @@ public class SwerveModule implements Sendable {
         if(scopeDiff < flippedDiff)
             targetState.angle = Rotation2d.fromDegrees(scoped);
         else {
-            if(driveMotor.getDeviceID() == 1) {
-                System.out.println(
-                        "curr: " + getDegrees() + "\t scoped: " + scoped + "\t flipped" + flipped + "\t scopeDiff" + scopeDiff + "\t flippedDiff" + flippedDiff + "\t time: " + System.currentTimeMillis());
-            }
             targetState.angle = Rotation2d.fromDegrees(flipped);
             targetState.speedMetersPerSecond *= -1;
         }
@@ -68,11 +64,6 @@ public class SwerveModule implements Sendable {
             difference += 360;
         else if(difference > 180)
             difference -= 360;
-        if(driveMotor.getDeviceID() == 1) {
-            //            System.out.println(
-            //                    "rca: " + rawCurrentAngle + "\t rta: " + rawTargetAngle + "\t diff: " + difference
-            //                    + "\t res: " + (difference + getDegrees()));
-        }
 
         return difference + getDegrees();
     }
@@ -109,9 +100,9 @@ public class SwerveModule implements Sendable {
     }
 
     private double getCurrentVelocity() {
-        double driveMotorVelocity = driveMotor.getSelectedSensorVelocity();
+        double ticksPer100Ms = driveMotor.getSelectedSensorVelocity();
         return Conversions.revolutionsToMeters(
-                Conversions.falconTicksToRevolutions(driveMotorVelocity),
+                Conversions.falconTicksToRevolutions(Conversions.hundredMsToSeconds(ticksPer100Ms)),
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                 SwerveModuleConstants.DRIVE_GEAR_RATIO
         );
@@ -123,7 +114,7 @@ public class SwerveModule implements Sendable {
 
     private double getDegrees() {
         double getDegreesTicks = angleMotor.getSelectedSensorPosition() - encoderOffset;
-        return Conversions.magTicksToDegrees(getDegreesTicks);
+        return Conversions.ticksToDegrees(getDegreesTicks);
     }
 
     private void configRemoteSensor() {

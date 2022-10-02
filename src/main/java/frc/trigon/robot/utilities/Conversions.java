@@ -4,8 +4,8 @@ public class Conversions {
     private static final double MAG_TICKS = 4096;
     private static final double FALCON_TICKS = 2048;
 
-    public static double magTicksToDegrees(double magTicks) {
-        return magTicksToRevolutions(magTicks) * 360;
+    public static double ticksToDegrees(double magTicks) {
+        return ticksToRevolutions(magTicks) * 360;
     }
 
     public static double degreesToMagTicks(double degrees) {
@@ -24,16 +24,16 @@ public class Conversions {
         return revolutions * MAG_TICKS;
     }
 
-    public static double magTicksToRevolutions(double magTicks) {
+    public static double ticksToRevolutions(double magTicks) {
         return magTicks / MAG_TICKS;
     }
 
-    public static double hundredMsToSeconds(double hundredMs ) {
+    public static double hundredMsToSeconds(double hundredMs) {
         return hundredMs * 10;
     }
 
     public static double falconTicksToRevolutions(double ticks) {
-        return hundredMsToSeconds(ticks) / FALCON_TICKS;
+        return ticks / FALCON_TICKS;
     }
 
     public static double motorRevolutionsToSystemRevolutions(double revolutions, double gearRatio) {
@@ -45,15 +45,15 @@ public class Conversions {
     }
 
     /**
-     * @param revolutions the revolutions of the motor per seconds
-     * @param circumference of the wheel
-     * @return returns the meters per seconds
+     * @param revolutions   of the motor per second.
+     * @param circumference of the Scope of the wheel.
+     * @return returns the meters per seconds.
      **/
     public static double revolutionsToMeters(double revolutions, double circumference, double gearRatio) {
         return motorRevolutionsToSystemRevolutions(revolutions, gearRatio) * circumference;
     }
 
-    public static double systemRevolutionsToFalconTicks(Double revolutions, double circumference, double gearRatio) {
+    public static double systemRevolutionsToFalconTicks(double revolutions, double circumference, double gearRatio) {
         return systemRevolutionsToMotorRevolutions(revolutions, gearRatio) / circumference;
     }
 
