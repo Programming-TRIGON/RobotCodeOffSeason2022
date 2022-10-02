@@ -14,7 +14,7 @@ public class Pitcher extends SubsystemBase {
 
     public void setTargetAngle(double degrees) {
         double ticks = Conversions.degreesToMagTicks(degrees);
-        motor.set(Conversions.offsetWrite());
+        motor.set(Conversions.offsetWrite(ticks, PitcherConstants.MIN_TICKS));
     }
 
     public double getError() {
@@ -23,8 +23,8 @@ public class Pitcher extends SubsystemBase {
     }
 
     public double getAngle() {
-        double ticks = motor.getSelectedSensorPosition() - PitcherConstants.MIN_TICKS;
-        double motorAngle = Conversions.magTicksToDegrees(ticks);
+        double offsettedRead = Conversions.offsetRead(motor.getSelectedSensorPosition(), PitcherConstants.MIN_TICKS);
+        double motorAngle = Conversions.magTicksToDegrees(offsettedRead);
         return Conversions.motorPositionToSystemPosition(motorAngle, PitcherConstants.GEAR_RATIO);
     }
 }

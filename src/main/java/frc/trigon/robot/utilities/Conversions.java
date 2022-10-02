@@ -24,7 +24,15 @@ public class Conversions {
         return position / gearRatio;
     }
 
-    public static double offsetWrite() {
+    /**
+     * The offset will be added to the target position,
+     * in order to compensate for the fact that the position is not 0 ware we want it to be.
+     *
+     * @param position
+     * @param offset
+     * @return the offsetted position
+     */
+    public static double offsetWrite(double position, double offset) {
         return position + offset;
     }
 
