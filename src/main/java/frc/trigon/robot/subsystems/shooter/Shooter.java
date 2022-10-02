@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * @return the target velocity as RPM
+     * @return the target velocity in RPM
      */
     private double getTargetVelocity() {
         if(!masterMotor.getControlMode().equals(ControlMode.Velocity)) {
@@ -34,21 +34,21 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * @param velocity target motor velocity
+     * @param velocity target shooter velocity
      */
     private void setTargetVelocity(double velocity) {
         masterMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, ShooterConstants.S);
     }
 
     /**
-     * Stops the motors
+     * Stops the shooter
      */
     private void stop() {
         masterMotor.stopMotor();
     }
 
     /**
-     * @return the current velocity in RPM
+     * @return the current velocity of the shooter in RPM
      */
     private double getCurrentVelocity() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getSelectedSensorVelocity());
@@ -69,15 +69,15 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * @return the current closed loop error value as RPM
+     * @return the current closed loop error value in RPM
      */
     private double getError() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopError());
     }
 
     /**
-     * @param targetVelocity the target velocity.
-     * @return an execute command that get the shooter to the targetVelocity
+     * @param targetVelocity the target velocity of the shooter
+     * @return a command that sets the velocity of the shooter according to the given supplier
      */
     public Command getPrimeShooterCommand(DoubleSupplier targetVelocity) {
         return new RunCommand(() -> setTargetVelocity(targetVelocity.getAsDouble()), this)

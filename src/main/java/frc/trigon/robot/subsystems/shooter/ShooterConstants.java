@@ -6,11 +6,13 @@ public class ShooterConstants {
     private static final int
             LEFT_MOTOR_ID = 3,
             RIGHT_MOTOR_ID = 4;
-
+    private static final WPI_TalonFX
+            LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
+            RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID);
+    static final WPI_TalonFX
+            MASTER_MOTOR = RIGHT_MOTOR;
     private static final boolean INVERTED = false;
-
     private static final double VOLTAGE_SATURATION = 10;
-
     private static final double
             P = 0.12,
             I = 0.00002,
@@ -18,18 +20,12 @@ public class ShooterConstants {
             V = 0.0522,
             MAX_I = 1300000;
     static final double S = 0.03;
-
-    private static final WPI_TalonFX
-            LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
-            RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID);
-
-    static final WPI_TalonFX
-            MASTER_MOTOR = RIGHT_MOTOR;
-
     private static final WPI_TalonFX FOLLOWER_MOTOR =
             LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
 
     static {
+        MASTER_MOTOR.configFactoryDefault();
+        FOLLOWER_MOTOR.configFactoryDefault();
         MASTER_MOTOR.setInverted(INVERTED);
         FOLLOWER_MOTOR.setInverted(!INVERTED);
 
@@ -43,6 +39,6 @@ public class ShooterConstants {
         MASTER_MOTOR.config_kD(0, D);
         MASTER_MOTOR.config_kF(0, V);
 
-        MASTER_MOTOR.configMaxIntegralAccumulator(0,MAX_I);
+        MASTER_MOTOR.configMaxIntegralAccumulator(0, MAX_I);
     }
 }
