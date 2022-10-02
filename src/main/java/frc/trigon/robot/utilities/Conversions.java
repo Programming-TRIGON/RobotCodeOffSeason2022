@@ -23,4 +23,12 @@ public class Conversions {
     public static double motorPositionToSystemPosition(double position, double gearRatio) {
         return position / gearRatio;
     }
+
+    public static double offsetWrite() {
+        return position + offset;
+    }
+
+    public static double offsetRead(double position, double offset) {
+        return position - offset;
+    }
 }
