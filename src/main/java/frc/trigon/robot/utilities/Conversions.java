@@ -13,7 +13,7 @@ public class Conversions {
         *
         * @param voltage the voltage of the loader
         * @param voltageCompensationSaturation the saturation of the compensation
-        * @return the compensated power
+        * @return the compensated power resulting from turning the voltage off and on without stopping
         */
         public static double voltageToCompensatedPower(double voltage, double voltageCompensationSaturation) {
             return voltage/voltageCompensationSaturation;
