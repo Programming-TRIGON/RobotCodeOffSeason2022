@@ -49,9 +49,10 @@ public class Conversions {
     }
 
     /**
+     * returns the velocity in meters per second
+     *
      * @param revolutions   to convert
      * @param circumference of the scope of the wheel
-     * @return returns the velocity in meters per second
      */
     public static double revolutionsToMeters(double revolutions, double circumference, double gearRatio) {
         return motorRevolutionsToSystemRevolutions(revolutions, gearRatio) * circumference;

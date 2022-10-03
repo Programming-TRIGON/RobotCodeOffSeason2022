@@ -39,6 +39,6 @@ public class SelfRelativeSupplierDrive extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        Swerve.getInstance().stop();
+        swerve.stop();
     }
 }

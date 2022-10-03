@@ -10,7 +10,7 @@ public class SwerveConstants {
 
     static final double DRIVE_RAMP_RATE = 0.3;
     static final double DEAD_BAND_DRIVE_DEADBAND = 0.1;
-    private static final int PIGEON_ID = 12;
+    private static final int PIGEON_ID = 25;
     public static final Pigeon2 gyro = new Pigeon2(PIGEON_ID);
 
     public static SwerveModule[] SWERVE_MODULES = {
