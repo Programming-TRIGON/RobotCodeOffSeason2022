@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.trigon.robot.subsystems.climber.ClimberConstants.ClimberPosition;
 
@@ -11,7 +12,7 @@ public class Climber extends SubsystemBase {
     private static final WPI_TalonFX
             masterMotor = ClimberConstants.MASTER_MOTOR,
             followerMotor = ClimberConstants.FOLLOWER_MOTOR;
-
+    private static final WPI_Pigeon2 robotPigeon = ClimberConstants.ROBOT_PIGEON;
     private final static Climber INSTANCE = new Climber();
 
     private Climber() {
@@ -38,14 +39,14 @@ public class Climber extends SubsystemBase {
     boolean inTargetPosition() {
         if(!masterMotor.getControlMode().equals(ControlMode.Position))
             return false;
-        return masterMotor.getClosedLoopError() <= ClimberConstants.ALLOWABLE_ERROR;
+        return Math.abs(masterMotor.getClosedLoopError()) <= ClimberConstants.ALLOWABLE_ERROR;
     }
 
     /**
      * @return the current position from -1 (lowest) to 1 (highest)
      */
     double getCurrentPosition() {
-        return masterMotor.getSelectedSensorPosition() / ClimberConstants.maxTicks/*.getAsDouble()*/;
+        return masterMotor.getSelectedSensorPosition() / ClimberConstants.maxTicks;
     }
 
     /**
@@ -93,5 +94,13 @@ public class Climber extends SubsystemBase {
      */
     boolean atBottom() {
         return masterMotor.isRevLimitSwitchClosed() + followerMotor.isRevLimitSwitchClosed() == 2;
+    }
+
+    /**
+     * @return true if the climber is stable, false otherwise
+     */
+    boolean isStable() {
+        return Math.abs(
+                robotPigeon.getPitch() - ClimberConstants.STABLE_PITCH) <= ClimberConstants.ALLOWABLE_PITCH_ERROR;
     }
 }

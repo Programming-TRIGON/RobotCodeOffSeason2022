@@ -4,17 +4,22 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import frc.trigon.robot.utilities.JsonHandler;
 
 import java.util.Objects;
 
 public class ClimberConstants {
-    static final double ALLOWABLE_ERROR = 100;
+    static final double
+            ALLOWABLE_ERROR = 100,
+            ALLOWABLE_PITCH_ERROR = 0.05;
     static final double CLIMBER_CALIBRATION_POWER = 0.3;
+    static final double STABLE_PITCH = 0;
     private static final boolean AUX_INVERTED = false;
     private static final int
             LEFT_MOTOR_ID = 0,
-            RIGHT_MOTOR_ID = 1;
+            RIGHT_MOTOR_ID = 1,
+            PIGEON_ID = 2;
     private static final boolean
             LEFT_MOTOR_INVERTED = false,
             RIGHT_MOTOR_INVERTED = false;
@@ -33,6 +38,7 @@ public class ClimberConstants {
             RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID),
             MASTER_MOTOR = RIGHT_MOTOR,
             FOLLOWER_MOTOR = LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
+    static final WPI_Pigeon2 ROBOT_PIGEON = new WPI_Pigeon2(PIGEON_ID);
 
     static {
         LEFT_MOTOR.configFactoryDefault();
