@@ -3,12 +3,33 @@ package frc.trigon.robot.utilities;
 import edu.wpi.first.math.geometry.Translation2d;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This class is used to calculate the shooting angle and distance for the shooter.
  */
 public class ShootingCalculations {
     private static final ArrayList<Waypoint> waypoints = new ArrayList<>();
+
+    public static Waypoint all(double distance) {
+        Waypoint[] waypointsFromDistance = getWaypointsFromDistance(distance);
+        if(waypointsFromDistance == null) {
+            return null;
+        }
+        double velocity = calculateM(
+                waypointsFromDistance[0].distance,
+                waypointsFromDistance[0].velocity,
+                waypointsFromDistance[1].distance,
+                waypointsFromDistance[1].velocity,
+                distance);
+        double angle = calculateM(
+                waypointsFromDistance[0].distance,
+                waypointsFromDistance[0].angle,
+                waypointsFromDistance[1].distance,
+                waypointsFromDistance[1].angle,
+                distance);
+        return new Waypoint(distance, velocity, angle);
+    }
 
     /**
      * Gets the velocity needed for the shooter to shoot from a distance.
@@ -17,13 +38,7 @@ public class ShootingCalculations {
      * @return the velocity needed for the shooter
      */
     public static double getShootingVelocityFromDistance(double distance) {
-        Waypoint[] waypointsFromDistance = getWaypointsFromDistance(distance);
-        if(waypointsFromDistance == null)
-            return 0;
-        Translation2d
-                firstPoint = new Translation2d(waypointsFromDistance[0].distance, waypointsFromDistance[0].velocity),
-                secondPoint = new Translation2d(waypointsFromDistance[1].distance, waypointsFromDistance[1].velocity);
-        return calculateBetweenTranslations(firstPoint, secondPoint, distance);
+        return Objects.requireNonNullElse(all(distance), new Waypoint(0,0,0)).velocity;
     }
 
     /**
@@ -33,13 +48,7 @@ public class ShootingCalculations {
      * @return the angle needed for the shooter
      */
     public static double getShootingAngleFromDistance(double distance) {
-        Waypoint[] waypointsFromDistance = getWaypointsFromDistance(distance);
-        if(waypointsFromDistance == null)
-            return 0;
-        Translation2d
-                firstPoint = new Translation2d(waypointsFromDistance[0].distance, waypointsFromDistance[0].angle),
-                secondPoint = new Translation2d(waypointsFromDistance[1].distance, waypointsFromDistance[1].angle);
-        return calculateBetweenTranslations(firstPoint, secondPoint, distance);
+        return Objects.requireNonNullElse(all(distance), new Waypoint(0,0,0)).angle;
     }
 
     /**
@@ -79,6 +88,11 @@ public class ShootingCalculations {
         waypoints.add(toAdd);
     }
 
+    public static double calculateM(double x1, double y1, double x2, double y2, double distance){
+        Translation2d firstPoint = new Translation2d(x1, y1);
+        Translation2d secondPoint = new Translation2d(x2, y2);
+        return calculateBetweenTranslations(firstPoint, secondPoint, distance);
+    }
     private static Waypoint[] getWaypointsFromDistance(double distance) {
         Waypoint[] toReturn = new Waypoint[2];
         for(int i = 0; i < waypoints.size(); i++) {
