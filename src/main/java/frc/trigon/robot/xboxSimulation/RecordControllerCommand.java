@@ -8,24 +8,26 @@ import frc.trigon.robot.RobotContainer;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class LogXboxCommand extends CommandBase {
+public class RecordControllerCommand extends CommandBase {
     private final XboxController controller = RobotContainer.driverController;
     private ArrayList<Log> logs;
     private double startTime;
 
-    public LogXboxCommand() {
+    public RecordControllerCommand() {
     }
 
     @Override
     public void initialize() {
         logs = new ArrayList<Log>();
-        startTime=Timer.getFPGATimestamp();
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
     public void execute() {
         logs.add(new Log(controller.getRightX(), controller.getRightY(), controller.getLeftX(), controller.getLeftY(),
-                Timer.getFPGATimestamp()-startTime));
+                controller.getRightTriggerAxis(), controller.getLeftTriggerAxis(), controller.getAButton(),
+                controller.getBButton(), controller.getXButton(), controller.getYButton(), controller.getRightBumper(),
+                controller.getLeftBumper(), Timer.getFPGATimestamp() - startTime));
     }
 
     @Override
