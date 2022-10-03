@@ -74,11 +74,11 @@ public class Swerve extends SubsystemBase {
             SwerveConstants.SWERVE_MODULES[i].setTargetState(swerveModuleStates[i]);
     }
 
-    void zeroHeading() {
+    public void zeroHeading() {
         setHeading(0);
     }
 
-    Rotation2d getHeading() {
+    public Rotation2d getHeading() {
         return Rotation2d.fromDegrees(SwerveConstants.gyro.getYaw());
     }
 
