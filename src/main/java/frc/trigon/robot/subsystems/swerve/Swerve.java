@@ -55,12 +55,6 @@ public class Swerve extends SubsystemBase {
     }
 
     private void selfRelativeDrive(ChassisSpeeds chassisSpeeds) {
-        if(isStill(chassisSpeeds)) {
-            SmartDashboard.putBoolean("still", true);
-            stop();
-            return;
-        }
-
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);
     }
@@ -113,6 +107,7 @@ public class Swerve extends SubsystemBase {
                     SwerveConstants.SWERVE_MODULES[i]
             );
         }
+        SmartDashboard.putData("Swerve", Swerve.getInstance());
     }
 }
 

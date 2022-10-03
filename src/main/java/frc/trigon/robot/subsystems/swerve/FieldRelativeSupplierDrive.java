@@ -10,6 +10,7 @@ public class FieldRelativeSupplierDrive extends CommandBase {
     private final DoubleSupplier xPower;
     private final DoubleSupplier yPower;
     private final DoubleSupplier rotPower;
+    private final Swerve swerve = Swerve.getInstance();
 
     /**
      * Drives the swerve relative to the robot.
@@ -23,16 +24,16 @@ public class FieldRelativeSupplierDrive extends CommandBase {
         this.yPower = yPower;
         this.rotPower = rotPower;
 
-        addRequirements(Swerve.getInstance());
+        addRequirements(swerve);
     }
 
     @Override
     public void execute() {
-        Swerve.getInstance().fieldRelativeDrive(
+        swerve.fieldRelativeDrive(
                 new Translation2d(
                         xPower.getAsDouble() * SwerveConstants.MAX_SPEED_METERS_PER_SECOND,
                         yPower.getAsDouble() * SwerveConstants.MAX_SPEED_METERS_PER_SECOND),
-                new Rotation2d(rotPower.getAsDouble() * SwerveConstants.MAX_SPEED_METERS_PER_SECOND));
+                new Rotation2d(rotPower.getAsDouble() * SwerveConstants.MAX_ROTATIONAL_SPEED_RADIANS_PER_SECOND));
     }
 
     @Override

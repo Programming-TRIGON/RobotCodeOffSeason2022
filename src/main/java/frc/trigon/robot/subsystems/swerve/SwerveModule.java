@@ -39,7 +39,7 @@ public class SwerveModule implements Sendable {
     }
 
     public SwerveModuleState getCurrentState() {
-        return new SwerveModuleState(getCurrentVelocity(), getModuleAngle());
+        return new SwerveModuleState(getCurrentVelocity(), getAngle());
     }
 
     private void optimizeTargetState() {
@@ -91,7 +91,7 @@ public class SwerveModule implements Sendable {
     }
 
     public void setTargetVelocity(double velocity) {
-        double driveMotorVelocity = Conversions.systemRevolutionsToFalconTicks(
+        double driveMotorVelocity = Conversions.systemRevolutionsToTicks(
                 velocity,
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                 SwerveModuleConstants.DRIVE_GEAR_RATIO
@@ -101,14 +101,15 @@ public class SwerveModule implements Sendable {
 
     private double getCurrentVelocity() {
         double ticksPer100Ms = driveMotor.getSelectedSensorVelocity();
+        double rotationPerSecond = Conversions.ticksPer100MsToRotationPerSecond(ticksPer100Ms);
         return Conversions.revolutionsToMeters(
-                Conversions.falconTicksToRevolutions(Conversions.hundredMsToSeconds(ticksPer100Ms)),
+                rotationPerSecond,
                 SwerveModuleConstants.WHEEL_CIRCUMFERENCE_METER,
                 SwerveModuleConstants.DRIVE_GEAR_RATIO
         );
     }
 
-    private Rotation2d getModuleAngle() {
+    private Rotation2d getAngle() {
         return Rotation2d.fromDegrees(getDegrees());
     }
 

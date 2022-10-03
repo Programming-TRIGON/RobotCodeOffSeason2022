@@ -28,12 +28,16 @@ public class Conversions {
         return magTicks / MAG_TICKS;
     }
 
-    public static double hundredMsToSeconds(double hundredMs) {
-        return hundredMs * 10;
+    public static double velocityPerHundredMsToVelocityPerSeconds(double velocityPerHundredMs) {
+        return velocityPerHundredMs * 10;
     }
 
     public static double falconTicksToRevolutions(double ticks) {
         return ticks / FALCON_TICKS;
+    }
+
+    public static double ticksPer100MsToRotationPerSecond(double velocityPerHundredMs) {
+        return falconTicksToRevolutions(velocityPerHundredMsToVelocityPerSeconds(velocityPerHundredMs));
     }
 
     public static double motorRevolutionsToSystemRevolutions(double revolutions, double gearRatio) {
@@ -45,15 +49,15 @@ public class Conversions {
     }
 
     /**
-     * @param revolutions   of the motor per second.
-     * @param circumference of the Scope of the wheel.
-     * @return returns the meters per seconds.
-     **/
+     * @param revolutions   to convert
+     * @param circumference of the scope of the wheel
+     * @return returns the velocity in meters per second
+     */
     public static double revolutionsToMeters(double revolutions, double circumference, double gearRatio) {
         return motorRevolutionsToSystemRevolutions(revolutions, gearRatio) * circumference;
     }
 
-    public static double systemRevolutionsToFalconTicks(double revolutions, double circumference, double gearRatio) {
+    public static double systemRevolutionsToTicks(double revolutions, double circumference, double gearRatio) {
         return systemRevolutionsToMotorRevolutions(revolutions, gearRatio) / circumference;
     }
 
