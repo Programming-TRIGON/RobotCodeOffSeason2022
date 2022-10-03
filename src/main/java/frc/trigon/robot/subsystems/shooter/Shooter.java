@@ -37,7 +37,9 @@ public class Shooter extends SubsystemBase {
      * @param velocity target shooter velocity
      */
     private void setTargetVelocity(double velocity) {
-        masterMotor.set(ControlMode.Velocity, Conversions.RpmToFalconTicksPer100Ms(velocity), DemandType.ArbitraryFeedForward, ShooterConstants.S);
+        masterMotor.set(
+                ControlMode.Velocity, Conversions.RpmToFalconTicksPer100Ms(velocity), DemandType.ArbitraryFeedForward,
+                ShooterConstants.S);
     }
 
     /**

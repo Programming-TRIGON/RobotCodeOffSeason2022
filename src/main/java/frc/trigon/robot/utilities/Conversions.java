@@ -17,16 +17,16 @@ public class Conversions {
     public static double falconTicksPer100MsToRpm(double ticksPer100Ms) {
         return velocityPer100MsToMin(ticksPer100Ms) / FALCON_TICKS;
     }
-    public static double velocityPerSecTo100Ms(double velocity)
-    {
+
+    public static double velocityPerSecTo100Ms(double velocity) {
         return velocity / HUNDRED_MS_PER_SEC;
     }
-    public static double velocityPerMinToSec(double velocity)
-    {
+
+    public static double velocityPerMinToSec(double velocity) {
         return velocityPerSecTo100Ms(velocity) / SEC_PER_MIN;
     }
-    public static double RpmToFalconTicksPer100Ms(double rpm)
-    {
+
+    public static double RpmToFalconTicksPer100Ms(double rpm) {
         return velocityPerMinToSec(rpm) * 2048;
     }
 }
