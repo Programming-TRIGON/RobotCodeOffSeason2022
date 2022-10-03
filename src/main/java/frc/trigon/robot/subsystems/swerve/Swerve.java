@@ -53,9 +53,11 @@ public class Swerve extends SubsystemBase {
     }
 
     private void selfRelativeDrive(ChassisSpeeds chassisSpeeds) {
-        SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-        if(isStill(chassisSpeeds))
+        if(isStill(chassisSpeeds)) {
             stop();
+            return;
+        }
+        SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);
     }
 
