@@ -23,7 +23,7 @@ public class Climber extends SubsystemBase {
     }
 
     /**
-     * Sets the target position for the climber.
+     * Sets the target position for the climber's encoder.
      *
      * @param position the target position
      */
