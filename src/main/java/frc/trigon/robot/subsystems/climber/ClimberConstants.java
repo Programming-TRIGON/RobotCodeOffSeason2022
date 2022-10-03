@@ -4,6 +4,9 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import frc.trigon.robot.utilities.JsonHandler;
+
+import java.util.Objects;
 
 public class ClimberConstants {
     static final double ALLOWABLE_ERROR = 100;
@@ -22,9 +25,9 @@ public class ClimberConstants {
             AUX_P = 1,
             AUX_I = 1,
             AUX_D = 1;
-    static double maxTicks = 0;
-    // static double maxTicks = Objects.requireNonNull(JsonHandler.parseJsonFileToObject(
-    //        "ClimberConstants.json", LocalClimberConstants.class)).maxTicks;
+    static double maxTicks = Objects.requireNonNullElse(
+            JsonHandler.parseJsonFileToObject("ClimberConstants.json", LocalClimberConstants.class),
+            new LocalClimberConstants()).maxTicks;
     static final WPI_TalonFX
             LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
             RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID),

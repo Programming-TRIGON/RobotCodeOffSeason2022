@@ -1,6 +1,7 @@
 package frc.trigon.robot.subsystems.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.trigon.robot.utilities.JsonHandler;
 
 /**
  * This is a command for calibrating the climber encoder.
@@ -30,7 +31,7 @@ public class ClimberEncoderCalibration extends CommandBase {
             ClimberConstants.LocalClimberConstants climberConstants = new ClimberConstants.LocalClimberConstants();
             climberConstants.maxTicks = climber.getSelectedSensorPosition() / 2;
             try {
-                // JsonHandler.saveToJsonFile(climberConstants, "ClimberConstants.json");
+                JsonHandler.parseToJsonAndWrite("ClimberConstants.json", climberConstants);
                 ClimberConstants.maxTicks = climber.getCurrentPosition() / 2;
             } catch(Exception e) {
                 e.printStackTrace();
