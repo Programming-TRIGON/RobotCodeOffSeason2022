@@ -8,7 +8,7 @@ public class PitcherConstants {
     static final int
             MIN_TICKS = -3284,
             MAX_TICKS = -1563;
-    private static final int MOTOR_ID = 3;
+    private static final int MOTOR_ID = 9;
     final static WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
     private static final double
             P = 3,

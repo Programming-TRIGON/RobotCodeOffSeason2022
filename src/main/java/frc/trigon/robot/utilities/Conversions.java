@@ -24,6 +24,11 @@ public class Conversions {
         return position / gearRatio;
     }
 
+    public static double systemPositionToMotorPosition(double position, double gearRatio)
+    {
+        return position * gearRatio;
+    }
+
     /**
      * The offset will be added to the target position,
      * in order to compensate for the fact that the position is not 0 ware we want it to be.

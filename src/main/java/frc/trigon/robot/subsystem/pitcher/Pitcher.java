@@ -1,5 +1,6 @@
 package frc.trigon.robot.subsystem.pitcher;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -17,8 +18,9 @@ public class Pitcher extends SubsystemBase {
     }
 
     public void setTargetAngle(double degrees) {
-        double ticks = Conversions.degreesToMagTicks(degrees);
-        motor.set(Conversions.offsetWrite(ticks, PitcherConstants.MIN_TICKS));
+        double motorPosition = Conversions.systemPositionToMotorPosition(degrees, PitcherConstants.GEAR_RATIO);
+        double ticks = Conversions.degreesToMagTicks(motorPosition);
+        motor.set(ControlMode.Position, Conversions.offsetWrite(ticks, PitcherConstants.MIN_TICKS));
     }
 
     public double getError() {
