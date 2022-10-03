@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
-    public boolean isOpenLoop;
 
     private final static Swerve INSTANCE = new Swerve();
 
@@ -60,15 +59,6 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
-     * Determines whether to use PID or percent output for the drive motor.
-     *
-     * @param isOpenLoop is open loop or cloesd
-     */
-    public void setOpenLoop(boolean openLoop) {
-        this.isOpenLoop = openLoop;
-    }
-
-    /**
      * Stops the swerve's motors.
      */
     public void stop() {
@@ -78,7 +68,7 @@ public class Swerve extends SubsystemBase {
 
     private void setTargetModuleStates(SwerveModuleState[] swerveModuleStates) {
         for(int i = 0; i < 4; i++)
-            SwerveConstants.SWERVE_MODULES[i].setTargetState(swerveModuleStates[i], isOpenLoop);
+            SwerveConstants.SWERVE_MODULES[i].setTargetState(swerveModuleStates[i]);
     }
 
     void zeroHeading() {

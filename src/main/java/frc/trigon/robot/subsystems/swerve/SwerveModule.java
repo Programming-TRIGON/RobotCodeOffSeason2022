@@ -28,13 +28,12 @@ public class SwerveModule implements Sendable {
         configRemoteSensor();
     }
 
-    public void setTargetState(SwerveModuleState targetState, boolean isOpenLoop) {
+    public void setTargetState(SwerveModuleState targetState) {
         this.targetState = targetState;
         optimizeTargetState();
         setTargetAngleAndVelocity(
                 targetState.angle.getDegrees(),
-                targetState.speedMetersPerSecond,
-                isOpenLoop
+                targetState.speedMetersPerSecond
         );
     }
 
@@ -68,26 +67,14 @@ public class SwerveModule implements Sendable {
         return difference + getDegrees();
     }
 
-    public void setTargetAngleAndVelocity(double targetAngle, double velocity, boolean isOpenLoop) {
+    public void setTargetAngleAndVelocity(double targetAngle, double velocity) {
         setTargetAngle(targetAngle);
-        setTargetVelocity(isOpenLoop, velocity);
+        setTargetVelocity(velocity);
     }
 
     public void setTargetAngle(double targetAngle) {
         double targetAnglePosition = Conversions.degreesToMagTicks(targetAngle);
         angleMotor.set(ControlMode.Position, targetAnglePosition + encoderOffset);
-    }
-
-    public void setTargetVelocity(boolean isOpenLoop, double velocity) {
-        if(isOpenLoop)
-            setDrivePower(velocity);
-        else
-            setTargetVelocity(velocity);
-    }
-
-    public void setDrivePower(double power) {
-        double targetPower = power / SwerveConstants.MAX_SPEED_METERS_PER_SECOND;
-        driveMotor.set(ControlMode.PercentOutput, targetPower);
     }
 
     public void setTargetVelocity(double velocity) {
