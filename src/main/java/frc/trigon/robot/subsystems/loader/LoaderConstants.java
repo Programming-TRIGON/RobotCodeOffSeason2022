@@ -1,7 +1,6 @@
 package frc.trigon.robot.subsystems.loader;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import frc.trigon.robot.utilities.Conversions;
 
 public class LoaderConstants {
     private static final int MOTOR_ID = 0;
