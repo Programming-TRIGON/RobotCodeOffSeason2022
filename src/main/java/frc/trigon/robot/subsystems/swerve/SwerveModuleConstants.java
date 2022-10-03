@@ -9,8 +9,8 @@ public class SwerveModuleConstants {
     public static final double WHEEL_CIRCUMFERENCE_METER = WHEEL_DIAMETER_METER * Math.PI;
     public static final double DRIVE_GEAR_RATIO = 8.14;
 
-    private static final double SIDE_LENGTH_METERS = 0.5;
-    private static final double DISTANCE_FROM_CENTER_OF_BASE = SIDE_LENGTH_METERS / 2;
+    static final double SIDE_LENGTH_METERS = 0.5;
+    static final double DISTANCE_FROM_CENTER_OF_BASE = SIDE_LENGTH_METERS / 2;
 
     private static final int FRONT_LEFT_ID = 0;
     private static final int FRONT_RIGHT_ID = 1;

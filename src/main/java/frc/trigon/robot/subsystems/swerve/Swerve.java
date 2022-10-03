@@ -107,7 +107,7 @@ public class Swerve extends SubsystemBase {
                     SwerveConstants.SWERVE_MODULES[i]
             );
         }
-        SmartDashboard.putData("Swerve", Swerve.getInstance());
+        SmartDashboard.putData("Swerve", this);
     }
 }
 
