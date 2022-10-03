@@ -28,6 +28,7 @@ public class ShootingCalculations {
                 waypointsFromDistance[1].distance,
                 waypointsFromDistance[1].angle,
                 distance);
+
         return new Waypoint(distance, velocity, angle);
     }
 
@@ -38,7 +39,7 @@ public class ShootingCalculations {
      * @return the velocity needed for the shooter
      */
     public static double getShootingVelocityFromDistance(double distance) {
-        return Objects.requireNonNullElse(all(distance), new Waypoint(0,0,0)).velocity;
+        return Objects.requireNonNullElse(all(distance), new Waypoint(0, 0, 0)).velocity;
     }
 
     /**
@@ -48,7 +49,8 @@ public class ShootingCalculations {
      * @return the angle needed for the shooter
      */
     public static double getShootingAngleFromDistance(double distance) {
-        return Objects.requireNonNullElse(all(distance), new Waypoint(0,0,0)).angle;
+
+        return Objects.requireNonNullElse(all(distance), new Waypoint(0, 0, 0)).angle;
     }
 
     /**
@@ -88,11 +90,6 @@ public class ShootingCalculations {
         waypoints.add(toAdd);
     }
 
-    public static double calculateM(double x1, double y1, double x2, double y2, double distance){
-        Translation2d firstPoint = new Translation2d(x1, y1);
-        Translation2d secondPoint = new Translation2d(x2, y2);
-        return calculateBetweenTranslations(firstPoint, secondPoint, distance);
-    }
     private static Waypoint[] getWaypointsFromDistance(double distance) {
         Waypoint[] toReturn = new Waypoint[2];
         for(int i = 0; i < waypoints.size(); i++) {
@@ -103,6 +100,13 @@ public class ShootingCalculations {
             }
         }
         return null;
+    }
+
+    public static double calculateM(double x1, double y1, double x2, double y2, double distance) {
+        Translation2d
+                firstPoint = new Translation2d(x1, y1),
+                secondPoint = new Translation2d(x2, y2);
+        return calculateBetweenTranslations(firstPoint, secondPoint, distance);
     }
 
     private static class Waypoint {
