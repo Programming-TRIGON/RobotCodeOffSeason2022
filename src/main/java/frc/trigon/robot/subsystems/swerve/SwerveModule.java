@@ -34,6 +34,7 @@ public class SwerveModule implements Sendable {
         setTargetAngleAndVelocity(
                 targetState.angle.getDegrees(),
                 targetState.speedMetersPerSecond
+
         );
     }
 
@@ -69,12 +70,17 @@ public class SwerveModule implements Sendable {
 
     public void setTargetAngleAndVelocity(double targetAngle, double velocity) {
         setTargetAngle(targetAngle);
-        setTargetVelocity(velocity);
+        setDrivePower(velocity);
     }
 
     public void setTargetAngle(double targetAngle) {
         double targetAnglePosition = Conversions.degreesToMagTicks(targetAngle);
         angleMotor.set(ControlMode.Position, targetAnglePosition + encoderOffset);
+    }
+
+    public void setDrivePower(double power) {
+        double targetPower = power / SwerveConstants.MAX_SPEED_METERS_PER_SECOND;
+        driveMotor.set(ControlMode.PercentOutput, targetPower);
     }
 
     public void setTargetVelocity(double velocity) {
