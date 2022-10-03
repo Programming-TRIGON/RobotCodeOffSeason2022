@@ -1,4 +1,4 @@
-package frc.trigon.robot.component;
+package frc.trigon.robot.components;
 
 /**
  * A Limelight with the ability to calculate the distance from the hub.
