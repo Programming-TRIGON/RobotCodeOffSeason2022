@@ -6,15 +6,27 @@ public class Conversions {
             SEC_PER_MIN = 60,
             FALCON_TICKS = 2048;
 
-    public static double hundredMsToSec(double hundredMs) {
-        return hundredMs / HUNDRED_MS_PER_SEC;
+    public static double velocityPerHundred100MsToSec(double velocity) {
+        return velocity * HUNDRED_MS_PER_SEC;
     }
 
-    public static double hundredMsToMin(double hundredMs) {
-        return hundredMsToSec(hundredMs) / SEC_PER_MIN;
+    public static double velocityPer100MsToMin(double velocity) {
+        return velocityPerHundred100MsToSec(velocity) * SEC_PER_MIN;
     }
 
     public static double falconTicksPer100MsToRpm(double ticksPer100Ms) {
-        return hundredMsToMin(ticksPer100Ms) / FALCON_TICKS;
+        return velocityPer100MsToMin(ticksPer100Ms) / FALCON_TICKS;
+    }
+
+    public static double velocityPerSecTo100Ms(double velocity) {
+        return velocity / HUNDRED_MS_PER_SEC;
+    }
+
+    public static double velocityPerMinToSec(double velocity) {
+        return velocityPerSecTo100Ms(velocity) / SEC_PER_MIN;
+    }
+
+    public static double RpmToFalconTicksPer100Ms(double rpm) {
+        return velocityPerMinToSec(rpm) * 2048;
     }
 }
