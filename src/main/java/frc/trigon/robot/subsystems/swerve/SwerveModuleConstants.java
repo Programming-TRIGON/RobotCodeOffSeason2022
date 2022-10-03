@@ -98,22 +98,18 @@ public class SwerveModuleConstants {
         FRONT_LEFT_ANGLE_ENCODER.configFactoryDefault();
         FRONT_LEFT_DRIVE_MOTOR.configFactoryDefault();
         FRONT_LEFT_ANGLE_MOTOR.configFactoryDefault();
-        FRONT_LEFT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
 
         FRONT_RIGHT_ANGLE_ENCODER.configFactoryDefault();
         FRONT_RIGHT_DRIVE_MOTOR.configFactoryDefault();
         FRONT_RIGHT_ANGLE_MOTOR.configFactoryDefault();
-        FRONT_RIGHT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
 
         REAR_LEFT_ANGLE_ENCODER.configFactoryDefault();
         REAR_LEFT_DRIVE_MOTOR.configFactoryDefault();
         REAR_LEFT_ANGLE_MOTOR.configFactoryDefault();
-        FRONT_RIGHT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
 
         REAR_RIGHT_ANGLE_ENCODER.configFactoryDefault();
         REAR_RIGHT_DRIVE_MOTOR.configFactoryDefault();
         REAR_RIGHT_ANGLE_MOTOR.configFactoryDefault();
-        REAR_RIGHT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
 
         FRONT_LEFT_ANGLE_ENCODER.setInverted(FRONT_LEFT_ANGLE_ENCODER_INVERTED);
         FRONT_LEFT_DRIVE_MOTOR.setInverted(FRONT_LEFT_DRIVE_MOTOR_INVERTED);
@@ -130,6 +126,11 @@ public class SwerveModuleConstants {
         REAR_RIGHT_ANGLE_ENCODER.setInverted(REAR_RIGHT_ANGLE_ENCODER_INVERTED);
         REAR_RIGHT_DRIVE_MOTOR.setInverted(REAR_RIGHT_DRIVE_MOTOR_INVERTED);
         REAR_RIGHT_ANGLE_MOTOR.setInverted(REAR_RIGHT_ANGLE_MOTOR_INVERTED);
+
+        FRONT_LEFT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
+        FRONT_RIGHT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
+        FRONT_RIGHT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
+        REAR_RIGHT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
     }
 
     public static double
