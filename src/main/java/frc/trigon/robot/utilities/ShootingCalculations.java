@@ -36,7 +36,7 @@ public class ShootingCalculations {
     /**
      * Gets the velocity needed for the shooter to shoot from a distance.
      *
-     * @param distance The distance from the target
+     * @param distance the distance from the target
      * @return the velocity needed for the shooter
      */
     public static double getShootingVelocityFromDistance(double distance) {
@@ -56,9 +56,9 @@ public class ShootingCalculations {
     /**
      * Calculates the value between two translations.
      *
-     * @param firstPoint  The first point
-     * @param secondPoint The second point
-     * @param pointToKnow The point to know the value of (between the first and second points)
+     * @param firstPoint  the first point
+     * @param secondPoint the second point
+     * @param pointToKnow the point to know the value of (between the first and second points)
      * @return the value between the two points
      */
     public static double calculateBetweenTranslations(
