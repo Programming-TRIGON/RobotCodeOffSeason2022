@@ -18,8 +18,8 @@ public class CollectorConstants {
             COLLECTOR_CURRENT_LIMIT_PEAK_DURATION = 0.8,
             COLLECTOR_CURRENT_LIMIT = 8;
     private static final int
-            OPENER_MOTOR_ID = 0,
-            COLLECTOR_MOTOR_ID = 1;
+            OPENER_MOTOR_ID = 8,
+            COLLECTOR_MOTOR_ID = 18;
     static final WPI_TalonFX
             OPENING_MOTOR = new WPI_TalonFX(OPENER_MOTOR_ID),
             COLLECTION_MOTOR = new WPI_TalonFX(COLLECTOR_MOTOR_ID);

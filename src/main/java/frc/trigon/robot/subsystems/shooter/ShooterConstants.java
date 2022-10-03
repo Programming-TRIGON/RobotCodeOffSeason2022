@@ -4,8 +4,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class ShooterConstants {
     private static final int
-            LEFT_MOTOR_ID = 3,
-            RIGHT_MOTOR_ID = 4;
+            LEFT_MOTOR_ID = 12,
+            RIGHT_MOTOR_ID = 6;
     private static final WPI_TalonFX
             LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
             RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID);
