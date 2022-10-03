@@ -1,4 +1,4 @@
-package frc.trigon.robot.command;
+package frc.trigon.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.trigon.robot.subsystems.collector.Collector;
