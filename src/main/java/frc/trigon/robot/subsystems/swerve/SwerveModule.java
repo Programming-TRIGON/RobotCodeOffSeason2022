@@ -30,7 +30,7 @@ public class SwerveModule implements Sendable {
 
     public void setTargetState(SwerveModuleState targetState) {
         this.targetState = targetState;
-        optimizeTargetState(targetState);
+        optimizeState(targetState);
         setTargetAngleAndVelocity(
                 targetState.angle.getDegrees(),
                 targetState.speedMetersPerSecond
@@ -50,7 +50,7 @@ public class SwerveModule implements Sendable {
      *
      * @param state the desired location wanted
      */
-    private SwerveModuleState optimizeTargetState(SwerveModuleState state) {
+    private SwerveModuleState optimizeState(SwerveModuleState state) {
         double scoped = scope(state.angle.getDegrees());
         double flipped = scope(180 + state.angle.getDegrees());
         double scopeDiff = Math.abs(scoped - getDegrees());
