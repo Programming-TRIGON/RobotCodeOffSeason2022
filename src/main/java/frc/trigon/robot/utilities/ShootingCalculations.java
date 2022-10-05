@@ -16,7 +16,7 @@ public class ShootingCalculations {
      * @return a waypoint with the distance, velocity and angle from the given distance
      */
     public static Waypoint getWaypointFromDistance(double distance) {
-        Waypoint[] waypointsFromDistance = getWaypointsFromDistance(distance);
+        Waypoint[] waypointsFromDistance = getNearstWaypointsFromDistance(distance);
         if(waypointsFromDistance == null) {
             return null;
         }
@@ -79,7 +79,24 @@ public class ShootingCalculations {
         waypoints.add(toAdd);
     }
 
-    private static Waypoint[] getWaypointsFromDistance(double distance) {
+    /**
+     * @return the waypoints list
+     */
+    public static ArrayList<Waypoint> getWaypoints() {
+        return waypoints;
+    }
+
+    /**
+     * Sets the waypoints list.
+     *
+     * @param waypoints the waypoints list
+     */
+    public static void setWaypoints(ArrayList<Waypoint> waypoints) {
+        ShootingCalculations.waypoints.clear();
+        ShootingCalculations.waypoints.addAll(waypoints);
+    }
+
+    private static Waypoint[] getNearstWaypointsFromDistance(double distance) {
         Waypoint[] toReturn = new Waypoint[2];
         for(int i = 0; i < waypoints.size(); i++) {
             if(distance < waypoints.get(i).distance) {
