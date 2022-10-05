@@ -82,7 +82,7 @@ public class Swerve extends SubsystemBase {
         return Rotation2d.fromDegrees(SwerveConstants.gyro.getYaw());
     }
 
-    void setHeading(double yaw) {
+    public void setHeading(double yaw) {
         SwerveConstants.gyro.setYaw(yaw);
     }
 
