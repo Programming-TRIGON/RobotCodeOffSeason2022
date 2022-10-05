@@ -2,13 +2,14 @@ package frc.trigon.robot.utilities;
 
 import edu.wpi.first.math.geometry.Translation2d;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * This class is used to calculate the shooting angle and distance for the shooter.
  */
 public class ShootingCalculations {
-    private static final ArrayList<Waypoint> waypoints = new ArrayList<>();
+    private static final ArrayList<Waypoint> waypoints = getWaypoints();
 
     /**
      * @param distance the distance from the target
@@ -75,6 +76,7 @@ public class ShootingCalculations {
         for(int i = 0; i < waypoints.size(); i++) {
             if(waypoints.get(i).distance < toAdd.distance) {
                 waypoints.add(i, toAdd);
+                saveWaypointsToJson();
                 break;
             }
         }
@@ -84,7 +86,10 @@ public class ShootingCalculations {
      * @return the waypoints list
      */
     public static ArrayList<Waypoint> getWaypoints() {
-        return waypoints;
+        Waypoints waypointsClass = JsonHandler.parseJsonFileToObject("waypoints.json", Waypoints.class);
+        if(waypointsClass == null)
+            waypointsClass = new Waypoints();
+        return waypointsClass.waypoints;
     }
 
     /**
@@ -95,6 +100,7 @@ public class ShootingCalculations {
     public static void setWaypoints(ArrayList<Waypoint> waypoints) {
         ShootingCalculations.waypoints.clear();
         ShootingCalculations.waypoints.addAll(waypoints);
+        saveWaypointsToJson();
     }
 
     private static Waypoint[] getNearstWaypointsFromDistance(double distance) {
@@ -116,6 +122,16 @@ public class ShootingCalculations {
         return toReturn;
     }
 
+    private static void saveWaypointsToJson() {
+        Waypoints waypointsClass = new Waypoints();
+        waypointsClass.waypoints = waypoints;
+        try {
+            JsonHandler.parseToJsonAndWrite("waypoints.json", waypointsClass);
+        } catch(IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private static class Waypoint {
         public double distance, velocity, angle;
 
@@ -124,5 +140,9 @@ public class ShootingCalculations {
             this.velocity = velocity;
             this.angle = angle;
         }
+    }
+
+    public static class Waypoints {
+        public ArrayList<Waypoint> waypoints;
     }
 }
