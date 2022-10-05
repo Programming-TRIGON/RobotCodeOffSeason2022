@@ -41,6 +41,15 @@ public class SwerveModule implements Sendable {
         return new SwerveModuleState(getCurrentVelocity(), getAngle());
     }
 
+    /**
+     * Minimize the change in the heading the desired swerve module state would require
+     * by potentially
+     * reversing the direction the wheel spins. Customized from WPILib's version to
+     * include placing
+     * in appropriate scope for CTRE onboard control.
+     *
+     * @param state the desired location wanted
+     */
     private SwerveModuleState optimizeTargetState(SwerveModuleState state) {
         double scoped = scope(state.angle.getDegrees());
         double flipped = scope(180 + state.angle.getDegrees());
