@@ -28,7 +28,7 @@ public class ClimbToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return climber.inTargetPosition();
+        return climber.inTargetPosition() && climber.isStable();
     }
 
     @Override
