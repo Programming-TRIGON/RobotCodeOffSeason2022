@@ -3,7 +3,6 @@ package frc.trigon.robot.utilities;
 import edu.wpi.first.math.geometry.Translation2d;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * This class is used to calculate the shooting angle and distance for the shooter.
@@ -17,9 +16,6 @@ public class ShootingCalculations {
      */
     public static Waypoint getWaypointFromDistance(double distance) {
         Waypoint[] waypointsFromDistance = getNearstWaypointsFromDistance(distance);
-        if(waypointsFromDistance == null) {
-            return null;
-        }
         double velocity = calculateBetweenTranslations(
                 new Translation2d(waypointsFromDistance[0].distance, waypointsFromDistance[0].velocity),
                 new Translation2d(waypointsFromDistance[1].distance, waypointsFromDistance[1].velocity),
@@ -40,7 +36,7 @@ public class ShootingCalculations {
      * @return the velocity needed for the shooter
      */
     public static double getShootingVelocityFromDistance(double distance) {
-        return Objects.requireNonNullElse(getWaypointFromDistance(distance), new Waypoint(0, 0, 0)).velocity;
+        return getWaypointFromDistance(distance).velocity;
     }
 
     /**
@@ -50,7 +46,7 @@ public class ShootingCalculations {
      * @return the angle needed for the shooter
      */
     public static double getShootingAngleFromDistance(double distance) {
-        return Objects.requireNonNullElse(getWaypointFromDistance(distance), new Waypoint(0, 0, 0)).angle;
+        return getWaypointFromDistance(distance).angle;
     }
 
     /**
@@ -76,7 +72,12 @@ public class ShootingCalculations {
      */
     public static void addWaypoint(double distance, double velocity, double angle) {
         Waypoint toAdd = new Waypoint(distance, velocity, angle);
-        waypoints.add(toAdd);
+        for(int i = 0; i < waypoints.size(); i++) {
+            if(waypoints.get(i).distance < toAdd.distance) {
+                waypoints.add(i, toAdd);
+                break;
+            }
+        }
     }
 
     /**
@@ -100,12 +101,19 @@ public class ShootingCalculations {
         Waypoint[] toReturn = new Waypoint[2];
         for(int i = 0; i < waypoints.size(); i++) {
             if(distance < waypoints.get(i).distance) {
-                toReturn[0] = waypoints.get(i);
-                toReturn[1] = waypoints.get(i - 1);
+                if(i == 0) {
+                    toReturn[0] = waypoints.get(i);
+                    toReturn[1] = waypoints.get(i + 1);
+                } else {
+                    toReturn[0] = waypoints.get(i - 1);
+                    toReturn[1] = waypoints.get(i);
+                }
                 return toReturn;
             }
         }
-        return null;
+        toReturn[0] = waypoints.get(waypoints.size() - 1);
+        toReturn[1] = waypoints.get(waypoints.size() - 2);
+        return toReturn;
     }
 
     private static class Waypoint {
