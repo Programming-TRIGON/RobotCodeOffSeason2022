@@ -1,5 +1,6 @@
 package frc.trigon.robot.components;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.trigon.robot.utilities.Conversions;
 
 /**
@@ -24,5 +25,11 @@ public class HubLimelight extends Limelight {
      */
     public double getDistanceFromHub() {
         return Conversions.calculatePolynomial(A, B, C, getTy());
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Distance from Hub", this::getDistanceFromHub, null);
     }
 }

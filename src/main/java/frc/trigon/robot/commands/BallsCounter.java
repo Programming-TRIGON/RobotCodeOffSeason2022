@@ -5,11 +5,13 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.shooter.Shooter;
 
 public class BallsCounter extends CommandBase {
+    private final static BallsCounter INSTANCE = new BallsCounter();
+
     private boolean ballInAlready = false;
     public static final ColorSensorV3 colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
     public static final DigitalInput ballInLoader = new DigitalInput(0);
@@ -21,7 +23,11 @@ public class BallsCounter extends CommandBase {
             BALL_IN_THRESHOLD = 900,
             BALL_OUT_THRESHOLD = 150;
 
-    public BallsCounter() {
+    public static BallsCounter getInstance() {
+        return INSTANCE;
+    }
+
+    private BallsCounter() {
     }
 
     @Override
@@ -51,9 +57,7 @@ public class BallsCounter extends CommandBase {
     private void addBall() {
         if(firstBall == null) {
             firstBall = getColor();
-            //            new WaitCommand(5).until(() -> false)
-            //                    .andThen(Loader.getInstance().getLoadCommand().until(() -> false)).schedule();
-            new WaitCommand(5).until(this::isBallOut).andThen(
+            new WaitUntilCommand(this::isBallOut).andThen(
                     Loader.getInstance().getLoadCommand().until(() -> !ballInLoader.get())
             ).schedule();
         } else if(secondBall == null) {
