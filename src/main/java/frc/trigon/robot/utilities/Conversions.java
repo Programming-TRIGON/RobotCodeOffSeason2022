@@ -24,8 +24,7 @@ public class Conversions {
         return position / gearRatio;
     }
 
-    public static double systemPositionToMotorPosition(double position, double gearRatio)
-    {
+    public static double systemPositionToMotorPosition(double position, double gearRatio) {
         return position * gearRatio;
     }
 
@@ -33,7 +32,7 @@ public class Conversions {
      * The offset will be added to the target position,
      * in order to compensate for the fact that the position is not 0 ware we want it to be.
      *
-     * @param position
+     * @param position the target position of the motor.
      * @param offset
      * @return the offsetted position
      */
@@ -41,6 +40,11 @@ public class Conversions {
         return position + offset;
     }
 
+    /**
+     * @param position
+     * @param offset
+     * @return
+     */
     public static double offsetRead(double position, double offset) {
         return position - offset;
     }

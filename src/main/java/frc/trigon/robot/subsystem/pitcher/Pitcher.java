@@ -17,7 +17,7 @@ public class Pitcher extends SubsystemBase {
         return INSTANCE;
     }
 
-    public void setTargetAngle(double degrees) {
+    void setTargetAngle(double degrees) {
         double motorPosition = Conversions.systemPositionToMotorPosition(degrees, PitcherConstants.GEAR_RATIO);
         double ticks = Conversions.degreesToMagTicks(motorPosition);
         motor.set(ControlMode.Position, Conversions.offsetWrite(ticks, PitcherConstants.MIN_TICKS));
@@ -34,7 +34,7 @@ public class Pitcher extends SubsystemBase {
         return Conversions.motorPositionToSystemPosition(motorAngle, PitcherConstants.GEAR_RATIO);
     }
 
-    public void stop() {
+    void stop() {
         motor.disable();
     }
 
