@@ -1,4 +1,4 @@
-package frc.trigon.robot.subsystem.pitcher;
+package frc.trigon.robot.subsystems.pitcher;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
