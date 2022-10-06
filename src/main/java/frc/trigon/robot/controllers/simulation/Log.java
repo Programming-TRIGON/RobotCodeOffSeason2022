@@ -1,12 +1,15 @@
-package frc.trigon.robot.xboxSimulation;
+package frc.trigon.robot.controllers.simulation;
 
 public class Log {
-    private final double rightX, rightY, leftX, leftY, rightTrigger, leftTrigger, time;
-    private final boolean a, b, x, y, rightBumper, leftBumper;
+    private final double rightX, rightY, leftX, leftY, rightTrigger, leftTrigger;
+    private final boolean a, b, x, y, rightBumper, leftBumper, rightStick, leftStick, back, start;
+    private final double time;
 
     public Log(
             double rightX, double rightY, double leftX, double leftY, double rightTrigger, double leftTrigger,
-            boolean a, boolean b, boolean x, boolean y, boolean rightBumper, boolean leftBumper, double time) {
+            boolean a, boolean b, boolean x, boolean y, boolean rightBumper, boolean leftBumper, boolean rightStick,
+            boolean leftStick, boolean back, boolean start, double time
+    ) {
         this.rightX = rightX;
         this.rightY = rightY;
         this.leftX = leftX;
@@ -19,6 +22,10 @@ public class Log {
         this.y = y;
         this.rightBumper = rightBumper;
         this.leftBumper = leftBumper;
+        this.rightStick = rightStick;
+        this.leftStick = leftStick;
+        this.back = back;
+        this.start = start;
         this.time = time;
     }
 
@@ -68,6 +75,22 @@ public class Log {
 
     public boolean getLeftBumper() {
         return leftBumper;
+    }
+
+    public boolean getRightStick() {
+        return rightStick;
+    }
+
+    public boolean getLeftStick() {
+        return leftStick;
+    }
+
+    public boolean getBack() {
+        return back;
+    }
+
+    public boolean getStart() {
+        return start;
     }
 
     public double getTime() {

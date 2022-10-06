@@ -5,20 +5,20 @@
 
 package frc.trigon.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.trigon.robot.components.TrigonController;
-import frc.trigon.robot.utilities.JsonHandler;
-import frc.trigon.robot.xboxSimulation.RecordControllerCommand;
-import frc.trigon.robot.xboxSimulation.PlaybackControllerCommand;
-import frc.trigon.robot.xboxSimulation.Log;
+import frc.trigon.robot.commands.PlaybackSimulatedControllerCommand;
+import frc.trigon.robot.commands.RecordControllerCommand;
+import frc.trigon.robot.controllers.simulation.SimulateableController;
 
 public class RobotContainer {
-    public static final TrigonController driverController = new TrigonController(0);
-    PlaybackControllerCommand playbackControllerCommand = new PlaybackControllerCommand(JsonHandler.parseJsonFileToObject("XboxLogs", Log[].class));
-    RecordControllerCommand recordControllerCommand =new RecordControllerCommand();
+    public static final SimulateableController driverController = new SimulateableController(0);
+    PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
+    RecordControllerCommand recordControllerCommand;
 
     public RobotContainer() {
-        SmartDashboard.putData(playbackControllerCommand);
-        SmartDashboard.putData(recordControllerCommand);
+        //        playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(
+        //                driverController, JsonHandler.parseJsonFileToObject("logs.json"));
+        //
+        //        SmartDashboard.putData(playbackSimulatedControllerCommand);
+        //        SmartDashboard.putData(recordControllerCommand);
     }
 }

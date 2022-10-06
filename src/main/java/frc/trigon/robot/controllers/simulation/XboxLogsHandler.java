@@ -1,10 +1,8 @@
-package frc.trigon.robot.xboxSimulation;
+package frc.trigon.robot.controllers.simulation;
 
 import frc.trigon.robot.utilities.JsonHandler;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class XboxLogsHandler {
 
