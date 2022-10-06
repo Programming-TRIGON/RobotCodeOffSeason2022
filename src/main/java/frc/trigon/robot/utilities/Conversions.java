@@ -47,6 +47,7 @@ public class Conversions {
      * @param position the target position of the motor.
      * @param offset   the encoder value when the system is on zero position.
      * @return the actual position of the motor offset.
+     * //TODO: clear this up
      */
     public static double offsetRead(double position, double offset) {
         return position - offset;
