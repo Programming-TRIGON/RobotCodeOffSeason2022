@@ -30,20 +30,23 @@ public class Conversions {
 
     /**
      * The offset will be added to the target position,
-     * in order to compensate for the fact that the position is not 0 ware we want it to be.
+     * in order to compensate for the fact that the position is not 0 where we want it to be.
      *
      * @param position the target position of the motor.
-     * @param offset   the encoder value when the system is on zero position
-     * @return the offsetted position
+     * @param offset   the encoder value when the system is on zero position.
+     * @return the offsetted position to give to the motor.
      */
     public static double offsetWrite(double position, double offset) {
         return position + offset;
     }
 
     /**
-     * @param position
-     * @param offset
-     * @return
+     * The offset will subtract to the target position,
+     * in order to compensate for the fact that the position is not 0 ware we want it to be.
+     *
+     * @param position the target position of the motor.
+     * @param offset   the encoder value when the system is on zero position.
+     * @return the actual position of the motor offset.
      */
     public static double offsetRead(double position, double offset) {
         return position - offset;
