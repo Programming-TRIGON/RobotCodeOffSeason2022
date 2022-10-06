@@ -4,13 +4,14 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.trigon.robot.commands.BallsCounter;
 
 import static frc.trigon.robot.subsystems.transporter.TransporterConstants.TransporterState;
 
 public class Transporter extends SubsystemBase {
     private final static Transporter INSTANCE = new Transporter();
     private final WPI_TalonSRX motor = TransporterConstants.MOTOR;
-    private TransporterState currentState;
+    private TransporterState currentState = TransporterState.OFF;
 
     private Transporter() {
     }
@@ -56,6 +57,15 @@ public class Transporter extends SubsystemBase {
                 () -> setState(TransporterState.OFF),
                 this
         );
+    }
+
+    @Override
+    public void periodic() {
+        if(BallsCounter.secondBall != null && BallsCounter.colorSensor.getProximity() > 1800) {
+            motor.set(0);
+        } else {
+            setState(getState());
+        }
     }
 }
 

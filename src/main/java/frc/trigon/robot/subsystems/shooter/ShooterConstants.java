@@ -11,15 +11,15 @@ public class ShooterConstants {
             RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID);
     static final WPI_TalonFX
             MASTER_MOTOR = RIGHT_MOTOR;
-    private static final boolean INVERTED = false;
+    private static final boolean INVERTED = true;
     private static final double VOLTAGE_SATURATION = 10;
     private static final double
-            P = 0.12,
-            I = 0.00002,
+            P = 0.2,
+            I = 0.0000,
             D = 0,
-            V = 0.0522,
+            V = 0.0576,
             MAX_I = 1300000;
-    static final double S = 0.03;
+    static final double S = 0.0328;
     private static final WPI_TalonFX FOLLOWER_MOTOR =
             LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
 
@@ -31,8 +31,8 @@ public class ShooterConstants {
 
         FOLLOWER_MOTOR.follow(MASTER_MOTOR);
 
-        MASTER_MOTOR.enableVoltageCompensation(true);
         MASTER_MOTOR.configVoltageCompSaturation(VOLTAGE_SATURATION);
+        MASTER_MOTOR.enableVoltageCompensation(true);
 
         MASTER_MOTOR.config_kP(0, P);
         MASTER_MOTOR.config_kI(0, I);
