@@ -14,10 +14,9 @@ public class BackspinReducer extends SubsystemBase {
     }
 
     private BackspinReducer() {
-
     }
 
-    private void fullPower() {
+    private void start() {
         motor.set(1);
     }
 
@@ -29,7 +28,7 @@ public class BackspinReducer extends SubsystemBase {
      * @return a command that sets to motor to full power, and stops the motor when it ends
      */
     public Command getReducerCommand() {
-        return new StartEndCommand(this::fullPower, this::stop);
+        return new StartEndCommand(this::start, this::stop);
     }
 }
 
