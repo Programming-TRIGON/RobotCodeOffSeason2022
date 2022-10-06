@@ -76,7 +76,7 @@ public class Shooter extends SubsystemBase {
     /**
      * @return the current closed loop error value in RPM
      */
-    private double getError() {
+    public double getError() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopError());
     }
 
