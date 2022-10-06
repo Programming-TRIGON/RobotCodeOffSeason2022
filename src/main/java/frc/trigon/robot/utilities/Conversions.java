@@ -1,6 +1,24 @@
 package frc.trigon.robot.utilities;
 
 public class Conversions {
+
+    /**
+     * Converts voltage to compensated power.
+     * <p>
+     * The voltage compensation saturation will determine what voltage represents 100% output.
+     * <p>
+     * The compensated power is the power resulting from turning the voltage off and on without stopping.
+     * In order to find the compensated power we have to divide the voltage by the voltage compensation
+     * saturation.
+     *
+     * @param voltage                       the voltage of the loader
+     * @param voltageCompensationSaturation the saturation of the compensation
+     * @return the compensated power resulting from turning the voltage off and on without stopping
+     */
+    public static double voltageToCompensatedPower(double voltage, double voltageCompensationSaturation) {
+        return voltage / voltageCompensationSaturation;
+    }
+
     private static final double
             MAG_TICKS = 4096,
             FALCON_TICKS = 2048;
@@ -12,12 +30,22 @@ public class Conversions {
         return ticksToRevolutions(magTicks) * 360;
     }
 
+    public static final int DEGREES_PER_REVOLUTIONS = 360;
+
+    public static double magTicksToDegrees(double magTicks) {
+        return magTicksToRevolutions(magTicks) * DEGREES_PER_REVOLUTIONS;
+    }
+
+    public static double magTicksToRevolutions(double magTicks) {
+        return magTicks / MAG_TICKS;
+    }
+
     public static double degreesToMagTicks(double degrees) {
         return degreesToRevolutions(degrees) * MAG_TICKS;
     }
 
     public static double degreesToRevolutions(double degrees) {
-        return degrees / 360;
+        return degrees / DEGREES_PER_REVOLUTIONS;
     }
 
     public static double revolutionsToDegrees(double revolutions) {
@@ -92,5 +120,29 @@ public class Conversions {
 
     public static double RpmToFalconTicksPer100Ms(double rpm) {
         return velocityPerMinToSec(rpm) * 2048;
+    }
+
+    public static double motorPositionToSystemPosition(double position, double gearRatio) {
+        return position / gearRatio;
+    }
+
+    public static double systemPositionToMotorPosition(double position, double gearRatio) {
+        return position * gearRatio;
+    }
+
+    /**
+     * The offset will be added to the target position,
+     * in order to compensate for the fact that the position is not 0 ware we want it to be.
+     *
+     * @param position
+     * @param offset
+     * @return the offsetted position
+     */
+    public static double offsetWrite(double position, double offset) {
+        return position + offset;
+    }
+
+    public static double offsetRead(double position, double offset) {
+        return position - offset;
     }
 }
