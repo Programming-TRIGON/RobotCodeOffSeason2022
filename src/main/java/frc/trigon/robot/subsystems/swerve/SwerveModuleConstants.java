@@ -8,6 +8,7 @@ public class SwerveModuleConstants {
     public static final double WHEEL_DIAMETER_METER = 0.1;
     public static final double WHEEL_CIRCUMFERENCE_METER = WHEEL_DIAMETER_METER * Math.PI;
     public static final double DRIVE_GEAR_RATIO = 8.14;
+    private static final double VOLTAGE_COMP_SATURATION = 12;
 
     static final double SIDE_LENGTH_METERS = 0.5;
     static final double DISTANCE_FROM_CENTER_OF_BASE = SIDE_LENGTH_METERS / 2;
@@ -131,6 +132,30 @@ public class SwerveModuleConstants {
         FRONT_RIGHT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
         FRONT_RIGHT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
         REAR_RIGHT_DRIVE_MOTOR.configOpenloopRamp(SwerveConstants.DRIVE_RAMP_RATE);
+
+        FRONT_LEFT_DRIVE_MOTOR.configVoltageCompSaturation(VOLTAGE_COMP_SATURATION);
+        FRONT_LEFT_ANGLE_MOTOR.configVoltageCompSaturation(VOLTAGE_COMP_SATURATION);
+
+        FRONT_RIGHT_DRIVE_MOTOR.configVoltageCompSaturation(VOLTAGE_COMP_SATURATION);
+        FRONT_RIGHT_ANGLE_MOTOR.configVoltageCompSaturation(VOLTAGE_COMP_SATURATION);
+
+        REAR_LEFT_DRIVE_MOTOR.configVoltageCompSaturation(VOLTAGE_COMP_SATURATION);
+        REAR_LEFT_ANGLE_MOTOR.configVoltageCompSaturation(VOLTAGE_COMP_SATURATION);
+
+        REAR_RIGHT_DRIVE_MOTOR.configVoltageCompSaturation(VOLTAGE_COMP_SATURATION);
+        REAR_RIGHT_ANGLE_MOTOR.configVoltageCompSaturation(VOLTAGE_COMP_SATURATION);
+
+        FRONT_LEFT_DRIVE_MOTOR.enableVoltageCompensation(true);
+        FRONT_LEFT_ANGLE_MOTOR.enableVoltageCompensation(true);
+
+        FRONT_RIGHT_DRIVE_MOTOR.enableVoltageCompensation(true);
+        FRONT_RIGHT_ANGLE_MOTOR.enableVoltageCompensation(true);
+
+        REAR_LEFT_DRIVE_MOTOR.enableVoltageCompensation(true);
+        REAR_LEFT_ANGLE_MOTOR.enableVoltageCompensation(true);
+
+        REAR_RIGHT_DRIVE_MOTOR.enableVoltageCompensation(true);
+        REAR_RIGHT_ANGLE_MOTOR.enableVoltageCompensation(true);
     }
 
     public static double

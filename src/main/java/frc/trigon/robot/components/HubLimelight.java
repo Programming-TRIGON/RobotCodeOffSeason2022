@@ -1,11 +1,14 @@
-package frc.trigon.robot.component;
+package frc.trigon.robot.components;
+
+import frc.trigon.robot.utilities.Conversions;
 
 /**
  * A Limelight with the ability to calculate the distance from the hub.
  */
 public class HubLimelight extends Limelight {
-    private static final double M = 1;
-    private static final double B = 1;
+    private static final double A = 0.003;
+    private static final double B = 0.0968;
+    private static final double C = 2.0034;
 
     /**
      * Constructs a new HubLimelight.
@@ -20,6 +23,6 @@ public class HubLimelight extends Limelight {
      * @return the distance from the hub in meters
      */
     public double getDistanceFromHub() {
-        return M * getTy() + B;
+        return Conversions.calculatePolynomial(A, B, C, getTy());
     }
 }
