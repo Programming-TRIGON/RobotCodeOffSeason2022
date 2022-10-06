@@ -1,8 +1,10 @@
 package frc.trigon.robot.utilities;
 
 public class Conversions {
+    public static final int MAG_TICKS = 4096;
+    public static final int DEGREES_PER_REVOLUTIONS = 360;
+
     private static final double
-            MAG_TICKS = 4096,
             FALCON_TICKS = 2048;
     private static final int
             HUNDRED_MS_PER_SEC = 10,
@@ -26,6 +28,14 @@ public class Conversions {
         return voltage / voltageCompensationSaturation;
     }
 
+    public static double magTicksToDegrees(double magTicks) {
+        return magTicksToRevolutions(magTicks) * DEGREES_PER_REVOLUTIONS;
+    }
+
+    public static double magTicksToRevolutions(double magTicks) {
+        return magTicks / MAG_TICKS;
+    }
+
     public static double ticksToDegrees(double magTicks) {
         return ticksToRevolutions(magTicks) * 360;
     }
@@ -35,7 +45,40 @@ public class Conversions {
     }
 
     public static double degreesToRevolutions(double degrees) {
-        return degrees / 360;
+        return degrees / DEGREES_PER_REVOLUTIONS;
+    }
+
+    public static double motorPositionToSystemPosition(double position, double gearRatio) {
+        return position / gearRatio;
+    }
+
+    public static double systemPositionToMotorPosition(double position, double gearRatio) {
+        return position * gearRatio;
+    }
+
+    /**
+     * The offset will be added to the target position,
+     * in order to compensate for the fact that the position is not 0 where we want it to be.
+     *
+     * @param position the target position of the motor.
+     * @param offset   the encoder value when the system is on zero position.
+     * @return the offsetted position to give to the motor.
+     */
+    public static double offsetWrite(double position, double offset) {
+        return position + offset;
+    }
+
+    /**
+     * The offset will subtract to the target position,
+     * in order to compensate for the fact that the position is not 0 ware we want it to be.
+     *
+     * @param position the target position of the motor.
+     * @param offset   the encoder value when the system is on zero position.
+     * @return the actual position of the motor offset.
+     * //TODO: clear this up
+     */
+    public static double offsetRead(double position, double offset) {
+        return position - offset;
     }
 
     public static double revolutionsToDegrees(double revolutions) {
