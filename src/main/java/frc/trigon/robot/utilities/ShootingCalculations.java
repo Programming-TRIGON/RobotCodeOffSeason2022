@@ -142,7 +142,7 @@ public class ShootingCalculations {
         }
     }
 
-    public static class Waypoints {
+    private static class Waypoints {
         public ArrayList<Waypoint> waypoints;
     }
 }
