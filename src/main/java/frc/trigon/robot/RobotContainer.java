@@ -6,16 +6,32 @@
 package frc.trigon.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
+import frc.trigon.robot.subsystems.swerve.Swerve;
 
 public class RobotContainer {
 
     XboxController controller;
 
+    //commands
+    FieldRelativeSupplierDrive fieldRelativeSupplierDrive;
+
     public RobotContainer() {
         controller = new XboxController(0);
+
+        initCommand();
+        bindCommands();
     }
 
-    private void bindCommends() {
-        
+    private void initCommand() {
+        fieldRelativeSupplierDrive = new FieldRelativeSupplierDrive(
+                () -> -controller.getLeftY(),
+                () -> -controller.getLeftX(),
+                () -> -controller.getRightX()
+        );
+    }
+
+    private void bindCommands() {
+        Swerve.getInstance().setDefaultCommand(fieldRelativeSupplierDrive);
     }
 }

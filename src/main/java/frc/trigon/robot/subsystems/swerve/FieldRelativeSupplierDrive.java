@@ -17,7 +17,7 @@ public class FieldRelativeSupplierDrive extends CommandBase {
      *
      * @param xPower   the forwards velocity in meters per second.
      * @param yPower   the leftwards velocity in meters per second.
-     * @param rotPower the rotational velocity in radians per second.
+     * @param rotPower the counterclockwise rotational velocity in radians per second.
      */
     public FieldRelativeSupplierDrive(DoubleSupplier xPower, DoubleSupplier yPower, DoubleSupplier rotPower) {
         this.xPower = xPower;
