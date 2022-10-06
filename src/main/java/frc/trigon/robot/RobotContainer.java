@@ -5,20 +5,33 @@
 
 package frc.trigon.robot;
 
-import frc.trigon.robot.commands.PlaybackSimulatedControllerCommand;
-import frc.trigon.robot.commands.RecordControllerCommand;
-import frc.trigon.robot.controllers.simulation.SimulateableController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.trigon.robot.commands.CollectCommand;
+import frc.trigon.robot.controllers.XboxController;
+import frc.trigon.robot.subsystems.pitcher.Pitcher;
+import frc.trigon.robot.subsystems.shooter.Shooter;
 
 public class RobotContainer {
-    public static final SimulateableController driverController = new SimulateableController(0);
-    PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
-    RecordControllerCommand recordControllerCommand;
+
+    XboxController controller = new XboxController(0);
+    CollectCommand collectCommand;
 
     public RobotContainer() {
-        //        playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(
-        //                driverController, JsonHandler.parseJsonFileToObject("logs.json"));
-        //
-        //        SmartDashboard.putData(playbackSimulatedControllerCommand);
-        //        SmartDashboard.putData(recordControllerCommand);
+        collectCommand = new CollectCommand();
+
+        bindCommands();
+        putStuffOnSmartDashboard();
+    }
+
+    private void initCommands() {
+    }
+
+    private void bindCommands() {
+        controller.getABtn().whileHeld(collectCommand);
+    }
+
+    private void putStuffOnSmartDashboard() {
+        SmartDashboard.putData(Shooter.getInstance());
+        SmartDashboard.putData(Pitcher.getInstance());
     }
 }
