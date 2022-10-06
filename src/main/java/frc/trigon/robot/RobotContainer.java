@@ -6,7 +6,7 @@
 package frc.trigon.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.trigon.robot.component.TrigonController;
+import frc.trigon.robot.components.TrigonController;
 import frc.trigon.robot.utilities.JsonHandler;
 import frc.trigon.robot.xboxSimulation.RecordControllerCommand;
 import frc.trigon.robot.xboxSimulation.PlaybackControllerCommand;
