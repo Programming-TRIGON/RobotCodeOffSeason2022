@@ -33,7 +33,7 @@ public class Conversions {
      * in order to compensate for the fact that the position is not 0 ware we want it to be.
      *
      * @param position the target position of the motor.
-     * @param offset
+     * @param offset   the encoder value when the system is on zero position
      * @return the offsetted position
      */
     public static double offsetWrite(double position, double offset) {
