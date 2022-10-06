@@ -3,11 +3,11 @@ package frc.trigon.robot.subsystems.loader;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class LoaderConstants {
-    private static final int MOTOR_ID = 0;
+    private static final int MOTOR_ID = 5;
     static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
     static final double VOLTAGE_COMPENSATION_SATURATION = 10.5;
     private static final double
-            LOAD_VOLTAGE = 6,
+            LOAD_VOLTAGE = 10,
             EJECT_VOLTAGE = -6;
     private static final boolean MOTOR_INVERTED = false;
 
