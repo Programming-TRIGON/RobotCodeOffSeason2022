@@ -6,7 +6,10 @@
 package frc.trigon.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import static frc.trigon.robot.RobotContainer.driverController;
 
 /**
  * The VM is configured to automatically run this class, and to call the methods corresponding to
@@ -25,5 +28,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
+        SmartDashboard.putNumber("rightX",driverController.getRightX());
     }
+
 }
