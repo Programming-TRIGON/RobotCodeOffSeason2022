@@ -13,8 +13,8 @@ public class LoaderConstants {
 
     static {
         MOTOR.setInverted(MOTOR_INVERTED);
-        MOTOR.enableVoltageCompensation(true);
         MOTOR.configVoltageCompSaturation(VOLTAGE_COMPENSATION_SATURATION);
+        MOTOR.enableVoltageCompensation(true);
     }
 
     public enum LoaderState {

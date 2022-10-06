@@ -33,7 +33,6 @@ public class Loader extends SubsystemBase {
      * @param state the wanted state of the loader as a LoaderState
      */
     public void setState(LoaderState state) {
-        System.out.println("set state to " + state.name());
         double compensatedPower = Conversions.voltageToCompensatedPower(
                 state.voltage, LoaderConstants.VOLTAGE_COMPENSATION_SATURATION);
         motor.set(compensatedPower);

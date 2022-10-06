@@ -17,9 +17,9 @@ public class ShooterConstants {
             P = 0.2,
             I = 0.0000,
             D = 0,
-            V = 0.0576,
+            V = 0.0595,
             MAX_I = 1300000;
-    static final double S = 0.0328;
+    static final double S = 0.0645;
     private static final WPI_TalonFX FOLLOWER_MOTOR =
             LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
 
