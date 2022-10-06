@@ -1,5 +1,7 @@
 package frc.trigon.robot.components;
 
+import frc.trigon.robot.utilities.Conversions;
+
 /**
  * A Limelight with the ability to calculate the distance from the hub.
  */
@@ -21,6 +23,6 @@ public class HubLimelight extends Limelight {
      * @return the distance from the hub in meters
      */
     public double getDistanceFromHub() {
-        return (A * Math.pow(getTy(), 2)) + (B * getTy()) + C;
+        return Conversions.calculatePolynomial(A, B, C, getTy());
     }
 }
