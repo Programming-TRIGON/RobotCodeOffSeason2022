@@ -93,4 +93,8 @@ public class Conversions {
     public static double RpmToFalconTicksPer100Ms(double rpm) {
         return velocityPerMinToSec(rpm) * 2048;
     }
+
+    public static double calculatePolynomial(double a, double b, double c, double x) {
+        return (a * Math.pow(x, 2)) + (b * x) + c;
+    }
 }
