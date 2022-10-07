@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FilesHandler {
-    public static final String DEPLOY_PATH = Filesystem.getDeployDirectory().getPath() + "\\";
+    public static final String DEPLOY_PATH = Filesystem.getDeployDirectory().getPath() + "/";
 
     /**
      * Deletes the given file.
