@@ -27,13 +27,13 @@ public class RobotContainer {
     BallsCounter ballsCounter;
 
     public RobotContainer() {
-        powerDistribution.clearStickyFaults();
-
         initComponents();
         initCommands();
         bindCommands();
 
         putSendablesOnSmartDashboard();
+
+        powerDistribution.clearStickyFaults();
     }
 
     private void initComponents() {
