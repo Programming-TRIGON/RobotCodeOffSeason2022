@@ -16,7 +16,7 @@ public class ShootingCalculations {
      * @return a waypoint with the distance, velocity and angle from the given distance
      */
     public static Waypoint getWaypointFromDistance(double distance) {
-        Waypoint[] waypointsFromDistance = getNearstWaypointsFromDistance(distance);
+        Waypoint[] waypointsFromDistance = getNearestWaypointsFromDistance(distance);
         double velocity = calculateBetweenTranslations(
                 new Translation2d(waypointsFromDistance[0].distance, waypointsFromDistance[0].velocity),
                 new Translation2d(waypointsFromDistance[1].distance, waypointsFromDistance[1].velocity),
@@ -103,8 +103,17 @@ public class ShootingCalculations {
         saveWaypointsToJson();
     }
 
-    private static Waypoint[] getNearstWaypointsFromDistance(double distance) {
+    private static Waypoint[] getNearestWaypointsFromDistance(double distance) {
         Waypoint[] toReturn = new Waypoint[2];
+        if(waypoints.isEmpty() || waypoints.size() < 2) return null;
+        if(distance < waypoints.get(0).distance){
+            toReturn[0] = waypoints.get(0);
+            toReturn[1] = waypoints.get(1);
+        }
+        if(distance > waypoints.get(waypoints.size()-1).distance){
+            toReturn[0] = waypoints.get(waypoints.size()-2);
+            toReturn[1] = waypoints.get(waypoints.size()-1);
+        }
         for(int i = 0; i < waypoints.size(); i++) {
             if(distance < waypoints.get(i).distance) {
                 if(i == 0) {
