@@ -3,10 +3,9 @@ package frc.trigon.robot.subsystems.shooter;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.*;
-import frc.trigon.robot.commands.runswhendisabled.RunsWhenDisabledInstantCommand;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.trigon.robot.utilities.Conversions;
 
 import java.util.function.DoubleSupplier;
@@ -15,22 +14,8 @@ public class Shooter extends SubsystemBase {
     private final static Shooter INSTANCE = new Shooter();
 
     private final WPI_TalonFX masterMotor = ShooterConstants.MASTER_MOTOR;
-    private boolean shotBall = false;
 
     private Shooter() {
-        SmartDashboard.putData("shoot", new RunsWhenDisabledInstantCommand(() -> shotBall = true));
-        new ShotsCounter().schedule();
-    }
-
-    static class RWDC extends InstantCommand {
-        @Override
-        public boolean runsWhenDisabled() {
-            return true;
-        }
-
-        public RWDC(Runnable toRun) {
-            super(toRun);
-        }
     }
 
     public static Shooter getInstance() {
@@ -74,24 +59,14 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * @return the number of balls that have been shot
-     */
-    public boolean hasShotBall() {
-        return shotBall;
-    }
-
-    /**
-     * Resets the ball count
-     */
-    public void resetBallFlag() {
-        shotBall = false;
-    }
-
-    /**
      * @return the current closed loop error value in RPM
      */
-    private double getError() {
+    double getError() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopError());
+    }
+
+    boolean atTargetVelocity() {
+        return Math.abs(getError()) <= ShooterConstants.VELOCITY_TOLERANCE;
     }
 
     /**
@@ -101,58 +76,6 @@ public class Shooter extends SubsystemBase {
     public Command getPrimeShooterCommand(DoubleSupplier targetVelocity) {
         return new RunCommand(() -> setTargetVelocity(targetVelocity.getAsDouble()), this)
                 .andThen(this::stop);
-    }
-
-    @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-        builder.addDoubleProperty("Target Velocity", this::getTargetVelocity, this::setTargetVelocity);
-        builder.addDoubleProperty("Current Velocity", this::getCurrentVelocity, null);
-        builder.addDoubleProperty("Error", this::getError, null);
-        builder.addBooleanProperty("Has Shot Ball", this::hasShotBall, null);
-    }
-
-    static class ShotsCounter extends CommandBase {
-        private static final int
-                IN_DIP_THRESHOLD = 300,
-                OUT_DIP_THRESHOLD = 80;
-        boolean alreadyInDip;
-
-        public ShotsCounter() {
-
-        }
-
-        boolean inDip() {
-            return Shooter.getInstance().getError() > IN_DIP_THRESHOLD;
-        }
-
-        boolean outDip() {
-            return Shooter.getInstance().getError() < OUT_DIP_THRESHOLD;
-        }
-
-        @Override
-        public void initialize() {
-            alreadyInDip = false;
-        }
-
-        @Override
-        public void execute() {
-            if(!alreadyInDip) {
-                if(inDip()) {
-                    alreadyInDip = true;
-                    Shooter.getInstance().shotBall = true;
-                }
-            } else {
-                if(outDip()) {
-                    alreadyInDip = false;
-                }
-            }
-        }
-
-        @Override
-        public boolean runsWhenDisabled() {
-            return true;
-        }
     }
 }
 
