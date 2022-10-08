@@ -30,21 +30,6 @@ public class CountBallsCommand extends CommandBase {
             Shooter.getInstance().resetBallFlag();
         }
     }
-    //
-    //    private void addBall() {
-    //        if(firstBall == null) {
-    //            firstBall = getColor();
-    //            new WaitUntilCommand(this::isBallOut).andThen(
-    //                    Loader.getInstance().getLoadCommand().until(() -> !ballInLoader.get())
-    //            ).schedule();
-    //        } else if(secondBall == null) {
-    //            secondBall = getColor();
-    //        } else {
-    //            System.out.println("Balls are full! Pushing anyway!");
-    //            pushBalls();
-    //            secondBall = getColor();
-    //        }
-    //    }
 
     @Override
     public boolean runsWhenDisabled() {

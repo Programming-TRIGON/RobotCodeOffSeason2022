@@ -12,7 +12,6 @@ public class BallsCounter extends SubsystemBase {
     public String firstBall = "", secondBall = "";
 
     private BallsCounter() {
-
     }
 
     public static BallsCounter getInstance() {

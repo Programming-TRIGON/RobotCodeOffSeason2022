@@ -37,6 +37,5 @@ public class PlaybackSimulatedControllerCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        //        RobotContainer.driverController.setCurrentLog(null);
     }
 }
