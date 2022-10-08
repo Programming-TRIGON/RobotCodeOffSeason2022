@@ -13,4 +13,5 @@ public class BallsCounterConstants {
     static final int BALL_IN_THRESHOLD = 900;
     static final int BALL_OUT_THRESHOLD = 150;
     static final ColorSensorV3 COLOR_SENSOR = new ColorSensorV3(COLOR_SENSOR_PORT);
+    static final int TOUCHES_BALL_PROXIMITY_THRESHOLD = 100;
 }

@@ -61,6 +61,14 @@ public class BallsCounter extends SubsystemBase {
         return colorSensor.getProximity();
     }
 
+    public boolean isTouchingBall() {
+        return colorSensor.getProximity() >= BallsCounterConstants.TOUCHES_BALL_PROXIMITY_THRESHOLD;
+    }
+
+    public boolean isLoaderSwitchHeld() {
+        return BallsCounterConstants.LOADER_SWITCH.get();
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
