@@ -6,7 +6,7 @@ public class TransporterConstants {
     private static final int MOTOR_ID = 13;
     static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
     private static final double
-            LOAD_POWER = 0.6,
+            LOAD_POWER = 0.45,
             EJECT_POWER = -0.4;
     private static final boolean MOTOR_INVERTED = false;
 

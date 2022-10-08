@@ -80,6 +80,8 @@ public class BallsCounter extends SubsystemBase {
         builder.addDoubleProperty("Proximity", colorSensor::getProximity, null);
         builder.addDoubleProperty("Red", colorSensor::getRed, null);
         builder.addDoubleProperty("Blue", colorSensor::getBlue, null);
+        builder.addBooleanProperty("Loader Switch", this::isLoaderSwitchHeld, null);
+        builder.addBooleanProperty("Touching Ball", this::isTouchingBall, null);
     }
 }
 
