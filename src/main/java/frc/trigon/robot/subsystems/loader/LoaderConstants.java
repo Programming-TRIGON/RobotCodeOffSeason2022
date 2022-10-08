@@ -7,7 +7,7 @@ public class LoaderConstants {
     static final WPI_TalonSRX MOTOR = new WPI_TalonSRX(MOTOR_ID);
     static final double VOLTAGE_COMPENSATION_SATURATION = 10.5;
     private static final double
-            LOAD_VOLTAGE = 10,
+            LOAD_VOLTAGE = 7,
             EJECT_VOLTAGE = -6;
     private static final boolean MOTOR_INVERTED = false;
 

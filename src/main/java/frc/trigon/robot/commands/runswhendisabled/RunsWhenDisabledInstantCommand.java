@@ -10,6 +10,6 @@ public class RunsWhenDisabledInstantCommand extends InstantCommand {
 
     @Override
     public boolean runsWhenDisabled() {
-        return super.runsWhenDisabled();
+        return true;
     }
 }

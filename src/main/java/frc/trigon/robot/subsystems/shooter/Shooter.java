@@ -4,7 +4,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.trigon.robot.commands.runswhendisabled.RunsWhenDisabledInstantCommand;
 import frc.trigon.robot.utilities.Conversions;
 
 import java.util.function.DoubleSupplier;
@@ -16,6 +18,8 @@ public class Shooter extends SubsystemBase {
     private boolean shotBall = false;
 
     private Shooter() {
+        SmartDashboard.putData("shoot", new RunsWhenDisabledInstantCommand(() -> shotBall = true));
+        new ShotsCounter().schedule();
     }
 
     static class RWDC extends InstantCommand {
@@ -105,12 +109,13 @@ public class Shooter extends SubsystemBase {
         builder.addDoubleProperty("Target Velocity", this::getTargetVelocity, this::setTargetVelocity);
         builder.addDoubleProperty("Current Velocity", this::getCurrentVelocity, null);
         builder.addDoubleProperty("Error", this::getError, null);
+        builder.addBooleanProperty("Has Shot Ball", this::hasShotBall, null);
     }
 
     static class ShotsCounter extends CommandBase {
         private static final int
-                IN_DIP_THRESHOLD = 100,
-                OUT_DIP_THRESHOLD = 10;
+                IN_DIP_THRESHOLD = 300,
+                OUT_DIP_THRESHOLD = 80;
         boolean alreadyInDip;
 
         public ShotsCounter() {
@@ -142,6 +147,11 @@ public class Shooter extends SubsystemBase {
                     alreadyInDip = false;
                 }
             }
+        }
+
+        @Override
+        public boolean runsWhenDisabled() {
+            return true;
         }
     }
 }

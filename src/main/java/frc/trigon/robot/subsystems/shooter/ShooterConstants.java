@@ -13,6 +13,7 @@ public class ShooterConstants {
             MASTER_MOTOR = RIGHT_MOTOR;
     private static final boolean INVERTED = true;
     private static final double VOLTAGE_SATURATION = 10;
+    private static final double DEADBAND = 0.1;
     private static final double
             P = 0.2,
             I = 0.0000,
@@ -40,5 +41,7 @@ public class ShooterConstants {
         MASTER_MOTOR.config_kF(0, V);
 
         MASTER_MOTOR.configMaxIntegralAccumulator(0, MAX_I);
+
+        MASTER_MOTOR.configNeutralDeadband(DEADBAND);
     }
 }

@@ -10,6 +10,6 @@ public class RunsWhenDisabledRunCommand extends RunCommand {
 
     @Override
     public boolean runsWhenDisabled() {
-        return super.runsWhenDisabled();
+        return true;
     }
 }
