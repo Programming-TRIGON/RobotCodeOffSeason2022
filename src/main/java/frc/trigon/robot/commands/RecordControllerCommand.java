@@ -44,6 +44,7 @@ public class RecordControllerCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         try {
+            System.out.println(logs.toArray(new Log[0]));
             XboxLogsHandler.writeLogs(logs.toArray(new Log[0]));
         } catch(IOException e) {
             throw new RuntimeException(e);

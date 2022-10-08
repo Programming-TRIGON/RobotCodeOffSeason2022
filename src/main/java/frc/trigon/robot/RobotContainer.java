@@ -5,21 +5,28 @@
 
 package frc.trigon.robot;
 
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.trigon.robot.commands.PlaybackSimulatedControllerCommand;
 import frc.trigon.robot.commands.RecordControllerCommand;
-import frc.trigon.robot.controllers.simulation.Log;
 import frc.trigon.robot.controllers.simulation.SimulateableController;
-import frc.trigon.robot.utilities.JsonHandler;
+import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
+import frc.trigon.robot.subsystems.swerve.Swerve;
 
 public class RobotContainer {
     public static final SimulateableController driverController = new SimulateableController(0);
-    public PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
-    public RecordControllerCommand recordControllerCommand;
+    private PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
+    private RecordControllerCommand recordControllerCommand;
+    private FieldRelativeSupplierDrive swerveCommand;
+    private Swerve swerve;
 
     public RobotContainer() {
-        playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(
-                driverController, JsonHandler.parseJsonFileToObject("XboxLogs", Log[].class)).raceWith(new WaitCommand(5));
+        playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
         recordControllerCommand = new RecordControllerCommand(driverController);
+        swerveCommand = new FieldRelativeSupplierDrive(driverController::getLeftX,
+               driverController::getLeftY, driverController::getRightX);
+        swerve = Swerve.getInstance();
+        swerve.setDefaultCommand(swerveCommand);
+        SmartDashboard.putData(recordControllerCommand);
+        SmartDashboard.putData(playbackSimulatedControllerCommand);
     }
 }
