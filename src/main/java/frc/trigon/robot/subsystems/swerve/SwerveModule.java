@@ -31,8 +31,8 @@ public class SwerveModule implements Sendable {
     public void setTargetState(SwerveModuleState targetState) {
         this.targetState = optimizeState(targetState);
         setTargetAngleAndVelocity(
-                targetState.angle.getDegrees(),
-                targetState.speedMetersPerSecond
+                this.targetState.angle.getDegrees(),
+                this.targetState.speedMetersPerSecond
         );
     }
 
