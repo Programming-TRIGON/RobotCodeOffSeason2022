@@ -12,21 +12,17 @@ public class ShotsDetectorCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (Shooter.getInstance().atTargetVelocity())
-        {
-            if(Timer.getFPGATimestamp() >= lastErrorTimer + ShooterConstants.ERROR_TIMER_STABLE_TIME)
-            {
+        if(Shooter.getInstance().atTargetVelocity()) {
+            if(Timer.getFPGATimestamp() >= lastErrorTimer + ShooterConstants.TIME_TOLERANCE) {
                 isStable = true;
             }
-        }
-        else {
+        } else {
             isStable = false;
             lastErrorTimer = Timer.getFPGATimestamp();
         }
     }
 
-    public boolean getIsStable()
-    {
+    public boolean getIsStable() {
         return isStable;
     }
 }

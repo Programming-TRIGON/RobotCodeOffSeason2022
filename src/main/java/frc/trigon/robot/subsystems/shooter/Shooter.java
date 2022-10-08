@@ -65,9 +65,8 @@ public class Shooter extends SubsystemBase {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopError());
     }
 
-    boolean atTargetVelocity()
-    {
-        return Math.abs(Shooter.getInstance().getError()) <= ShooterConstants.ERROR_RANGE_STABLE_ALLOWANCE;
+    boolean atTargetVelocity() {
+        return Math.abs(getError()) <= ShooterConstants.VELOCITY_TOLERANCE;
     }
 
     /**
