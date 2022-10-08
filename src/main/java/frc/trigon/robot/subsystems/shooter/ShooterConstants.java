@@ -11,6 +11,8 @@ public class ShooterConstants {
             RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID);
     static final WPI_TalonFX
             MASTER_MOTOR = RIGHT_MOTOR;
+    static final double ERROR_TIMER_STABLE_TIME = 0.5;
+    static final double ERROR_RANGE_STABLE_ALLOWANCE = 10;
     private static final boolean INVERTED = false;
     private static final double VOLTAGE_SATURATION = 10;
     private static final double

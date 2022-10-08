@@ -14,7 +14,6 @@ public class Shooter extends SubsystemBase {
     private final static Shooter INSTANCE = new Shooter();
 
     private final WPI_TalonFX masterMotor = ShooterConstants.MASTER_MOTOR;
-    private int ballCount = 0;
 
     private Shooter() {
     }
@@ -60,24 +59,15 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * @return the number of balls that have been shot
-     */
-    private int getBallCount() {
-        return ballCount;
-    }
-
-    /**
-     * Resets the ball count
-     */
-    private void resetBallCount() {
-        ballCount = 0;
-    }
-
-    /**
      * @return the current closed loop error value in RPM
      */
-    private double getError() {
+    double getError() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopError());
+    }
+
+    boolean atTargetVelocity()
+    {
+        return Math.abs(Shooter.getInstance().getError()) <= ShooterConstants.ERROR_RANGE_STABLE_ALLOWANCE;
     }
 
     /**
