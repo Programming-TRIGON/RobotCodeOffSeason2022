@@ -2,6 +2,7 @@ package frc.trigon.robot.subsystems.pitcher;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,6 +35,15 @@ public class Pitcher extends SubsystemBase {
         return Conversions.motorPositionToSystemPosition(motorAngle, PitcherConstants.GEAR_RATIO);
     }
 
+    public double getTargetAngle() {
+        if(motor.getControlMode() != ControlMode.Position) {
+            return 0;
+        }
+        double offsettedRead = Conversions.offsetRead(motor.getClosedLoopTarget(), PitcherConstants.MIN_TICKS);
+        double motorAngle = Conversions.magTicksToDegrees(offsettedRead);
+        return Conversions.motorPositionToSystemPosition(motorAngle, PitcherConstants.GEAR_RATIO);
+    }
+
     void stop() {
         motor.disable();
     }
@@ -45,6 +55,14 @@ public class Pitcher extends SubsystemBase {
     public Command getPitchingCommand(DoubleSupplier targetAngle) {
         return new RunCommand(() -> setTargetAngle(targetAngle.getAsDouble()), this)
                 .andThen(this::stop, this);
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Target Angle", this::getTargetAngle, this::setTargetAngle);
+        builder.addDoubleProperty("Current Angle", this::getAngle, null);
+        builder.addDoubleProperty("Error", this::getError, null);
     }
 }
 

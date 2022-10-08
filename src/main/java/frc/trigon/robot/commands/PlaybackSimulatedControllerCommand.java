@@ -2,7 +2,6 @@ package frc.trigon.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.trigon.robot.RobotContainer;
 import frc.trigon.robot.controllers.simulation.Log;
 import frc.trigon.robot.controllers.simulation.SimulateableController;
 
@@ -38,6 +37,5 @@ public class PlaybackSimulatedControllerCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.driverController.setCurrentLog(null);
     }
 }

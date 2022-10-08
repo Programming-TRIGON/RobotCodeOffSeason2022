@@ -5,20 +5,68 @@
 
 package frc.trigon.robot;
 
-import frc.trigon.robot.commands.PlaybackSimulatedControllerCommand;
-import frc.trigon.robot.commands.RecordControllerCommand;
-import frc.trigon.robot.controllers.simulation.SimulateableController;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.trigon.robot.commands.CollectCommand;
+import frc.trigon.robot.components.HubLimelight;
+import frc.trigon.robot.controllers.XboxController;
+import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
+import frc.trigon.robot.subsystems.ballscounter.CountBallsCommand;
+import frc.trigon.robot.subsystems.loader.Loader;
+import frc.trigon.robot.subsystems.pitcher.Pitcher;
+import frc.trigon.robot.subsystems.shooter.Shooter;
+import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
+import frc.trigon.robot.subsystems.swerve.Swerve;
 
 public class RobotContainer {
-    public static final SimulateableController driverController = new SimulateableController(0);
-    PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
-    RecordControllerCommand recordControllerCommand;
+    XboxController controller;
+    PowerDistribution powerDistribution;
+    HubLimelight limelight;
+
+    CollectCommand collectCommand;
+    FieldRelativeSupplierDrive swerveCmd;
+    CountBallsCommand countBallsCmd;
 
     public RobotContainer() {
-        //        playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(
-        //                driverController, JsonHandler.parseJsonFileToObject("logs.json"));
-        //
-        //        SmartDashboard.putData(playbackSimulatedControllerCommand);
-        //        SmartDashboard.putData(recordControllerCommand);
+        initComponents();
+        initCommands();
+        bindCommands();
+
+        putSendablesOnSmartDashboard();
+
+        powerDistribution.clearStickyFaults();
+    }
+
+    private void initComponents() {
+        controller = new XboxController(0, true, 0.05);
+        powerDistribution = new PowerDistribution(43, PowerDistribution.ModuleType.kRev);
+        limelight = new HubLimelight("limelight");
+    }
+
+    private void initCommands() {
+        swerveCmd = new FieldRelativeSupplierDrive(
+                () -> -controller.getLeftY(),
+                () -> controller.getLeftX(),
+                () -> -controller.getRightX()
+        );
+        collectCommand = new CollectCommand();
+
+        countBallsCmd = new CountBallsCommand();
+    }
+
+    private void bindCommands() {
+        Swerve.getInstance().setDefaultCommand(swerveCmd);
+        controller.getABtn().whileHeld(collectCommand);
+        controller.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
+        controller.getBBtn().whileHeld(Loader.getInstance().getLoadCommand());
+
+        countBallsCmd.schedule();
+    }
+
+    private void putSendablesOnSmartDashboard() {
+        SmartDashboard.putData(Shooter.getInstance());
+        SmartDashboard.putData(Pitcher.getInstance());
+        SmartDashboard.putData(limelight);
+        SmartDashboard.putData(BallsCounter.getInstance());
     }
 }

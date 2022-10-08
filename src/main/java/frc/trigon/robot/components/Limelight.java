@@ -3,8 +3,10 @@ package frc.trigon.robot.components;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
-public class Limelight {
+public class Limelight implements Sendable {
     private final NetworkTableEntry tv, tx, ty, ts, ta, ledMode, driverCam, pipeline, snapshot;
 
     /**
@@ -114,6 +116,14 @@ public class Limelight {
      */
     public void takeSnapshot() {
         snapshot.setNumber(1);
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("tx", this::getTx, null);
+        builder.addDoubleProperty("ty", this::getTy, null);
+        builder.addDoubleProperty("ts", this::getTs, null);
+        builder.addBooleanProperty("tv", this::hasTarget, null);
     }
 
     public enum LedMode {
