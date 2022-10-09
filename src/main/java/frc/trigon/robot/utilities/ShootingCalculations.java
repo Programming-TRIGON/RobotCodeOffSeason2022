@@ -10,12 +10,12 @@ import java.util.Objects;
  */
 public class ShootingCalculations {
     private static final Waypoint[] waypoints = new Waypoint[] {
-            new Waypoint(127, 2400, 0),
-            new Waypoint(172, 2600, 3),
-            new Waypoint(280, 2800, 7),
-            new Waypoint(384, 3000, 13),
-            new Waypoint(464, 3400, 13),
-            new Waypoint(529, 3500, 13)
+            new Waypoint(1.27, 2400, 0),
+            new Waypoint(1.72, 2600, 3),
+            new Waypoint(2.80, 2800, 7),
+            new Waypoint(3.84, 3000, 13),
+            new Waypoint(4.64, 3400, 13),
+            new Waypoint(5.29, 3500, 13)
     };
 
     /**
