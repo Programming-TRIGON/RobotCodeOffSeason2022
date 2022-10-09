@@ -8,7 +8,7 @@ import frc.trigon.robot.utilities.Conversions;
  */
 public class HubLimelight extends Limelight {
     private static final double A = 0.003;
-    private static final double B = 0.0968;
+    private static final double B = -0.0968;
     private static final double C = 2.0034;
 
     /**

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.trigon.robot.commands.CollectCommand;
 import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.XboxController;
+import frc.trigon.robot.subsystems.backspinreducer.BackspinReducer;
 import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
 import frc.trigon.robot.subsystems.ballscounter.CountBallsCommand;
 import frc.trigon.robot.subsystems.loader.Loader;
@@ -18,6 +19,7 @@ import frc.trigon.robot.subsystems.shooter.Shooter;
 import frc.trigon.robot.subsystems.shooter.ShotsDetectorCommand;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
+import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
 
 public class RobotContainer {
     XboxController controller;
@@ -29,6 +31,8 @@ public class RobotContainer {
 
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
+
+    TurnToTargetCommand tttCmd;
 
     public RobotContainer() {
         initComponents();
@@ -48,21 +52,25 @@ public class RobotContainer {
 
     private void initCommands() {
         swerveCmd = new FieldRelativeSupplierDrive(
-                () -> -controller.getLeftY(),
-                () -> controller.getLeftX(),
+                () -> controller.getLeftY(),
+                () -> -controller.getLeftX(),
                 () -> -controller.getRightX()
         );
         collectCommand = new CollectCommand();
 
         countBallsCommand = new CountBallsCommand();
         shotsDetectorCommand = new ShotsDetectorCommand();
+
+        tttCmd = new TurnToTargetCommand(limelight, 0);
     }
 
     private void bindCommands() {
         Swerve.getInstance().setDefaultCommand(swerveCmd);
         controller.getABtn().whileHeld(collectCommand);
         controller.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
-        controller.getBBtn().whileHeld(Loader.getInstance().getLoadCommand());
+        controller.getBBtn().whileHeld(
+                Loader.getInstance().getLoadCommand().alongWith(BackspinReducer.getInstance().getReducerCommand()));
+        controller.getXBtn().whileHeld(tttCmd);
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();
@@ -71,7 +79,7 @@ public class RobotContainer {
     private void putSendablesOnSmartDashboard() {
         SmartDashboard.putData(Shooter.getInstance());
         SmartDashboard.putData(Pitcher.getInstance());
-        SmartDashboard.putData(limelight);
+        SmartDashboard.putData("Hub Limelight", limelight);
         SmartDashboard.putData(BallsCounter.getInstance());
         SmartDashboard.putData(BallsCounter.getInstance().countBallsCommand);
         SmartDashboard.putData(Shooter.getInstance());

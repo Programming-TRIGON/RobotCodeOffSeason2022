@@ -3,6 +3,7 @@ package frc.trigon.robot.subsystems.swerve;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.trigon.robot.components.Limelight;
 
@@ -10,10 +11,9 @@ import java.util.function.DoubleSupplier;
 
 public class TurnToTargetCommand extends CommandBase {
     private static final double
-            P = 1,
-            I = 1,
-            D = 1,
-            TOLERANCE = 10;
+            P = 0.2,
+            I = 0.2,
+            D = 1;
 
     private final Swerve swerve;
     private final Limelight limelight;
@@ -23,6 +23,9 @@ public class TurnToTargetCommand extends CommandBase {
 
     public TurnToTargetCommand(Limelight limelight, double target) {
         pidController = new PIDController(P, I, D);
+        pidController.setTolerance(0);
+        pidController.setIntegratorRange(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        SmartDashboard.putData("tttPid", pidController);
         CurrentTx = limelight::getTx;
         this.target = target;
         swerve = Swerve.getInstance();
@@ -32,7 +35,6 @@ public class TurnToTargetCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        pidController.setTolerance(TOLERANCE);
         pidController.setSetpoint(target);
     }
 
