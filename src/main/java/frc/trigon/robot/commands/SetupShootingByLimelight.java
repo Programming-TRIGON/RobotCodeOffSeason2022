@@ -11,8 +11,8 @@ import frc.trigon.robot.utilities.ShootingCalculations;
  */
 public class SetupShootingByLimelight extends ParallelCommandGroup {
     private static final double
-            DEFAULT_VELOCITY = 0,
-            DEFAULT_ANGLE = 0;
+            DEFAULT_VELOCITY = 2500,
+            DEFAULT_ANGLE = 5;
     HubLimelight limelight;
 
     public SetupShootingByLimelight(HubLimelight limelight) {
