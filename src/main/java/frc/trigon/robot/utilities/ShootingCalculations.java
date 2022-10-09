@@ -105,7 +105,7 @@ public class ShootingCalculations {
 
     private static Waypoint[] getNearestWaypointsFromDistance(double distance) {
         Waypoint[] toReturn = new Waypoint[2];
-        if(waypoints.isEmpty() || waypoints.size() < 2) return null;
+        if(waypoints.size() <= 2) return null;
         if(distance < waypoints.get(0).distance){
             toReturn[0] = waypoints.get(0);
             toReturn[1] = waypoints.get(1);
