@@ -5,8 +5,24 @@ import frc.trigon.robot.controllers.XboxController;
 public class SimulateableController extends XboxController {
     private Log currentLog;
 
-    public SimulateableController(int id) {
-        super(id);
+    /**
+     * Construct an instance of a controller.
+     *
+     * @param port the port index on the Driver Station that the controller is plugged into
+     */
+    public SimulateableController(int port) {
+        super(port);
+    }
+
+    /**
+     * Construct an instance of a controller.
+     *
+     * @param port     the port index on the Driver Station that the controller is plugged into
+     * @param square   whether to square the input values
+     * @param deadband the deadband for the controller
+     */
+    public SimulateableController(int port, boolean square, double deadband) {
+        super(port, square, deadband);
     }
 
     public void setCurrentLog(Log currentLog) {
