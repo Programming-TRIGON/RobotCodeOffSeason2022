@@ -50,6 +50,13 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
+     * Sets the target velocity to the default value.
+     */
+    public void setToDefaultTargetVelocity() {
+        setTargetVelocity(ShooterConstants.DEFAULT_TARGET_VELOCITY);
+    }
+
+    /**
      * Stops the shooter
      */
     private void stop() {
@@ -81,6 +88,17 @@ public class Shooter extends SubsystemBase {
     public Command getPrimeShooterCommand(DoubleSupplier targetVelocity) {
         return new RunCommand(() -> setTargetVelocity(targetVelocity.getAsDouble()), this)
                 .andThen(this::stop);
+    }
+
+    public Command getPrimeShooterCommandWithDefault(DoubleSupplier targetVelocity) {
+        return new RunCommand(() -> {
+            if(targetVelocity.getAsDouble() == 0) {
+                setToDefaultTargetVelocity();
+            } else {
+                setTargetVelocity(targetVelocity.getAsDouble());
+            }
+        }, this)
+                .andThen(this::stop, this);
     }
 
     @Override

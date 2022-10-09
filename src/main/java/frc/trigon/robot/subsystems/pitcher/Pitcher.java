@@ -24,6 +24,10 @@ public class Pitcher extends SubsystemBase {
         motor.set(ControlMode.Position, Conversions.offsetWrite(ticks, PitcherConstants.MIN_TICKS));
     }
 
+    public void setToDefaultTargetAngle() {
+        setTargetAngle(PitcherConstants.DEFAULT_TARGET_ANGLE);
+    }
+
     public double getError() {
         double error = motor.getClosedLoopError();
         return Conversions.magTicksToDegrees(error);
@@ -54,6 +58,22 @@ public class Pitcher extends SubsystemBase {
      */
     public Command getPitchingCommand(DoubleSupplier targetAngle) {
         return new RunCommand(() -> setTargetAngle(targetAngle.getAsDouble()), this)
+                .andThen(this::stop, this);
+    }
+
+    /**
+     * @param targetAngle the command will continuously set the target angle to this, if this is 0, then the default
+     *                    target angle will be used.
+     * @return a command that sets the angle of the pitcher according to the given supplier.
+     */
+    public Command getPitchingCommandWithDefault(DoubleSupplier targetAngle) {
+        return new RunCommand(() -> {
+            if(targetAngle.getAsDouble() == 0) {
+                setToDefaultTargetAngle();
+            } else {
+                setTargetAngle(targetAngle.getAsDouble());
+            }
+        }, this)
                 .andThen(this::stop, this);
     }
 

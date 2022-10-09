@@ -7,8 +7,8 @@ package frc.trigon.robot;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.trigon.robot.commands.CollectCommand;
-import frc.trigon.robot.commands.SetupShootingByLimelight;
 import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.XboxController;
 import frc.trigon.robot.subsystems.backspinreducer.BackspinReducer;
@@ -21,6 +21,7 @@ import frc.trigon.robot.subsystems.shooter.ShotsDetectorCommand;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
+import frc.trigon.robot.utilities.ShootingCalculations;
 
 public class RobotContainer {
     XboxController controller;
@@ -29,12 +30,13 @@ public class RobotContainer {
 
     CollectCommand collectCommand;
     FieldRelativeSupplierDrive swerveCmd;
+    Command primeShooterCmd;
+    Command pitchCmd;
 
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
 
     TurnToTargetCommand turnToHubCmd;
-    SetupShootingByLimelight setupShootingByLimelightCmd;
 
     public RobotContainer() {
         initComponents();
@@ -64,12 +66,23 @@ public class RobotContainer {
         shotsDetectorCommand = new ShotsDetectorCommand();
 
         turnToHubCmd = new TurnToTargetCommand(limelight, 0);
-        setupShootingByLimelightCmd = new SetupShootingByLimelight(limelight);
+
+        primeShooterCmd = Shooter.getInstance().getPrimeShooterCommandWithDefault(
+                () -> limelight.hasTarget() ?
+                      ShootingCalculations.getShootingVelocityFromDistance(limelight.getDistanceFromHub()) :
+                      0
+        );
+        pitchCmd = Pitcher.getInstance().getPitchingCommandWithDefault(
+                () -> limelight.hasTarget() ?
+                      ShootingCalculations.getShootingAngleFromDistance(limelight.getDistanceFromHub()) :
+                      0
+        );
     }
 
     private void bindCommands() {
         Swerve.getInstance().setDefaultCommand(swerveCmd);
-        Pitcher.getInstance().setDefaultCommand(setupShootingByLimelightCmd);
+        Pitcher.getInstance().setDefaultCommand(pitchCmd);
+        Shooter.getInstance().setDefaultCommand(primeShooterCmd);
 
         controller.getABtn().whileHeld(collectCommand);
         controller.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
