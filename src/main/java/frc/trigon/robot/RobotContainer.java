@@ -9,23 +9,79 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.trigon.robot.commands.PlaybackSimulatedControllerCommand;
 import frc.trigon.robot.commands.RecordControllerCommand;
 import frc.trigon.robot.controllers.simulation.SimulateableController;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import frc.trigon.robot.commands.CollectCommand;
+import frc.trigon.robot.components.HubLimelight;
+import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
+import frc.trigon.robot.subsystems.ballscounter.CountBallsCommand;
+import frc.trigon.robot.subsystems.loader.Loader;
+import frc.trigon.robot.subsystems.pitcher.Pitcher;
+import frc.trigon.robot.subsystems.shooter.Shooter;
+import frc.trigon.robot.subsystems.shooter.ShotsDetectorCommand;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
 
 public class RobotContainer {
-    public static final SimulateableController driverController = new SimulateableController(0);
-    private PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
-    private RecordControllerCommand recordControllerCommand;
-    private FieldRelativeSupplierDrive swerveCommand;
-    private Swerve swerve;
+    SimulateableController driverController;
+
+    PowerDistribution powerDistribution;
+    HubLimelight limelight;
+
+    FieldRelativeSupplierDrive swerveCommand;
+    PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
+    RecordControllerCommand recordControllerCommand;
+    CollectCommand collectCommand;
+
+    CountBallsCommand countBallsCommand;
+    ShotsDetectorCommand shotsDetectorCommand;
 
     public RobotContainer() {
-        playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
-        recordControllerCommand = new RecordControllerCommand(driverController);
-        swerveCommand = new FieldRelativeSupplierDrive(driverController::getLeftX,
-               driverController::getLeftY, driverController::getRightX);
-        swerve = Swerve.getInstance();
-        swerve.setDefaultCommand(swerveCommand);
+        initComponents();
+        initCommands();
+        bindCommands();
+
+        putSendablesOnSmartDashboard();
+
+        powerDistribution.clearStickyFaults();
+    }
+
+    private void initComponents() {
+        driverController = new SimulateableController(0, true, 0.05);
+        powerDistribution = new PowerDistribution(43, PowerDistribution.ModuleType.kRev);
+        limelight = new HubLimelight("limelight");
+    }
+
+    private void initCommands() {
+        swerveCommand = new FieldRelativeSupplierDrive(
+                () -> -driverController.getLeftY(),
+                () -> driverController.getLeftX(),
+                () -> -driverController.getRightX()
+        );
+        collectCommand = new CollectCommand();
+
+        countBallsCommand = new CountBallsCommand();
+        shotsDetectorCommand = new ShotsDetectorCommand();
+    }
+
+    private void bindCommands() {
+        Swerve.getInstance().setDefaultCommand(swerveCommand);
+        driverController.getABtn().whileHeld(collectCommand);
+        driverController.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
+        driverController.getBBtn().whileHeld(Loader.getInstance().getLoadCommand());
+
+        countBallsCommand.schedule();
+        shotsDetectorCommand.schedule();
+    }
+
+    private void putSendablesOnSmartDashboard() {
+        SmartDashboard.putData(Shooter.getInstance());
+        SmartDashboard.putData(Pitcher.getInstance());
+        SmartDashboard.putData(limelight);
+        SmartDashboard.putData(BallsCounter.getInstance());
+        SmartDashboard.putData(BallsCounter.getInstance().countBallsCommand);
+        SmartDashboard.putData(Shooter.getInstance());
+        SmartDashboard.putData(Shooter.getInstance().shotsDetectorCommand);
+        SmartDashboard.putData(Swerve.getInstance());
         SmartDashboard.putData(recordControllerCommand);
         SmartDashboard.putData(playbackSimulatedControllerCommand);
     }
