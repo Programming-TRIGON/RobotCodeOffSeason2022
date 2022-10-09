@@ -3,26 +3,36 @@ package frc.trigon.robot.utilities;
 import edu.wpi.first.math.geometry.Translation2d;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This class is used to calculate the shooting angle and distance for the shooter.
  */
 public class ShootingCalculations {
-    private static final ArrayList<Waypoint> waypoints = getWaypoints();
+    private static final Waypoint[] waypoints = new Waypoint[] {
+            new Waypoint(127, 2400, 0),
+            new Waypoint(172, 2600, 3),
+            new Waypoint(280, 2800, 7),
+            new Waypoint(384, 3000, 13),
+            new Waypoint(464, 3400, 13),
+            new Waypoint(529, 3500, 13)
+    };
 
     /**
      * @param distance the distance from the target
      * @return a waypoint with the distance, velocity and angle from the given distance
      */
-    public static Waypoint getWaypointFromDistance(double distance) {
+    public static Waypoint calculateCustomWaypointFromDistance(double distance) {
         Waypoint[] waypointsFromDistance = getNearestWaypointsFromDistance(distance);
-        double velocity = calculateBetweenTranslations(
+        if(waypointsFromDistance == null) {
+            return null;
+        }
+        double velocity = Maths.calculateBetweenTranslations(
                 new Translation2d(waypointsFromDistance[0].distance, waypointsFromDistance[0].velocity),
                 new Translation2d(waypointsFromDistance[1].distance, waypointsFromDistance[1].velocity),
                 distance
         );
-        double angle = calculateBetweenTranslations(
+        double angle = Maths.calculateBetweenTranslations(
                 new Translation2d(waypointsFromDistance[0].distance, waypointsFromDistance[0].angle),
                 new Translation2d(waypointsFromDistance[1].distance, waypointsFromDistance[1].angle),
                 distance
@@ -37,7 +47,8 @@ public class ShootingCalculations {
      * @return the velocity needed for the shooter
      */
     public static double getShootingVelocityFromDistance(double distance) {
-        return getWaypointFromDistance(distance).velocity;
+        return Objects.requireNonNullElse(
+                calculateCustomWaypointFromDistance(distance), new Waypoint(0, 0, 0)).velocity;
     }
 
     /**
@@ -47,101 +58,35 @@ public class ShootingCalculations {
      * @return the angle needed for the shooter
      */
     public static double getShootingAngleFromDistance(double distance) {
-        return getWaypointFromDistance(distance).angle;
+        return Objects.requireNonNullElse(calculateCustomWaypointFromDistance(distance), new Waypoint(0, 0, 0)).angle;
     }
 
-    /**
-     * Calculates the value between two translations.
-     *
-     * @param firstPoint  the first point
-     * @param secondPoint the second point
-     * @param pointToKnow the point to know the value of (between the first and second points)
-     * @return the value between the two points
-     */
-    public static double calculateBetweenTranslations(
-            Translation2d firstPoint, Translation2d secondPoint, double pointToKnow) {
-        double m = (firstPoint.getY() - secondPoint.getY()) / (firstPoint.getX() - secondPoint.getX());
-        return m * pointToKnow - m * firstPoint.getX() + firstPoint.getY();
-    }
-
-    /**
-     * Adds a waypoint to the waypoints list.
-     *
-     * @param distance the distance for the waypoint
-     * @param velocity the velocity for the waypoint
-     * @param angle    the angle for the waypoint
-     */
-    public static void addWaypoint(double distance, double velocity, double angle) {
-        Waypoint toAdd = new Waypoint(distance, velocity, angle);
-        for(int i = 0; i < waypoints.size(); i++) {
-            if(waypoints.get(i).distance < toAdd.distance) {
-                waypoints.add(i, toAdd);
-                saveWaypointsToJson();
-                break;
+    public static Waypoint[] getNearestWaypointsFromDistance(double distance) {
+        if(waypoints == null || waypoints.length < 2)
+            return null;
+        if(distance < waypoints[0].distance) {
+            return new Waypoint[] {waypoints[0], waypoints[1]};
+        }
+        if(distance > waypoints[waypoints.length - 1].distance) {
+            return new Waypoint[] {waypoints[waypoints.length - 2], waypoints[waypoints.length - 1]};
+        }
+        for(int i = 0; i < waypoints.length; i++) {
+            if(distance < waypoints[i].distance) {
+                return new Waypoint[] {waypoints[i - 1], waypoints[i]};
             }
         }
+        return null;
     }
 
-    /**
-     * @return the waypoints list
-     */
-    public static ArrayList<Waypoint> getWaypoints() {
-        Waypoints waypointsClass = JsonHandler.parseJsonFileToObject("waypoints.json", Waypoints.class);
-        if(waypointsClass == null)
-            waypointsClass = new Waypoints();
-        return waypointsClass.waypoints;
-    }
-
-    /**
-     * Sets the waypoints list.
-     *
-     * @param waypoints the waypoints list
-     */
-    public static void setWaypoints(ArrayList<Waypoint> waypoints) {
-        ShootingCalculations.waypoints.clear();
-        ShootingCalculations.waypoints.addAll(waypoints);
-        saveWaypointsToJson();
-    }
-
-    private static Waypoint[] getNearestWaypointsFromDistance(double distance) {
-        Waypoint[] toReturn = new Waypoint[2];
-        if(waypoints.isEmpty() || waypoints.size() < 2) return null;
-        if(distance < waypoints.get(0).distance){
-            toReturn[0] = waypoints.get(0);
-            toReturn[1] = waypoints.get(1);
-        }
-        if(distance > waypoints.get(waypoints.size()-1).distance){
-            toReturn[0] = waypoints.get(waypoints.size()-2);
-            toReturn[1] = waypoints.get(waypoints.size()-1);
-        }
-        for(int i = 0; i < waypoints.size(); i++) {
-            if(distance < waypoints.get(i).distance) {
-                if(i == 0) {
-                    toReturn[0] = waypoints.get(i);
-                    toReturn[1] = waypoints.get(i + 1);
-                } else {
-                    toReturn[0] = waypoints.get(i - 1);
-                    toReturn[1] = waypoints.get(i);
-                }
-                return toReturn;
-            }
-        }
-        toReturn[0] = waypoints.get(waypoints.size() - 1);
-        toReturn[1] = waypoints.get(waypoints.size() - 2);
-        return toReturn;
-    }
-
-    private static void saveWaypointsToJson() {
-        Waypoints waypointsClass = new Waypoints();
-        waypointsClass.waypoints = waypoints;
+    public static void saveWaypointsToJson() {
         try {
-            JsonHandler.parseToJsonAndWrite("waypoints.json", waypointsClass);
+            JsonHandler.parseToJsonAndWrite("waypoints.json", waypoints.getClass());
         } catch(IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private static class Waypoint {
+    public static class Waypoint {
         public double distance, velocity, angle;
 
         public Waypoint(double distance, double velocity, double angle) {
@@ -149,9 +94,14 @@ public class ShootingCalculations {
             this.velocity = velocity;
             this.angle = angle;
         }
-    }
 
-    private static class Waypoints {
-        public ArrayList<Waypoint> waypoints;
+        @Override
+        public String toString() {
+            return "Waypoint{" +
+                    "distance=" + distance +
+                    ", velocity=" + velocity +
+                    ", angle=" + angle +
+                    '}';
+        }
     }
 }

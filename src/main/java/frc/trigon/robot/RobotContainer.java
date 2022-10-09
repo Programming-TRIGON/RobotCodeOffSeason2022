@@ -8,6 +8,7 @@ package frc.trigon.robot;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.trigon.robot.commands.CollectCommand;
+import frc.trigon.robot.commands.SetupShootingByLimelight;
 import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.XboxController;
 import frc.trigon.robot.subsystems.backspinreducer.BackspinReducer;
@@ -32,7 +33,8 @@ public class RobotContainer {
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
 
-    TurnToTargetCommand tttCmd;
+    TurnToTargetCommand turnToHubCmd;
+    SetupShootingByLimelight setupShootingByLimelightCmd;
 
     public RobotContainer() {
         initComponents();
@@ -61,16 +63,19 @@ public class RobotContainer {
         countBallsCommand = new CountBallsCommand();
         shotsDetectorCommand = new ShotsDetectorCommand();
 
-        tttCmd = new TurnToTargetCommand(limelight, 0);
+        turnToHubCmd = new TurnToTargetCommand(limelight, 0);
+        setupShootingByLimelightCmd = new SetupShootingByLimelight(limelight);
     }
 
     private void bindCommands() {
         Swerve.getInstance().setDefaultCommand(swerveCmd);
+        Pitcher.getInstance().setDefaultCommand(setupShootingByLimelightCmd);
+
         controller.getABtn().whileHeld(collectCommand);
         controller.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
         controller.getBBtn().whileHeld(
                 Loader.getInstance().getLoadCommand().alongWith(BackspinReducer.getInstance().getReducerCommand()));
-        controller.getXBtn().whileHeld(tttCmd);
+        controller.getXBtn().whileHeld(turnToHubCmd);
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();
