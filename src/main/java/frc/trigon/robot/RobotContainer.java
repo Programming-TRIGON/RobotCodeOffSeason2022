@@ -15,6 +15,7 @@ import frc.trigon.robot.subsystems.ballscounter.CountBallsCommand;
 import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.pitcher.Pitcher;
 import frc.trigon.robot.subsystems.shooter.Shooter;
+import frc.trigon.robot.subsystems.shooter.ShotsDetectorCommand;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
 
@@ -25,7 +26,9 @@ public class RobotContainer {
 
     CollectCommand collectCommand;
     FieldRelativeSupplierDrive swerveCmd;
-    CountBallsCommand countBallsCmd;
+
+    CountBallsCommand countBallsCommand;
+    ShotsDetectorCommand shotsDetectorCommand;
 
     public RobotContainer() {
         initComponents();
@@ -51,7 +54,8 @@ public class RobotContainer {
         );
         collectCommand = new CollectCommand();
 
-        countBallsCmd = new CountBallsCommand();
+        countBallsCommand = new CountBallsCommand();
+        shotsDetectorCommand = new ShotsDetectorCommand();
     }
 
     private void bindCommands() {
@@ -60,7 +64,8 @@ public class RobotContainer {
         controller.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
         controller.getBBtn().whileHeld(Loader.getInstance().getLoadCommand());
 
-        countBallsCmd.schedule();
+        countBallsCommand.schedule();
+        shotsDetectorCommand.schedule();
     }
 
     private void putSendablesOnSmartDashboard() {
@@ -68,5 +73,9 @@ public class RobotContainer {
         SmartDashboard.putData(Pitcher.getInstance());
         SmartDashboard.putData(limelight);
         SmartDashboard.putData(BallsCounter.getInstance());
+        SmartDashboard.putData(BallsCounter.getInstance().countBallsCommand);
+        SmartDashboard.putData(Shooter.getInstance());
+        SmartDashboard.putData(Shooter.getInstance().shotsDetectorCommand);
+        SmartDashboard.putData(Swerve.getInstance());
     }
 }

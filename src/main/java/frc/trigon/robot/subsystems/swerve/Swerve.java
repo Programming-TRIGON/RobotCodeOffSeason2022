@@ -12,7 +12,6 @@ public class Swerve extends SubsystemBase {
 
     private Swerve() {
         zeroHeading();
-        putOnDashboard();
     }
 
     public static Swerve getInstance() {
@@ -100,7 +99,6 @@ public class Swerve extends SubsystemBase {
                     SwerveConstants.SWERVE_MODULES[i]
             );
         }
-        SmartDashboard.putData("Swerve", this);
     }
 }
 

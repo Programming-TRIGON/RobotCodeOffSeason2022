@@ -8,6 +8,7 @@ import frc.trigon.robot.subsystems.loader.Loader;
 
 public class BallsCounter extends SubsystemBase {
     private final static BallsCounter INSTANCE = new BallsCounter();
+    public CountBallsCommand countBallsCommand;
     private final ColorSensorV3 colorSensor = BallsCounterConstants.COLOR_SENSOR;
     public String firstBall = "", secondBall = "";
 
@@ -73,8 +74,8 @@ public class BallsCounter extends SubsystemBase {
         super.initSendable(builder);
         builder.addBooleanProperty("Ball In", this::isBallIn, null);
         builder.addBooleanProperty("Ball Out", this::isBallOut, null);
-        builder.addStringProperty("First Ball", () -> firstBall, null);
-        builder.addStringProperty("Second Ball", () -> secondBall, null);
+        builder.addStringProperty("First Ball", () -> firstBall, (str) -> firstBall = str);
+        builder.addStringProperty("Second Ball", () -> secondBall, (str) -> secondBall = str);
         builder.addStringProperty("Color", this::getColor, null);
         builder.addDoubleProperty("Proximity", colorSensor::getProximity, null);
         builder.addDoubleProperty("Red", colorSensor::getRed, null);
