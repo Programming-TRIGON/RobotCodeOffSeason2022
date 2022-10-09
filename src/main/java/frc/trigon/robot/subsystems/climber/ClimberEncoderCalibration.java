@@ -8,6 +8,7 @@ import frc.trigon.robot.utilities.JsonHandler;
  */
 public class ClimberEncoderCalibration extends CommandBase {
     private final Climber climber = Climber.getInstance();
+    private boolean finished;
 
     /**
      * Constructs a new ClimberEncoderCalibration command.
@@ -19,6 +20,7 @@ public class ClimberEncoderCalibration extends CommandBase {
     @Override
     public void initialize() {
         climber.setPower(-ClimberConstants.CLIMBER_CALIBRATION_POWER);
+        finished = false;
     }
 
     @Override
@@ -32,17 +34,18 @@ public class ClimberEncoderCalibration extends CommandBase {
             climberConstants.maxTicks = climber.getSelectedSensorPosition() / 2;
             try {
                 JsonHandler.parseToJsonAndWrite("ClimberConstants.json", climberConstants);
-                ClimberConstants.maxTicks = climber.getCurrentPosition() / 2;
+                Climber.maxTicks = climber.getCurrentPosition() / 2;
             } catch(Exception e) {
                 e.printStackTrace();
             }
             climber.setSelectedSensorPosition(climber.getSelectedSensorPosition() / 2);
+            finished = true;
         }
     }
 
     @Override
     public boolean isFinished() {
-        return climber.atTop();
+        return finished;
     }
 
     @Override

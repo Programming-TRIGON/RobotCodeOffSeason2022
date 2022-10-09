@@ -7,6 +7,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.trigon.robot.subsystems.climber.ClimberConstants.ClimberPosition;
+import frc.trigon.robot.utilities.JsonHandler;
+
+import java.util.Objects;
 
 public class Climber extends SubsystemBase {
     private static final WPI_TalonFX
@@ -18,6 +21,10 @@ public class Climber extends SubsystemBase {
     private Climber() {
 
     }
+
+    static double maxTicks = Objects.requireNonNullElse(
+            JsonHandler.parseJsonFileToObject("ClimberConstants.json", ClimberConstants.LocalClimberConstants.class),
+            new ClimberConstants.LocalClimberConstants()).maxTicks;
 
     static Climber getInstance() {
         return INSTANCE;
@@ -46,7 +53,7 @@ public class Climber extends SubsystemBase {
      * @return the current position from -1 (lowest) to 1 (highest)
      */
     double getCurrentPosition() {
-        return masterMotor.getSelectedSensorPosition() / ClimberConstants.maxTicks;
+        return masterMotor.getSelectedSensorPosition() / maxTicks;
     }
 
     /**
