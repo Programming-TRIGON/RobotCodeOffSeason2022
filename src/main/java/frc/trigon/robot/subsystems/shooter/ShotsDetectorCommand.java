@@ -1,5 +1,6 @@
 package frc.trigon.robot.subsystems.shooter;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -15,6 +16,7 @@ public class ShotsDetectorCommand extends CommandBase {
         if(Shooter.getInstance().atTargetVelocity()) {
             if(Timer.getFPGATimestamp() >= lastErrorTimer + ShooterConstants.TIME_TOLERANCE) {
                 isStable = true;
+                Shooter.getInstance().wasInSetpoint = true;
             }
         } else {
             isStable = false;
@@ -24,5 +26,18 @@ public class ShotsDetectorCommand extends CommandBase {
 
     public boolean getIsStable() {
         return isStable;
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addBooleanProperty("Is stable", () -> isStable, null);
+        builder.addDoubleProperty("Last error timer", () -> lastErrorTimer, null);
+        builder.addDoubleProperty("Current time", Timer::getFPGATimestamp, null);
     }
 }

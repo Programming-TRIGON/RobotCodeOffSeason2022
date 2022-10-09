@@ -3,20 +3,20 @@ package frc.trigon.robot.subsystems.shooter;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class ShooterConstants {
-    static final WPI_TalonFX
-            MASTER_MOTOR = RIGHT_MOTOR;
-    static final double TIME_TOLERANCE = 0.5;
-    static final double VELOCITY_TOLERANCE = 100;
-    static final double S = 0.03;
     private static final int
             LEFT_MOTOR_ID = 12,
             RIGHT_MOTOR_ID = 6;
     private static final WPI_TalonFX
             LEFT_MOTOR = new WPI_TalonFX(LEFT_MOTOR_ID),
             RIGHT_MOTOR = new WPI_TalonFX(RIGHT_MOTOR_ID);
+    static final WPI_TalonFX
+            MASTER_MOTOR = RIGHT_MOTOR;
+    static final double TIME_TOLERANCE = 0.5;
+    static final double VELOCITY_TOLERANCE = 20;
+    static final double S = 0.03;
     private static final WPI_TalonFX FOLLOWER_MOTOR =
             LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
-    private static final boolean INVERTED = false;
+    private static final boolean INVERTED = true;
     private static final double VOLTAGE_SATURATION = 10;
     private static final double
             P = 0.12,
