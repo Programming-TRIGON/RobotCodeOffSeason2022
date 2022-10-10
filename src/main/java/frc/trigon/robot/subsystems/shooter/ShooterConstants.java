@@ -1,5 +1,6 @@
 package frc.trigon.robot.subsystems.shooter;
 
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class ShooterConstants {
@@ -43,5 +44,9 @@ public class ShooterConstants {
         MASTER_MOTOR.config_kF(0, V);
 
         MASTER_MOTOR.configMaxIntegralAccumulator(0, MAX_I);
+
+        MASTER_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General,1000,0);
+        FOLLOWER_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General,1000,0);
+        FOLLOWER_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0,1000,0);
     }
 }
