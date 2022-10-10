@@ -53,8 +53,8 @@ public class Shooter extends SubsystemBase {
     /**
      * Sets the target velocity to the default value.
      */
-    public void setToDefaultTargetVelocity() {
-        setTargetVelocity(ShooterConstants.DEFAULT_TARGET_VELOCITY);
+    public void setToIdleTargetVelocity() {
+        setTargetVelocity(ShooterConstants.IDLE_TARGET_VELOCITY);
     }
 
     /**
@@ -94,7 +94,7 @@ public class Shooter extends SubsystemBase {
     public CommandBase getPrimeShooterCommandWithDefault(DoubleSupplier targetVelocity) {
         return new RunCommand(() -> {
             if(targetVelocity.getAsDouble() == 0) {
-                setToDefaultTargetVelocity();
+                setToIdleTargetVelocity();
             } else {
                 setTargetVelocity(targetVelocity.getAsDouble());
             }

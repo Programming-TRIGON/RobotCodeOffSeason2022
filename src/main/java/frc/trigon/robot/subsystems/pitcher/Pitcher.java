@@ -25,8 +25,8 @@ public class Pitcher extends SubsystemBase {
         motor.set(ControlMode.Position, Conversions.offsetWrite(ticks, PitcherConstants.MIN_TICKS));
     }
 
-    public void setToDefaultTargetAngle() {
-        setTargetAngle(PitcherConstants.DEFAULT_TARGET_ANGLE);
+    public void setToIdleTargetAngle() {
+        setTargetAngle(PitcherConstants.IDLE_TARGET_ANGLE);
     }
 
     public double getError() {
@@ -70,7 +70,7 @@ public class Pitcher extends SubsystemBase {
     public CommandBase getPitchingCommandWithDefault(DoubleSupplier targetAngle) {
         return new RunCommand(() -> {
             if(targetAngle.getAsDouble() == 0) {
-                setToDefaultTargetAngle();
+                setToIdleTargetAngle();
             } else {
                 setTargetAngle(targetAngle.getAsDouble());
             }
