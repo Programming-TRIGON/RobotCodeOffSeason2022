@@ -5,8 +5,8 @@
 
 package frc.trigon.robot;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.trigon.robot.commands.AutoShootCommand;
@@ -45,6 +45,7 @@ public class RobotContainer {
         bindCommands();
 
         putSendablesOnSmartDashboard();
+        LiveWindow.disableAllTelemetry();
 
         powerDistribution.clearStickyFaults();
     }
@@ -89,7 +90,7 @@ public class RobotContainer {
 
         controller.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
         controller.getLeftBumperBtn().whileHeld(collectCommand);
-        controller.getBBtn().whileHeld(autoShootCommand);
+        controller.getBBtn().whenHeld(autoShootCommand);
         controller.getABtn().whileHeld(Loader.getInstance().getLoadCommand());
         controller.getXBtn().whileHeld(turnToHubCommand);
 

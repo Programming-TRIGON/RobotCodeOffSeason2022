@@ -30,7 +30,8 @@ public class Pitcher extends SubsystemBase {
     }
 
     public double getError() {
-        double error = motor.getClosedLoopError();
+        double error = Conversions.motorPositionToSystemPosition(
+                motor.getClosedLoopError(), PitcherConstants.GEAR_RATIO);
         return Conversions.magTicksToDegrees(error);
     }
 
@@ -87,6 +88,7 @@ public class Pitcher extends SubsystemBase {
         super.initSendable(builder);
         builder.addDoubleProperty("Target Angle", this::getTargetAngle, this::setTargetAngle);
         builder.addDoubleProperty("Current Angle", this::getAngle, null);
+        builder.addBooleanProperty("At Target Angle", this::atTargetAngle, null);
         builder.addDoubleProperty("Error", this::getError, null);
     }
 }
