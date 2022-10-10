@@ -41,6 +41,7 @@ public class RobotContainer {
     public RobotContainer() {
         initComponents();
         initCommands();
+        bindDefaultCommands();
         bindDriverCommands();
         bindOperatorCommands();
 
@@ -79,14 +80,17 @@ public class RobotContainer {
         shotsDetectorCommand = new ShotsDetectorCommand();
     }
 
-    private void bindDriverCommands() {
+    private void bindDefaultCommands(){
         Swerve.getInstance().setDefaultCommand(swerveCommand);
-        driverController.getABtn().whileHeld(collectCommand);
-        driverController.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
-        driverController.getBBtn().whileHeld(Loader.getInstance().getLoadCommand());
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();
+    }
+
+    private void bindDriverCommands() {
+        driverController.getABtn().whileHeld(collectCommand);
+        driverController.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
+        driverController.getBBtn().whileHeld(Loader.getInstance().getLoadCommand());
     }
 
     private void bindOperatorCommands() {
