@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.trigon.robot.utilities.Conversions;
@@ -66,7 +67,7 @@ public class Pitcher extends SubsystemBase {
      *                    target angle will be used.
      * @return a command that sets the angle of the pitcher according to the given supplier.
      */
-    public Command getPitchingCommandWithDefault(DoubleSupplier targetAngle) {
+    public CommandBase getPitchingCommandWithDefault(DoubleSupplier targetAngle) {
         return new RunCommand(() -> {
             if(targetAngle.getAsDouble() == 0) {
                 setToDefaultTargetAngle();
@@ -75,6 +76,10 @@ public class Pitcher extends SubsystemBase {
             }
         }, this)
                 .andThen(this::stop, this);
+    }
+
+    public boolean atTargetAngle() {
+        return Math.abs(getError()) < Conversions.magTicksToDegrees(PitcherConstants.ALLOWABLE_ERROR);
     }
 
     @Override

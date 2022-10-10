@@ -8,7 +8,9 @@ package frc.trigon.robot;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.trigon.robot.commands.CollectCommand;
+import frc.trigon.robot.commands.Commands;
 import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.XboxController;
 import frc.trigon.robot.subsystems.backspinreducer.BackspinReducer;
@@ -20,13 +22,11 @@ import frc.trigon.robot.subsystems.shooter.Shooter;
 import frc.trigon.robot.subsystems.shooter.ShotsDetectorCommand;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
-import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
-import frc.trigon.robot.utilities.ShootingCalculations;
 
 public class RobotContainer {
     XboxController controller;
     PowerDistribution powerDistribution;
-    HubLimelight limelight;
+    public static HubLimelight hubLimelight = new HubLimelight("limelight");
 
     CollectCommand collectCommand;
     FieldRelativeSupplierDrive swerveCmd;
@@ -36,7 +36,7 @@ public class RobotContainer {
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
 
-    TurnToTargetCommand turnToHubCmd;
+    CommandBase turnToHubCmd;
 
     public RobotContainer() {
         initComponents();
@@ -51,7 +51,6 @@ public class RobotContainer {
     private void initComponents() {
         controller = new XboxController(0, true, 0.05);
         powerDistribution = new PowerDistribution(43, PowerDistribution.ModuleType.kRev);
-        limelight = new HubLimelight("limelight");
     }
 
     private void initCommands() {
@@ -65,18 +64,10 @@ public class RobotContainer {
         countBallsCommand = new CountBallsCommand();
         shotsDetectorCommand = new ShotsDetectorCommand();
 
-        turnToHubCmd = new TurnToTargetCommand(limelight, 0);
+        turnToHubCmd = Commands.getTurnToLimelight0Command();
 
-        primeShooterCmd = Shooter.getInstance().getPrimeShooterCommandWithDefault(
-                () -> limelight.hasTarget() ?
-                      ShootingCalculations.getShootingVelocityFromDistance(limelight.getDistanceFromHub()) :
-                      0
-        );
-        pitchCmd = Pitcher.getInstance().getPitchingCommandWithDefault(
-                () -> limelight.hasTarget() ?
-                      ShootingCalculations.getShootingAngleFromDistance(limelight.getDistanceFromHub()) :
-                      0
-        );
+        primeShooterCmd = Commands.getPrimeShooterByLimelightCommand();
+        pitchCmd = Commands.getPitchByLimelightCommand();
     }
 
     private void bindCommands() {
@@ -97,7 +88,7 @@ public class RobotContainer {
     private void putSendablesOnSmartDashboard() {
         SmartDashboard.putData(Shooter.getInstance());
         SmartDashboard.putData(Pitcher.getInstance());
-        SmartDashboard.putData("Hub Limelight", limelight);
+        SmartDashboard.putData("Hub Limelight", hubLimelight);
         SmartDashboard.putData(BallsCounter.getInstance());
         SmartDashboard.putData(BallsCounter.getInstance().countBallsCommand);
         SmartDashboard.putData(Shooter.getInstance());

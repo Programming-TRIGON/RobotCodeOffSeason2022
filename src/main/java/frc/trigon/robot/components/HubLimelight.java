@@ -7,9 +7,11 @@ import frc.trigon.robot.utilities.Conversions;
  * A Limelight with the ability to calculate the distance from the hub.
  */
 public class HubLimelight extends Limelight {
-    private static final double A = 0.003;
-    private static final double B = -0.0968;
-    private static final double C = 2.0034;
+    private static final double
+            A = 0.003,
+            B = -0.0968,
+            C = 2.0034;
+    private static final double ALLOWABLE_ERROR = 0.5;
 
     /**
      * Constructs a new HubLimelight.
@@ -25,6 +27,10 @@ public class HubLimelight extends Limelight {
      */
     public double getDistanceFromHub() {
         return Conversions.calculatePolynomial(A, B, C, getTy());
+    }
+
+    public boolean isCentered() {
+        return hasTarget() && Math.abs(getTx()) < ALLOWABLE_ERROR;
     }
 
     @Override

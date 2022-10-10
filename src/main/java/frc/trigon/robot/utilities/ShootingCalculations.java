@@ -1,6 +1,7 @@
 package frc.trigon.robot.utilities;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.trigon.robot.RobotContainer;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -59,6 +60,18 @@ public class ShootingCalculations {
      */
     public static double getShootingAngleFromDistance(double distance) {
         return Objects.requireNonNullElse(calculateCustomWaypointFromDistance(distance), new Waypoint(0, 0, 0)).angle;
+    }
+
+    public static Waypoint calculateCustomWaypointFromLimelight() {
+        return calculateCustomWaypointFromDistance(RobotContainer.hubLimelight.getDistanceFromHub());
+    }
+
+    public static double getShootingVelocityFromLimelight() {
+        return getShootingVelocityFromDistance(RobotContainer.hubLimelight.getDistanceFromHub());
+    }
+
+    public static double getShootingAngleFromLimelight() {
+        return getShootingAngleFromDistance(RobotContainer.hubLimelight.getDistanceFromHub());
     }
 
     public static Waypoint[] getNearestWaypointsFromDistance(double distance) {
