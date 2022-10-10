@@ -1,5 +1,6 @@
 package frc.trigon.robot.subsystems.loader;
 
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class LoaderConstants {
