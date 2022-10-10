@@ -10,7 +10,7 @@ import static frc.trigon.robot.subsystems.transporter.TransporterConstants.Trans
 public class Transporter extends SubsystemBase {
     private final static Transporter INSTANCE = new Transporter();
     private final WPI_TalonSRX motor = TransporterConstants.MOTOR;
-    private TransporterState currentState;
+    private TransporterState currentState = TransporterState.OFF;
 
     private Transporter() {
     }

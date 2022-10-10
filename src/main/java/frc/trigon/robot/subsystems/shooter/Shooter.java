@@ -3,6 +3,7 @@ package frc.trigon.robot.subsystems.shooter;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,11 +13,13 @@ import java.util.function.DoubleSupplier;
 
 public class Shooter extends SubsystemBase {
     private final static Shooter INSTANCE = new Shooter();
+    public boolean wasInSetpoint = false;
+    public ShotsDetectorCommand shotsDetectorCommand = new ShotsDetectorCommand();
 
     private final WPI_TalonFX masterMotor = ShooterConstants.MASTER_MOTOR;
-    private int ballCount = 0;
 
     private Shooter() {
+        shotsDetectorCommand.schedule();
     }
 
     public static Shooter getInstance() {
@@ -43,6 +46,7 @@ public class Shooter extends SubsystemBase {
                 DemandType.ArbitraryFeedForward,
                 ShooterConstants.S
         );
+        wasInSetpoint = false;
     }
 
     /**
@@ -60,24 +64,14 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * @return the number of balls that have been shot
-     */
-    private int getBallCount() {
-        return ballCount;
-    }
-
-    /**
-     * Resets the ball count
-     */
-    private void resetBallCount() {
-        ballCount = 0;
-    }
-
-    /**
      * @return the current closed loop error value in RPM
      */
-    private double getError() {
+    double getError() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopError());
+    }
+
+    boolean atTargetVelocity() {
+        return Math.abs(getError()) <= ShooterConstants.VELOCITY_TOLERANCE;
     }
 
     /**
@@ -87,6 +81,16 @@ public class Shooter extends SubsystemBase {
     public Command getPrimeShooterCommand(DoubleSupplier targetVelocity) {
         return new RunCommand(() -> setTargetVelocity(targetVelocity.getAsDouble()), this)
                 .andThen(this::stop);
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Target Velocity", this::getTargetVelocity, this::setTargetVelocity);
+        builder.addDoubleProperty("Current Velocity", this::getCurrentVelocity, null);
+        builder.addDoubleProperty("Error", this::getError, null);
+        builder.addBooleanProperty("At Target Velocity", this::atTargetVelocity, null);
+        builder.addBooleanProperty("Was In Setpoint", () -> wasInSetpoint, null);
     }
 }
 
