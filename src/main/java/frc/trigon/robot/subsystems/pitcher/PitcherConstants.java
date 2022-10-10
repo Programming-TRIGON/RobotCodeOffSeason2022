@@ -1,5 +1,6 @@
 package frc.trigon.robot.subsystems.pitcher;
 
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -36,5 +37,7 @@ public class PitcherConstants {
         MOTOR.config_kD(0, D);
         MOTOR.configClosedLoopPeakOutput(0, PEAK_OUTPUT);
         MOTOR.configAllowableClosedloopError(0, ALLOWABLE_ERROR);
+
+        MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General,1000,0);
     }
 }
