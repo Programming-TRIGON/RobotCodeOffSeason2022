@@ -93,7 +93,7 @@ public class ShootingCalculations {
 
     public static void saveWaypointsToJson() {
         try {
-            JsonHandler.parseToJsonAndWrite("waypoints.json", waypoints.getClass());
+            JsonHandler.parseToJsonAndWrite("Waypoints.json", waypoints.getClass());
         } catch(IOException e) {
             System.out.println(e.getMessage());
         }

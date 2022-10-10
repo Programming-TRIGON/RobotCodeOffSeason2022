@@ -5,10 +5,10 @@
 
 package frc.trigon.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.trigon.robot.commands.AutoShootCommand;
 import frc.trigon.robot.commands.CollectCommand;
 import frc.trigon.robot.commands.Commands;
@@ -22,22 +22,22 @@ import frc.trigon.robot.subsystems.shooter.Shooter;
 import frc.trigon.robot.subsystems.shooter.ShotsDetectorCommand;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
+import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
+import frc.trigon.robot.utilities.ShootingCalculations;
 
 public class RobotContainer {
+    public static HubLimelight hubLimelight = new HubLimelight("limelight");
     XboxController controller;
     PowerDistribution powerDistribution;
-    public static HubLimelight hubLimelight = new HubLimelight("limelight");
 
     CollectCommand collectCommand;
     FieldRelativeSupplierDrive swerveCmd;
-    Command primeShooterCmd;
-    Command pitchCmd;
-
+    Command primeShooterCommand;
+    Command pitchCommand;
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
-
-    CommandBase turnToHubCmd;
     AutoShootCommand autoShootCommand;
+    TurnToTargetCommand turnToHubCommand;
 
     public RobotContainer() {
         initComponents();
@@ -65,23 +65,33 @@ public class RobotContainer {
         countBallsCommand = new CountBallsCommand();
         shotsDetectorCommand = new ShotsDetectorCommand();
 
-        turnToHubCmd = Commands.getTurnToLimelight0Command();
-
-        primeShooterCmd = Commands.getPrimeShooterByLimelightCommand();
-        pitchCmd = Commands.getPitchByLimelightCommand();
+        primeShooterCommand = Commands.getPrimeShooterByLimelightCommand();
+        pitchCommand = Commands.getPitchByLimelightCommand();
+        turnToHubCommand = Commands.getTurnToLimelight0Command();
         autoShootCommand = new AutoShootCommand();
+
+        primeShooterCommand = Shooter.getInstance().getPrimeShooterCommandWithDefault(
+                () -> hubLimelight.hasTarget() ?
+                      ShootingCalculations.getShootingVelocityFromDistance(hubLimelight.getDistanceFromHub()) :
+                      0
+        );
+        pitchCommand = Pitcher.getInstance().getPitchingCommandWithDefault(
+                () -> hubLimelight.hasTarget() ?
+                      ShootingCalculations.getShootingAngleFromDistance(hubLimelight.getDistanceFromHub()) :
+                      0
+        );
     }
 
     private void bindCommands() {
         Swerve.getInstance().setDefaultCommand(swerveCmd);
-        Pitcher.getInstance().setDefaultCommand(pitchCmd);
-        Shooter.getInstance().setDefaultCommand(primeShooterCmd);
+        Pitcher.getInstance().setDefaultCommand(pitchCommand);
+        Shooter.getInstance().setDefaultCommand(primeShooterCommand);
 
         controller.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
         controller.getLeftBumperBtn().whileHeld(collectCommand);
         controller.getBBtn().whileHeld(autoShootCommand);
         controller.getABtn().whileHeld(Loader.getInstance().getLoadCommand());
-        controller.getXBtn().whileHeld(turnToHubCmd);
+        controller.getXBtn().whileHeld(turnToHubCommand);
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();

@@ -37,13 +37,12 @@ public class TurnToTargetCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if(hasTargetSupplier.getAsBoolean()) {
+        if(hasTargetSupplier.getAsBoolean())
             swerve.selfRelativeDrive(
                     new Translation2d(), new Rotation2d(pidController.calculate(positionSupplier.getAsDouble())));
-        } else {
+        else
             swerve.selfRelativeDrive(
                     new Translation2d(), new Rotation2d(5));
-        }
     }
 
     @Override
