@@ -4,8 +4,10 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class ShooterConstants {
-    public static final double IDLE_TARGET_VELOCITY = 2500;
-    public static final double EJECT_TARGET_VELOCITY = 1000;
+    public static final double
+            IDLE_TARGET_VELOCITY = 2500,
+            CLOSE_SHOOTING_TARGET_VELOCITY = 2000,
+            EJECT_TARGET_VELOCITY = 1000;
     private static final int
             LEFT_MOTOR_ID = 12,
             RIGHT_MOTOR_ID = 6;

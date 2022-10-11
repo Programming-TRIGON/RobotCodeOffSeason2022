@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class PitcherConstants {
     public static final double IDLE_TARGET_ANGLE = 7;
+    public static final double CLOSE_SHOOTING_TARGET_ANGLE = 0;
     static final double GEAR_RATIO = 10;
     static final int
             MIN_TICKS = -3284,
