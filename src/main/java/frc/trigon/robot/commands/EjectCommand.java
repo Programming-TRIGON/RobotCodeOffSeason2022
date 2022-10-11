@@ -21,6 +21,6 @@ public class EjectCommand extends ParallelCommandGroup {
     }
 
     boolean canEject() {
-        return Shooter.getInstance().getError() < TOLERANCE;
+        return Math.abs(Shooter.getInstance().getError()) < TOLERANCE;
     }
 }
