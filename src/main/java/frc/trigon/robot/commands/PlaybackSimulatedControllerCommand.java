@@ -27,8 +27,6 @@ public class PlaybackSimulatedControllerCommand extends CommandBase {
     public void execute() {
         for(int i = 0; i < logs.length; i++) {
             if(logs[i].getTime() > Timer.getFPGATimestamp() - startTime) {
-                System.out.println(
-                        "Executing log " + i + " with time of " + logs[i].getTime() + " and right x of " + logs[i].getRightX());
                 controller.setCurrentLog(logs[i]);
                 break;
             }
