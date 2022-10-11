@@ -160,12 +160,4 @@ public class Conversions {
     public static double calculatePolynomial(double a, double b, double c, double x) {
         return (a * Math.pow(x, 2)) + (b * x) + c;
     }
-
-    public static double controllerPosToConsistent(double controllerPos) {
-        if(controllerPos == 0) {
-            return 0;
-        } else {
-            return SwerveConstants.CONSISTENT_SLOW_POWER;
-        }
-    }
 }

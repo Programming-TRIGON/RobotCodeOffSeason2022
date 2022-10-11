@@ -106,7 +106,8 @@ public class RobotContainer {
         driverController.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
         driverController.getBBtn().whileHeld(autoShootCommand);
         driverController.getXBtn().whileHeld(turnToHubCommand);
-        driverController.getStartBtn().whenPressed(Swerve.getInstance()::toggleSlowDrive);
+        driverController.getRightBumperBtn().whileHeld(() -> Swerve.getInstance().setSlowDrive(true))
+                .whenReleased(() -> Swerve.getInstance().setSlowDrive(false));
     }
 
     private void bindOperatorCommands() {

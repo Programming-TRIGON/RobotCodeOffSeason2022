@@ -59,9 +59,9 @@ public class Swerve extends SubsystemBase {
             return;
         }
         if(slowDrive) {
-            chassisSpeeds.vxMetersPerSecond /= 2;
-            chassisSpeeds.vyMetersPerSecond /= 2;
-            chassisSpeeds.omegaRadiansPerSecond /= 2;
+            chassisSpeeds.vxMetersPerSecond /= 4;
+            chassisSpeeds.vyMetersPerSecond /= 4;
+            chassisSpeeds.omegaRadiansPerSecond /= 4;
         }
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);
@@ -92,8 +92,8 @@ public class Swerve extends SubsystemBase {
         SwerveConstants.gyro.setYaw(yaw);
     }
 
-    public void toggleSlowDrive() {
-        slowDrive = !slowDrive;
+    public void setSlowDrive(boolean slowDrive) {
+        this.slowDrive = slowDrive;
     }
 
     private boolean isStill(ChassisSpeeds chassisSpeeds) {
