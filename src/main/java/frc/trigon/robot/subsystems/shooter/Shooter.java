@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.trigon.robot.utilities.Conversions;
@@ -50,6 +51,13 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
+     * Sets the target velocity to the default value.
+     */
+    public void setToIdleTargetVelocity() {
+        setTargetVelocity(ShooterConstants.IDLE_TARGET_VELOCITY);
+    }
+
+    /**
      * Stops the shooter
      */
     private void stop() {
@@ -81,6 +89,17 @@ public class Shooter extends SubsystemBase {
     public Command getPrimeShooterCommand(DoubleSupplier targetVelocity) {
         return new RunCommand(() -> setTargetVelocity(targetVelocity.getAsDouble()), this)
                 .andThen(this::stop);
+    }
+
+    public CommandBase getPrimeShooterCommandWithIdleMode(DoubleSupplier targetVelocity) {
+        return new RunCommand(() -> {
+            if(targetVelocity.getAsDouble() == 0) {
+                setToIdleTargetVelocity();
+            } else {
+                setTargetVelocity(targetVelocity.getAsDouble());
+            }
+        }, this)
+                .andThen(this::stop, this);
     }
 
     @Override

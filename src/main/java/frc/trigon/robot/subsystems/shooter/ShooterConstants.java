@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class ShooterConstants {
+    public static final double IDLE_TARGET_VELOCITY = 2500;
     private static final int
             LEFT_MOTOR_ID = 12,
             RIGHT_MOTOR_ID = 6;
@@ -13,7 +14,7 @@ public class ShooterConstants {
     static final WPI_TalonFX
             MASTER_MOTOR = RIGHT_MOTOR;
     static final double TIME_TOLERANCE = 0.5;
-    static final double VELOCITY_TOLERANCE = 20;
+    static final double VELOCITY_TOLERANCE = 60;
     static final double S = 0.03;
     private static final WPI_TalonFX FOLLOWER_MOTOR =
             LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
