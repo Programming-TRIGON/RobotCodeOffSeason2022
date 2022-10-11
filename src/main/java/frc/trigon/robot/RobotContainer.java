@@ -5,11 +5,17 @@
 
 package frc.trigon.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.trigon.robot.commands.*;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.trigon.robot.commands.PlaybackSimulatedControllerCommand;
+import frc.trigon.robot.commands.RecordControllerCommand;
+import frc.trigon.robot.commands.AutoShootCommand;
+import frc.trigon.robot.commands.CollectCommand;
+import frc.trigon.robot.commands.Commands;
 import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.simulation.SimulateableController;
 import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
@@ -24,6 +30,7 @@ import frc.trigon.robot.subsystems.swerve.Swerve;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
 import frc.trigon.robot.subsystems.transporter.Transporter;
 
+
 public class RobotContainer {
     SimulateableController driverController;
     SimulateableController operatorController;
@@ -37,10 +44,13 @@ public class RobotContainer {
     CollectCommand collectCommand;
     Command primeShooterCommand;
     Command pitchCommand;
+    Command ejectCommand;
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
     AutoShootCommand autoShootCommand;
     TurnToTargetCommand turnToHubCommand;
+
+    Button foreignBallButton;
 
     public RobotContainer() {
         initComponents();
@@ -72,6 +82,11 @@ public class RobotContainer {
                 OPERATOR_DEADBAND);
         powerDistribution = new PowerDistribution(POWER_DISTRIBUTION_MODULE, PowerDistribution.ModuleType.kRev);
         hubLimelight = new HubLimelight("limelight");
+
+        foreignBallButton = new Button(() ->
+                !BallsCounter.getInstance().getFirstBall().equals("") && !BallsCounter.getInstance().getFirstBall()
+                        .equals(DriverStation.getAlliance().name().toLowerCase())
+        );
     }
 
     private void initCommands() {
@@ -88,6 +103,7 @@ public class RobotContainer {
         primeShooterCommand = Commands.getPrimeShooterByLimelightCommand();
         pitchCommand = Commands.getPitchByLimelightCommand();
         turnToHubCommand = Commands.getTurnToLimelight0Command();
+        ejectCommand = Commands.getShooterEjectCommand();
         autoShootCommand = new AutoShootCommand();
 
         playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
@@ -96,6 +112,8 @@ public class RobotContainer {
 
     private void bindDefaultCommands() {
         Swerve.getInstance().setDefaultCommand(swerveCommand);
+
+        foreignBallButton.whileHeld(ejectCommand);
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();
