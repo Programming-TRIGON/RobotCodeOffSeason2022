@@ -18,7 +18,7 @@ public class CollectCommand extends ParallelCommandGroup {
     public CollectCommand() {
         super(Collector.getInstance().getCollectCommand());
         runCommandWhile(
-                () -> BallsCounter.getInstance().secondBall.equals("") || !BallsCounter.getInstance().isTouchingBall(),
+                () -> BallsCounter.getInstance().getSecondBall().equals("") || !BallsCounter.getInstance().isTouchingBall(),
                 Transporter.getInstance().getLoadCommand());
         runCommandWhile(() -> !BallsCounter.getInstance().isLoaderSwitchHeld(), Loader.getInstance().getLoadCommand());
     }
