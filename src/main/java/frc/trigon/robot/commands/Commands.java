@@ -3,6 +3,7 @@ package frc.trigon.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.trigon.robot.RobotContainer;
+import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.pitcher.Pitcher;
 import frc.trigon.robot.subsystems.shooter.Shooter;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
@@ -15,6 +16,10 @@ public class Commands {
                       ShootingCalculations.getShootingVelocityFromLimelight() :
                       0
         );
+    }
+
+    public static CommandBase getShooterEjectCommand(){
+        return Shooter.getInstance().getEjectShooterCommand();
     }
 
     public static CommandBase getPitchByLimelightCommand() {
@@ -38,4 +43,5 @@ public class Commands {
                 0
         );
     }
+
 }
