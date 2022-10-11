@@ -9,10 +9,10 @@ import frc.trigon.robot.subsystems.shooter.Shooter;
 import frc.trigon.robot.subsystems.shooter.ShooterConstants;
 import frc.trigon.robot.subsystems.transporter.Transporter;
 
-public class CloseShootingCommand extends ParallelCommandGroup {
+public class ShootFromCloseCommand extends ParallelCommandGroup {
     Button canShootBtn;
 
-    public CloseShootingCommand() {
+    public ShootFromCloseCommand() {
         super();
         canShootBtn = new Button(() -> canShoot() && isScheduled());
         addCommands(
