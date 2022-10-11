@@ -9,13 +9,12 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.trigon.robot.commands.AutoShootCommand;
-import frc.trigon.robot.commands.CollectCommand;
-import frc.trigon.robot.commands.Commands;
+import frc.trigon.robot.commands.*;
 import frc.trigon.robot.components.HubLimelight;
-import frc.trigon.robot.controllers.XboxController;
+import frc.trigon.robot.controllers.simulation.SimulateableController;
 import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
 import frc.trigon.robot.subsystems.ballscounter.CountBallsCommand;
+import frc.trigon.robot.subsystems.collector.Collector;
 import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.pitcher.Pitcher;
 import frc.trigon.robot.subsystems.shooter.Shooter;
@@ -23,15 +22,19 @@ import frc.trigon.robot.subsystems.shooter.ShotsDetectorCommand;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
-import frc.trigon.robot.utilities.ShootingCalculations;
+import frc.trigon.robot.subsystems.transporter.Transporter;
 
 public class RobotContainer {
+    SimulateableController driverController;
+    SimulateableController operatorController;
+
     public static HubLimelight hubLimelight = new HubLimelight("limelight");
-    XboxController controller;
     PowerDistribution powerDistribution;
 
+    FieldRelativeSupplierDrive swerveCommand;
+    PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
+    RecordControllerCommand recordControllerCommand;
     CollectCommand collectCommand;
-    FieldRelativeSupplierDrive swerveCmd;
     Command primeShooterCommand;
     Command pitchCommand;
     CountBallsCommand countBallsCommand;
@@ -42,7 +45,9 @@ public class RobotContainer {
     public RobotContainer() {
         initComponents();
         initCommands();
-        bindCommands();
+        bindDefaultCommands();
+        bindDriverCommands();
+        bindOperatorCommands();
 
         putSendablesOnSmartDashboard();
         LiveWindow.disableAllTelemetry();
@@ -51,15 +56,29 @@ public class RobotContainer {
     }
 
     private void initComponents() {
-        controller = new XboxController(0, true, 0.05);
-        powerDistribution = new PowerDistribution(43, PowerDistribution.ModuleType.kRev);
+        final int DRIVER_CONTROLLER_PORT = 0;
+        final boolean SQUARE_DRIVER_INPUTS = true;
+        final double DRIVER_DEADBAND = 0.05;
+
+        final int OPERATOR_CONTROLLER_PORT = 1;
+        final boolean SQUARE_OPERATOR_INPUTS = true;
+        final double OPERATOR_DEADBAND = 0.05;
+
+        final int POWER_DISTRIBUTION_MODULE = 43;
+
+        driverController = new SimulateableController(
+                DRIVER_CONTROLLER_PORT, SQUARE_DRIVER_INPUTS, DRIVER_DEADBAND);
+        operatorController = new SimulateableController(OPERATOR_CONTROLLER_PORT, SQUARE_OPERATOR_INPUTS,
+                OPERATOR_DEADBAND);
+        powerDistribution = new PowerDistribution(POWER_DISTRIBUTION_MODULE, PowerDistribution.ModuleType.kRev);
+        hubLimelight = new HubLimelight("limelight");
     }
 
     private void initCommands() {
-        swerveCmd = new FieldRelativeSupplierDrive(
-                () -> controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> -controller.getRightX()
+        swerveCommand = new FieldRelativeSupplierDrive(
+                () -> driverController.getLeftY(),
+                () -> -driverController.getLeftX(),
+                () -> -driverController.getRightX()
         );
         collectCommand = new CollectCommand();
 
@@ -70,21 +89,32 @@ public class RobotContainer {
         pitchCommand = Commands.getPitchByLimelightCommand();
         turnToHubCommand = Commands.getTurnToLimelight0Command();
         autoShootCommand = new AutoShootCommand();
+
+        playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
+        recordControllerCommand = new RecordControllerCommand(driverController);
     }
 
-    private void bindCommands() {
-        Swerve.getInstance().setDefaultCommand(swerveCmd);
-        Pitcher.getInstance().setDefaultCommand(pitchCommand);
-        Shooter.getInstance().setDefaultCommand(primeShooterCommand);
-
-        controller.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
-        controller.getLeftBumperBtn().whileHeld(collectCommand);
-        controller.getBBtn().whenHeld(autoShootCommand);
-        controller.getABtn().whileHeld(Loader.getInstance().getLoadCommand());
-        controller.getXBtn().whileHeld(turnToHubCommand);
+    private void bindDefaultCommands() {
+        Swerve.getInstance().setDefaultCommand(swerveCommand);
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();
+    }
+
+    private void bindDriverCommands() {
+        driverController.getLeftBumperBtn().whileHeld(collectCommand);
+        driverController.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
+        driverController.getBBtn().whileHeld(autoShootCommand);
+        driverController.getXBtn().whileHeld(turnToHubCommand);
+    }
+
+    private void bindOperatorCommands() {
+        operatorController.getLeftBumperBtn().whileHeld(Transporter.getInstance().getEjectCommand());
+        operatorController.getRightBumperBtn().whileHeld(Transporter.getInstance().getLoadCommand());
+        operatorController.getBBtn().whileHeld(Loader.getInstance().getLoadCommand());
+        operatorController.getXBtn().whileHeld(Loader.getInstance().getEjectCommand());
+        operatorController.getYBtn().whileHeld(Shooter.getInstance().getPrimeShooterCommand(() -> 3000));
+        operatorController.getABtn().whileHeld(Collector.getInstance().getCollectCommand());
     }
 
     private void putSendablesOnSmartDashboard() {
@@ -96,5 +126,7 @@ public class RobotContainer {
         SmartDashboard.putData(Shooter.getInstance());
         SmartDashboard.putData(Shooter.getInstance().shotsDetectorCommand);
         SmartDashboard.putData(Swerve.getInstance());
+        SmartDashboard.putData(recordControllerCommand);
+        SmartDashboard.putData(playbackSimulatedControllerCommand);
     }
 }
