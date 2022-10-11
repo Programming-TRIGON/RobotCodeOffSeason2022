@@ -17,14 +17,14 @@ public class CollectCommand extends ParallelCommandGroup {
 
     public CollectCommand() {
         super(Collector.getInstance().getCollectCommand());
-        runCommandWhile(
-                () -> BallsCounter.getInstance().getSecondBall().equals("") || !BallsCounter.getInstance().isTouchingBall(),
+        Commands.runCommandWhile(
+                this,
+                () -> BallsCounter.getInstance().getSecondBall().equals("") || !BallsCounter.getInstance()
+                        .isTouchingBall(),
                 Transporter.getInstance().getLoadCommand());
-        runCommandWhile(() -> !BallsCounter.getInstance().isLoaderSwitchHeld(), Loader.getInstance().getLoadCommand());
-    }
-
-    private void runCommandWhile(BooleanSupplier condition, Command command) {
-        Button button = new Button(() -> condition.getAsBoolean() && isScheduled());
-        button.whileHeld(command);
+        Commands.runCommandWhile(
+                this,
+                () -> !BallsCounter.getInstance().isLoaderSwitchHeld(),
+                Loader.getInstance().getLoadCommand());
     }
 }
