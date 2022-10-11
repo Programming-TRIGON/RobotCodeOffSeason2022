@@ -10,7 +10,7 @@ import frc.trigon.robot.utilities.ShootingCalculations;
 
 public class Commands {
     public static CommandBase getPrimeShooterByLimelightCommand() {
-        return Shooter.getInstance().getPrimeShooterCommandWithDefault(
+        return Shooter.getInstance().getPrimeShooterCommandWithIdleMode(
                 () -> RobotContainer.hubLimelight.hasTarget() ?
                       ShootingCalculations.getShootingVelocityFromLimelight() :
                       0
@@ -18,7 +18,7 @@ public class Commands {
     }
 
     public static CommandBase getPitchByLimelightCommand() {
-        return Pitcher.getInstance().getPitchingCommandWithDefault(
+        return Pitcher.getInstance().getPitchingCommandWithIdleMode(
                 () -> RobotContainer.hubLimelight.hasTarget() ?
                       ShootingCalculations.getShootingAngleFromLimelight() :
                       0
@@ -26,7 +26,11 @@ public class Commands {
     }
 
     public static TurnToTargetCommand getTurnToLimelight0Command() {
-        PIDController pidController = new PIDController(0.2, 0.2, 0);
+        final double P = 0.2;
+        final double I = 0.2;
+        final double D = 0.0;
+        
+        PIDController pidController = new PIDController(P, I, D);
         return new TurnToTargetCommand(
                 pidController,
                 RobotContainer.hubLimelight::getTx,

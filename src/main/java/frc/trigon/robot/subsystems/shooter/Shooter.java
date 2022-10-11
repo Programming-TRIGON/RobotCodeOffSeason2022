@@ -91,7 +91,7 @@ public class Shooter extends SubsystemBase {
                 .andThen(this::stop);
     }
 
-    public CommandBase getPrimeShooterCommandWithDefault(DoubleSupplier targetVelocity) {
+    public CommandBase getPrimeShooterCommandWithIdleMode(DoubleSupplier targetVelocity) {
         return new RunCommand(() -> {
             if(targetVelocity.getAsDouble() == 0) {
                 setToIdleTargetVelocity();

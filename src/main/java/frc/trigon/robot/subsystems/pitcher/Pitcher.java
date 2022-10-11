@@ -68,7 +68,7 @@ public class Pitcher extends SubsystemBase {
      *                    target angle will be used.
      * @return a command that sets the angle of the pitcher according to the given supplier.
      */
-    public CommandBase getPitchingCommandWithDefault(DoubleSupplier targetAngle) {
+    public CommandBase getPitchingCommandWithIdleMode(DoubleSupplier targetAngle) {
         return new RunCommand(() -> {
             if(targetAngle.getAsDouble() == 0) {
                 setToIdleTargetAngle();

@@ -70,17 +70,6 @@ public class RobotContainer {
         pitchCommand = Commands.getPitchByLimelightCommand();
         turnToHubCommand = Commands.getTurnToLimelight0Command();
         autoShootCommand = new AutoShootCommand();
-
-        primeShooterCommand = Shooter.getInstance().getPrimeShooterCommandWithDefault(
-                () -> hubLimelight.hasTarget() ?
-                      ShootingCalculations.getShootingVelocityFromDistance(hubLimelight.getDistanceFromHub()) :
-                      0
-        );
-        pitchCommand = Pitcher.getInstance().getPitchingCommandWithDefault(
-                () -> hubLimelight.hasTarget() ?
-                      ShootingCalculations.getShootingAngleFromDistance(hubLimelight.getDistanceFromHub()) :
-                      0
-        );
     }
 
     private void bindCommands() {

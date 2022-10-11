@@ -11,7 +11,7 @@ public class HubLimelight extends Limelight {
             A = 0.003,
             B = -0.0968,
             C = 2.0034;
-    private static final double ALLOWABLE_ERROR = 0.5;
+    private static final double TOLERANCE = 0.5;
 
     /**
      * Constructs a new HubLimelight.
@@ -30,7 +30,7 @@ public class HubLimelight extends Limelight {
     }
 
     public boolean isCentered() {
-        return hasTarget() && Math.abs(getTx()) < ALLOWABLE_ERROR;
+        return hasTarget() && Math.abs(getTx()) < TOLERANCE;
     }
 
     @Override
