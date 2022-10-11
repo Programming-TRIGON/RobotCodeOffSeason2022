@@ -5,15 +5,11 @@
 
 package frc.trigon.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.trigon.robot.commands.PlaybackSimulatedControllerCommand;
-import frc.trigon.robot.commands.RecordControllerCommand;
-import frc.trigon.robot.commands.AutoShootCommand;
-import frc.trigon.robot.commands.CollectCommand;
-import frc.trigon.robot.commands.Commands;
+import frc.trigon.robot.commands.*;
 import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.simulation.SimulateableController;
 import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
@@ -25,8 +21,8 @@ import frc.trigon.robot.subsystems.shooter.Shooter;
 import frc.trigon.robot.subsystems.shooter.ShotsDetectorCommand;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
-import frc.trigon.robot.subsystems.transporter.Transporter;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
+import frc.trigon.robot.subsystems.transporter.Transporter;
 
 public class RobotContainer {
     SimulateableController driverController;
@@ -94,6 +90,9 @@ public class RobotContainer {
         pitchCommand = Commands.getPitchByLimelightCommand();
         turnToHubCommand = Commands.getTurnToLimelight0Command();
         autoShootCommand = new AutoShootCommand();
+
+        playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
+        recordControllerCommand = new RecordControllerCommand(driverController);
     }
 
     private void bindDefaultCommands() {
