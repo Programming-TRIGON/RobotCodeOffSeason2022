@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.trigon.robot.commands.*;
 import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.simulation.SimulateableController;
@@ -41,6 +43,9 @@ public class RobotContainer {
     ShotsDetectorCommand shotsDetectorCommand;
     AutoShootCommand autoShootCommand;
     TurnToTargetCommand turnToHubCommand;
+    AutoReloadCommand autoReloadCommand;
+
+    Button emptyLoader;
 
     public RobotContainer() {
         initComponents();
@@ -72,6 +77,10 @@ public class RobotContainer {
                 OPERATOR_DEADBAND);
         powerDistribution = new PowerDistribution(POWER_DISTRIBUTION_MODULE, PowerDistribution.ModuleType.kRev);
         hubLimelight = new HubLimelight("limelight");
+
+        emptyLoader = new Button(
+                () -> BallsCounter.getInstance().getFirstBall().equals("")
+                        && !driverController.getBBtn().get() && !driverController.getLeftBumperBtn().get());
     }
 
     private void initCommands() {
@@ -92,10 +101,13 @@ public class RobotContainer {
 
         playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
         recordControllerCommand = new RecordControllerCommand(driverController);
+        autoReloadCommand = new AutoReloadCommand();
     }
 
     private void bindDefaultCommands() {
         Swerve.getInstance().setDefaultCommand(swerveCommand);
+
+        emptyLoader.whileHeld(new WaitCommand(1).andThen(autoReloadCommand));
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();
