@@ -1,5 +1,7 @@
 package frc.trigon.robot.utilities;
 
+import frc.trigon.robot.subsystems.swerve.SwerveConstants;
+
 public class Conversions {
     public static final int MAG_TICKS = 4096;
     public static final int DEGREES_PER_REVOLUTIONS = 360;
@@ -157,5 +159,13 @@ public class Conversions {
 
     public static double calculatePolynomial(double a, double b, double c, double x) {
         return (a * Math.pow(x, 2)) + (b * x) + c;
+    }
+
+    public static double controllerPosToConsistent(double controllerPos) {
+        if(controllerPos == 0) {
+            return 0;
+        } else {
+            return SwerveConstants.CONSISTENT_SLOW_POWER;
+        }
     }
 }
