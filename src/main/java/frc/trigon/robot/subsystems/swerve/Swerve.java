@@ -9,10 +9,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
     private final static Swerve INSTANCE = new Swerve();
+    private boolean slowDrive;
 
     private Swerve() {
         zeroHeading();
         putOnDashboard();
+        slowDrive = false;
     }
 
     public static Swerve getInstance() {
@@ -84,6 +86,14 @@ public class Swerve extends SubsystemBase {
 
     public void setHeading(double yaw) {
         SwerveConstants.gyro.setYaw(yaw);
+    }
+
+    public boolean getSlowDrive(){
+        return slowDrive;
+    }
+
+    public void toggleSlowDrive() {
+        slowDrive = !slowDrive;
     }
 
     private boolean isStill(ChassisSpeeds chassisSpeeds) {
