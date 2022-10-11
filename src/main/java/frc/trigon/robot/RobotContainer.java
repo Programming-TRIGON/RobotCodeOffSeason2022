@@ -35,7 +35,6 @@ public class RobotContainer {
     PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
     RecordControllerCommand recordControllerCommand;
     CollectCommand collectCommand;
-    FieldRelativeSupplierDrive swerveCmd;
     Command primeShooterCommand;
     Command pitchCommand;
     CountBallsCommand countBallsCommand;
@@ -76,7 +75,7 @@ public class RobotContainer {
     }
 
     private void initCommands() {
-        swerveCmd = new FieldRelativeSupplierDrive(
+        swerveCommand = new FieldRelativeSupplierDrive(
                 () -> driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
                 () -> -driverController.getRightX()
@@ -103,9 +102,10 @@ public class RobotContainer {
     }
 
     private void bindDriverCommands() {
-        driverController.getABtn().whileHeld(collectCommand);
+        driverController.getLeftBumperBtn().whileHeld(collectCommand);
         driverController.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
-        driverController.getBBtn().whileHeld(Loader.getInstance().getLoadCommand());
+        driverController.getBBtn().whileHeld(autoShootCommand);
+        driverController.getXBtn().whileHeld(turnToHubCommand);
     }
 
     private void bindOperatorCommands() {

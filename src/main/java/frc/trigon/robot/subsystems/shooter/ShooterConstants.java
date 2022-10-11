@@ -45,8 +45,8 @@ public class ShooterConstants {
 
         MASTER_MOTOR.configMaxIntegralAccumulator(0, MAX_I);
 
-        MASTER_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General,1000,0);
-        FOLLOWER_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General,1000,0);
-        FOLLOWER_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0,1000,0);
+        MASTER_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General, 1000, 0);
+        FOLLOWER_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General, 1000, 0);
+        FOLLOWER_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1000, 0);
     }
 }
