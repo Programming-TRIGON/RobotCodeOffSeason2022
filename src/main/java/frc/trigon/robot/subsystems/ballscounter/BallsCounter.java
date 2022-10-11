@@ -10,7 +10,7 @@ public class BallsCounter extends SubsystemBase {
     private final static BallsCounter INSTANCE = new BallsCounter();
     public CountBallsCommand countBallsCommand;
     private final ColorSensorV3 colorSensor = BallsCounterConstants.COLOR_SENSOR;
-    public String firstBall = "", secondBall = "";
+    private String firstBall = "", secondBall = "";
 
     private BallsCounter() {
     }
@@ -67,6 +67,14 @@ public class BallsCounter extends SubsystemBase {
 
     public boolean isLoaderSwitchHeld() {
         return BallsCounterConstants.LOADER_SWITCH.get();
+    }
+
+    public String getFirstBall() {
+        return firstBall;
+    }
+
+    public String getSecondBall() {
+        return secondBall;
     }
 
     @Override
