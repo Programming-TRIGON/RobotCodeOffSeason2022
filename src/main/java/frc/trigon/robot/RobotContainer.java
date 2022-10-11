@@ -9,9 +9,6 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.trigon.robot.commands.*;
 import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.simulation.SimulateableController;
@@ -79,12 +76,9 @@ public class RobotContainer {
 
     private void initCommands() {
         swerveCommand = new FieldRelativeSupplierDrive(
-                () -> !Swerve.getInstance().getSlowDrive() ?
-                      driverController.getLeftTriggerAxis() : driverController.getLeftY() / 2,
-                () -> !Swerve.getInstance().getSlowDrive() ?
-                      -driverController.getLeftX() : -driverController.getLeftX() / 2,
-                () -> !Swerve.getInstance().getSlowDrive() ?
-                      -driverController.getRightX() : -driverController.getRightX() / 2
+                () -> driverController.getLeftY(),
+                () -> -driverController.getLeftX(),
+                () -> -driverController.getRightX()
         );
         collectCommand = new CollectCommand();
 

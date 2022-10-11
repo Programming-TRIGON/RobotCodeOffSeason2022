@@ -33,7 +33,6 @@ public class Swerve extends SubsystemBase {
                 translation.getY(),
                 rotation.getRadians()
         );
-
         selfRelativeDrive(chassisSpeeds);
     }
 
@@ -58,6 +57,11 @@ public class Swerve extends SubsystemBase {
         if(isStill(chassisSpeeds)) {
             stop();
             return;
+        }
+        if(slowDrive) {
+            chassisSpeeds.vxMetersPerSecond /= 2;
+            chassisSpeeds.vyMetersPerSecond /= 2;
+            chassisSpeeds.omegaRadiansPerSecond /= 2;
         }
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);
@@ -86,10 +90,6 @@ public class Swerve extends SubsystemBase {
 
     public void setHeading(double yaw) {
         SwerveConstants.gyro.setYaw(yaw);
-    }
-
-    public boolean getSlowDrive(){
-        return slowDrive;
     }
 
     public void toggleSlowDrive() {
