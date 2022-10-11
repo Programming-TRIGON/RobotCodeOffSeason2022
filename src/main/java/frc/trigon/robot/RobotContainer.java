@@ -22,7 +22,6 @@ import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.pitcher.Pitcher;
 import frc.trigon.robot.subsystems.shooter.Shooter;
 import frc.trigon.robot.subsystems.shooter.ShotsDetectorCommand;
-import frc.trigon.robot.subsystems.swerve.DriveSlowlyCommand;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
