@@ -24,6 +24,10 @@ public class Commands {
         );
     }
 
+    public static CommandBase getShooterEjectCommand(){
+        return Shooter.getInstance().getEjectShooterCommand();
+    }
+
     public static CommandBase getPitchByLimelightCommand() {
         return Pitcher.getInstance().getPitchingCommandWithIdleMode(
                 () -> RobotContainer.hubLimelight.hasTarget() ?

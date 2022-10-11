@@ -5,9 +5,10 @@
 
 package frc.trigon.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.trigon.robot.commands.*;
@@ -40,10 +41,13 @@ public class RobotContainer {
     Command pitchCommand;
     Command defaultLoaderCommand;
     Command defaultTransporterCommand;
+    Command ejectCommand;
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
     AutoShootCommand autoShootCommand;
     TurnToTargetCommand turnToHubCommand;
+
+    Button foreignBallButton;
 
     public RobotContainer() {
         initComponents();
@@ -75,6 +79,11 @@ public class RobotContainer {
                 OPERATOR_DEADBAND);
         powerDistribution = new PowerDistribution(POWER_DISTRIBUTION_MODULE, PowerDistribution.ModuleType.kRev);
         hubLimelight = new HubLimelight("limelight");
+
+        foreignBallButton = new Button(() ->
+                !BallsCounter.getInstance().getFirstBall().equals("") && !BallsCounter.getInstance().getFirstBall()
+                        .equals(DriverStation.getAlliance().name().toLowerCase())
+        );
     }
 
     private void initCommands() {
@@ -93,17 +102,19 @@ public class RobotContainer {
         turnToHubCommand = Commands.getTurnToLimelight0Command();
         defaultLoaderCommand = Commands.getDefaultLoaderCommand();
         defaultTransporterCommand = Commands.getDefaultTransporterCommand();
-        autoShootCommand = new AutoShootCommand();
+        ejectCommand = Commands.getShooterEjectCommand();
 
+        autoShootCommand = new AutoShootCommand();
         playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
         recordControllerCommand = new RecordControllerCommand(driverController);
-        defaultLoaderCommand = new DefaultLoaderCommand();
     }
 
     private void bindDefaultCommands() {
         Swerve.getInstance().setDefaultCommand(swerveCommand);
         Loader.getInstance().setDefaultCommand(defaultLoaderCommand);
         Transporter.getInstance().setDefaultCommand(defaultTransporterCommand);
+
+        foreignBallButton.whileHeld(ejectCommand);
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();
