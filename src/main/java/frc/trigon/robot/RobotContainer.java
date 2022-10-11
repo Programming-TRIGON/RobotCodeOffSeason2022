@@ -6,12 +6,16 @@
 package frc.trigon.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.trigon.robot.commands.PlaybackSimulatedControllerCommand;
 import frc.trigon.robot.commands.RecordControllerCommand;
-import frc.trigon.robot.controllers.simulation.SimulateableController;
-import edu.wpi.first.wpilibj.PowerDistribution;
+import frc.trigon.robot.commands.AutoShootCommand;
 import frc.trigon.robot.commands.CollectCommand;
+import frc.trigon.robot.commands.Commands;
 import frc.trigon.robot.components.HubLimelight;
+import frc.trigon.robot.controllers.simulation.SimulateableController;
 import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
 import frc.trigon.robot.subsystems.ballscounter.CountBallsCommand;
 import frc.trigon.robot.subsystems.collector.Collector;
@@ -22,21 +26,26 @@ import frc.trigon.robot.subsystems.shooter.ShotsDetectorCommand;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
 import frc.trigon.robot.subsystems.transporter.Transporter;
+import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
 
 public class RobotContainer {
     SimulateableController driverController;
     SimulateableController operatorController;
 
+    public static HubLimelight hubLimelight = new HubLimelight("limelight");
     PowerDistribution powerDistribution;
-    HubLimelight limelight;
 
     FieldRelativeSupplierDrive swerveCommand;
     PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
     RecordControllerCommand recordControllerCommand;
     CollectCommand collectCommand;
-
+    FieldRelativeSupplierDrive swerveCmd;
+    Command primeShooterCommand;
+    Command pitchCommand;
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
+    AutoShootCommand autoShootCommand;
+    TurnToTargetCommand turnToHubCommand;
 
     public RobotContainer() {
         initComponents();
@@ -46,6 +55,7 @@ public class RobotContainer {
         bindOperatorCommands();
 
         putSendablesOnSmartDashboard();
+        LiveWindow.disableAllTelemetry();
 
         powerDistribution.clearStickyFaults();
     }
@@ -61,26 +71,32 @@ public class RobotContainer {
 
         final int POWER_DISTRIBUTION_MODULE = 43;
 
-        driverController = new SimulateableController(DRIVER_CONTROLLER_PORT, SQUARE_DRIVER_INPUTS, DRIVER_DEADBAND);
+        driverController = new SimulateableController(
+                DRIVER_CONTROLLER_PORT, SQUARE_DRIVER_INPUTS, DRIVER_DEADBAND);
         operatorController = new SimulateableController(OPERATOR_CONTROLLER_PORT, SQUARE_OPERATOR_INPUTS,
                 OPERATOR_DEADBAND);
         powerDistribution = new PowerDistribution(POWER_DISTRIBUTION_MODULE, PowerDistribution.ModuleType.kRev);
-        limelight = new HubLimelight("limelight");
+        hubLimelight = new HubLimelight("limelight");
     }
 
     private void initCommands() {
-        swerveCommand = new FieldRelativeSupplierDrive(
-                () -> -driverController.getLeftY(),
-                () -> driverController.getLeftX(),
+        swerveCmd = new FieldRelativeSupplierDrive(
+                () -> driverController.getLeftY(),
+                () -> -driverController.getLeftX(),
                 () -> -driverController.getRightX()
         );
         collectCommand = new CollectCommand();
 
         countBallsCommand = new CountBallsCommand();
         shotsDetectorCommand = new ShotsDetectorCommand();
+
+        primeShooterCommand = Commands.getPrimeShooterByLimelightCommand();
+        pitchCommand = Commands.getPitchByLimelightCommand();
+        turnToHubCommand = Commands.getTurnToLimelight0Command();
+        autoShootCommand = new AutoShootCommand();
     }
 
-    private void bindDefaultCommands(){
+    private void bindDefaultCommands() {
         Swerve.getInstance().setDefaultCommand(swerveCommand);
 
         countBallsCommand.schedule();
@@ -105,7 +121,7 @@ public class RobotContainer {
     private void putSendablesOnSmartDashboard() {
         SmartDashboard.putData(Shooter.getInstance());
         SmartDashboard.putData(Pitcher.getInstance());
-        SmartDashboard.putData(limelight);
+        SmartDashboard.putData("Hub Limelight", hubLimelight);
         SmartDashboard.putData(BallsCounter.getInstance());
         SmartDashboard.putData(BallsCounter.getInstance().countBallsCommand);
         SmartDashboard.putData(Shooter.getInstance());

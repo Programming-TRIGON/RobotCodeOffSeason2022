@@ -1,6 +1,7 @@
 package frc.trigon.robot.subsystems.collector;
 
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class CollectorConstants {
@@ -47,5 +48,8 @@ public class CollectorConstants {
                         COLLECTOR_CURRENT_LIMIT_PEAK_DURATION
                 )
         );
+
+        OPENING_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0,1000,0);
+        COLLECTION_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0,1000,0);
     }
 }
