@@ -12,6 +12,7 @@ public class Swerve extends SubsystemBase {
 
     private Swerve() {
         zeroHeading();
+        putOnDashboard();
     }
 
     public static Swerve getInstance() {
