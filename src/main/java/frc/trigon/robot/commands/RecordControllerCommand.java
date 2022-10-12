@@ -25,12 +25,6 @@ public class RecordControllerCommand extends CommandBase {
         startTime = Timer.getFPGATimestamp();
     }
 
-    //    public Log(
-    //            double rightX, double rightY, double leftX, double leftY, double rightTrigger, double leftTrigger,
-    //            double time, boolean a, boolean b, boolean x, boolean y, boolean rightBumper, boolean leftBumper,
-    //            boolean rightStick,
-    //            boolean leftStick, boolean back, boolean start
-    //    )
     @Override
     public void execute() {
         logs.add(new Log(controller.getRightX(), controller.getRightY(), controller.getLeftX(), controller.getLeftY(),

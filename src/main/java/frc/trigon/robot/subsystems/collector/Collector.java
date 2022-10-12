@@ -1,5 +1,6 @@
 package frc.trigon.robot.subsystems.collector;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -56,6 +57,10 @@ public class Collector extends SubsystemBase {
      */
     public Command getEjectCommand() {
         return new StartEndCommand(this::eject, this::close, this);
+    }
+
+    public void setNeutralMode(NeutralMode mode) {
+        openingMotor.setNeutralMode(mode);
     }
 }
 

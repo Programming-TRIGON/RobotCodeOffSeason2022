@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.trigon.robot.utilities.Conversions;
@@ -24,8 +25,13 @@ public class Pitcher extends SubsystemBase {
         motor.set(ControlMode.Position, Conversions.offsetWrite(ticks, PitcherConstants.MIN_TICKS));
     }
 
+    public void setToIdleTargetAngle() {
+        setTargetAngle(PitcherConstants.IDLE_TARGET_ANGLE);
+    }
+
     public double getError() {
-        double error = motor.getClosedLoopError();
+        double error = Conversions.motorPositionToSystemPosition(
+                motor.getClosedLoopError(), PitcherConstants.GEAR_RATIO);
         return Conversions.magTicksToDegrees(error);
     }
 
@@ -57,11 +63,32 @@ public class Pitcher extends SubsystemBase {
                 .andThen(this::stop, this);
     }
 
+    /**
+     * @param targetAngle the command will continuously set the target angle to this, if this is 0, then the default
+     *                    target angle will be used.
+     * @return a command that sets the angle of the pitcher according to the given supplier.
+     */
+    public CommandBase getPitchingCommandWithIdleMode(DoubleSupplier targetAngle) {
+        return new RunCommand(() -> {
+            if(targetAngle.getAsDouble() == 0) {
+                setToIdleTargetAngle();
+            } else {
+                setTargetAngle(targetAngle.getAsDouble());
+            }
+        }, this)
+                .andThen(this::stop, this);
+    }
+
+    public boolean atTargetAngle() {
+        return Math.abs(getError()) < Conversions.magTicksToDegrees(PitcherConstants.ALLOWABLE_ERROR);
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
         builder.addDoubleProperty("Target Angle", this::getTargetAngle, this::setTargetAngle);
         builder.addDoubleProperty("Current Angle", this::getAngle, null);
+        builder.addBooleanProperty("At Target Angle", this::atTargetAngle, null);
         builder.addDoubleProperty("Error", this::getError, null);
     }
 }

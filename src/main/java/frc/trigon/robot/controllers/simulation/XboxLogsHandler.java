@@ -11,13 +11,13 @@ public class XboxLogsHandler {
      * @throws IOException if write fails
      */
     public static void writeLogs(Log[] logs) throws IOException {
-        JsonHandler.parseToJsonAndWrite("XboxLogs", logs);
+        JsonHandler.parseToJsonAndWrite("XboxLogs.json", logs);
     }
 
     /**
      * @return the logs from the json file
      */
     public static Log[] readLogs() {
-        return JsonHandler.parseJsonFileToObject("XboxLogs", Log[].class);
+        return JsonHandler.parseJsonFileToObject("XboxLogs.json", Log[].class);
     }
 }
