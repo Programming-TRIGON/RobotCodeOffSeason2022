@@ -4,15 +4,18 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
     private final static Swerve INSTANCE = new Swerve();
+    private boolean slowDrive;
 
     private Swerve() {
         zeroHeading();
         putOnDashboard();
+        slowDrive = false;
     }
 
     public static Swerve getInstance() {
@@ -31,7 +34,6 @@ public class Swerve extends SubsystemBase {
                 translation.getY(),
                 rotation.getRadians()
         );
-
         selfRelativeDrive(chassisSpeeds);
     }
 
@@ -56,6 +58,11 @@ public class Swerve extends SubsystemBase {
         if(isStill(chassisSpeeds)) {
             stop();
             return;
+        }
+        if(slowDrive) {
+            chassisSpeeds.vxMetersPerSecond /= 4;
+            chassisSpeeds.vyMetersPerSecond /= 4;
+            chassisSpeeds.omegaRadiansPerSecond /= 4;
         }
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);
@@ -86,6 +93,10 @@ public class Swerve extends SubsystemBase {
         SwerveConstants.gyro.setYaw(yaw);
     }
 
+    public void setSlowDrive(boolean slowDrive) {
+        this.slowDrive = slowDrive;
+    }
+
     private boolean isStill(ChassisSpeeds chassisSpeeds) {
         return
                 Math.abs(chassisSpeeds.vxMetersPerSecond) < SwerveConstants.DEAD_BAND_DRIVE_DEADBAND &&
@@ -100,6 +111,12 @@ public class Swerve extends SubsystemBase {
                     SwerveConstants.SWERVE_MODULES[i]
             );
         }
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Heading", () -> getHeading().getDegrees(), this::setHeading);
     }
 }
 
