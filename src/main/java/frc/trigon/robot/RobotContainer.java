@@ -140,7 +140,8 @@ public class RobotContainer {
         driverController.getXBtn().whileHeld(autoShootCommand);
         driverController.getABtn().whileHeld(turnToHubCommand);
         driverController.getBBtn().whileHeld(new ShootFromCloseCommand());
-        //TODO: bind slow to right bumper
+        driverController.getRightBumperBtn().whileHeld(() -> Swerve.getInstance().setSlowDrive(true))
+                .whenReleased(() -> Swerve.getInstance().setSlowDrive(false));
     }
 
     private void bindOperatorCommands() {
