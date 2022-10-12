@@ -30,6 +30,10 @@ public class Robot extends TimedRobot {
     }
 
     @Override
+    public void autonomousPeriodic() {
+        robotContainer.getAutonomousCommand().schedule();
+    }
+
     public void disabledInit() {
         Collector.getInstance().setNeutralMode(NeutralMode.Coast);
     }

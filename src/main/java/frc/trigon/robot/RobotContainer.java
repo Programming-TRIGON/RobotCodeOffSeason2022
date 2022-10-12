@@ -43,6 +43,7 @@ public class RobotContainer {
     Command primeShooterCommand;
     Command pitchCommand;
     Command ejectCommand;
+    Command autonomousCommand;
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
     AutoShootCommand autoShootCommand;
@@ -106,6 +107,7 @@ public class RobotContainer {
         pitchCommand = Commands.getPitchByLimelightCommand();
         turnToHubCommand = Commands.getTurnToLimelight0Command();
         ejectCommand = Commands.getShooterEjectCommand();
+        autonomousCommand = Commands.getHailMaryAutonomous();
         autoShootCommand = new AutoShootCommand();
 
         playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
@@ -148,6 +150,10 @@ public class RobotContainer {
         operatorController.getXBtn().whileHeld(Loader.getInstance().getEjectCommand());
         operatorController.getABtn().whileHeld(Collector.getInstance().getCollectCommand());
         operatorController.getYBtn().whenPressed(this::toggleLockOnHub);
+    }
+
+    public Command getAutonomousCommand() {
+        return autonomousCommand;
     }
 
     private void putSendablesOnSmartDashboard() {
