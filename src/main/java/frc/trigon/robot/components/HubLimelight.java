@@ -1,6 +1,7 @@
 package frc.trigon.robot.components;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.trigon.robot.utilities.Conversions;
 
 /**
@@ -26,7 +27,9 @@ public class HubLimelight extends Limelight {
      * @return the distance from the hub in meters
      */
     public double getDistanceFromHub() {
-        return Conversions.calculatePolynomial(A, B, C, getTy());
+        if(SmartDashboard.getNumber("limelightOffset", -400) == -400)
+            SmartDashboard.putNumber("limelightOffset", 0);
+        return Conversions.calculatePolynomial(A, B, C, getTy()) + SmartDashboard.getNumber("limelightOffset", 0);
     }
 
     public boolean isCentered() {
