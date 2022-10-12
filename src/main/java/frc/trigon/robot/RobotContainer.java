@@ -6,16 +6,14 @@
 package frc.trigon.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.trigon.robot.commands.PlaybackSimulatedControllerCommand;
-import frc.trigon.robot.commands.RecordControllerCommand;
-import frc.trigon.robot.commands.AutoShootCommand;
-import frc.trigon.robot.commands.CollectCommand;
-import frc.trigon.robot.commands.Commands;
+import frc.trigon.robot.commands.*;
+import frc.trigon.robot.commands.runswhendisabled.RunsWhenDisabledRunCommand;
 import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.simulation.SimulateableController;
 import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
@@ -30,7 +28,6 @@ import frc.trigon.robot.subsystems.swerve.Swerve;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
 import frc.trigon.robot.subsystems.transporter.Transporter;
 
-
 public class RobotContainer {
     SimulateableController driverController;
     SimulateableController operatorController;
@@ -38,7 +35,8 @@ public class RobotContainer {
     public static HubLimelight hubLimelight = new HubLimelight("limelight");
     PowerDistribution powerDistribution;
 
-    FieldRelativeSupplierDrive swerveCommand;
+    FieldRelativeSupplierDrive swerveDriveCommand;
+    CommandBase swerveDriveWithHubLockCommand;
     PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
     RecordControllerCommand recordControllerCommand;
     CollectCommand collectCommand;
@@ -90,10 +88,14 @@ public class RobotContainer {
     }
 
     private void initCommands() {
-        swerveCommand = new FieldRelativeSupplierDrive(
+        swerveDriveCommand = new FieldRelativeSupplierDrive(
                 () -> driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
                 () -> -driverController.getRightX()
+        );
+        swerveDriveWithHubLockCommand = Commands.getSwerveDriveWithHubLockCommand(
+                () -> driverController.getLeftY(),
+                () -> -driverController.getLeftX()
         );
         collectCommand = new CollectCommand();
 
@@ -111,19 +113,32 @@ public class RobotContainer {
     }
 
     private void bindDefaultCommands() {
-        Swerve.getInstance().setDefaultCommand(swerveCommand);
+        Swerve.getInstance().setDefaultCommand(swerveDriveCommand);
 
         foreignBallButton.whileHeld(ejectCommand);
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();
+
+        new RunsWhenDisabledRunCommand(
+                () -> {
+                    SmartDashboard.putBoolean(
+                            "WNTS/shooter stable",
+                            Shooter.getInstance().shotsDetectorCommand.getIsStable());
+                    SmartDashboard.putBoolean("WNTS/pitcher stable", Pitcher.getInstance().atTargetAngle());
+                    SmartDashboard.putBoolean(
+                            "WNTS/limelight centered", RobotContainer.hubLimelight.isCentered());
+                }
+        ).schedule();
     }
 
     private void bindDriverCommands() {
         driverController.getLeftBumperBtn().whileHeld(collectCommand);
         driverController.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
-        driverController.getBBtn().whileHeld(autoShootCommand);
-        driverController.getXBtn().whileHeld(turnToHubCommand);
+        driverController.getXBtn().whileHeld(autoShootCommand);
+        driverController.getABtn().whileHeld(turnToHubCommand);
+        driverController.getBBtn().whileHeld(new ShootFromCloseCommand());
+        //TODO: bind slow to right bumper
     }
 
     private void bindOperatorCommands() {
@@ -131,8 +146,8 @@ public class RobotContainer {
         operatorController.getRightBumperBtn().whileHeld(Transporter.getInstance().getLoadCommand());
         operatorController.getBBtn().whileHeld(Loader.getInstance().getLoadCommand());
         operatorController.getXBtn().whileHeld(Loader.getInstance().getEjectCommand());
-        operatorController.getYBtn().whileHeld(Shooter.getInstance().getPrimeShooterCommand(() -> 3000));
         operatorController.getABtn().whileHeld(Collector.getInstance().getCollectCommand());
+        operatorController.getYBtn().whenPressed(this::toggleLockOnHub);
     }
 
     private void putSendablesOnSmartDashboard() {
@@ -146,5 +161,13 @@ public class RobotContainer {
         SmartDashboard.putData(Swerve.getInstance());
         SmartDashboard.putData(recordControllerCommand);
         SmartDashboard.putData(playbackSimulatedControllerCommand);
+    }
+
+    private void toggleLockOnHub() {
+        Swerve.getInstance().setDefaultCommand(
+                Swerve.getInstance().getDefaultCommand() == swerveDriveCommand ?
+                swerveDriveWithHubLockCommand :
+                swerveDriveCommand
+        );
     }
 }
