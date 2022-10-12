@@ -4,10 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.trigon.robot.utilities.Conversions;
 
 import java.util.function.DoubleSupplier;
@@ -74,7 +71,7 @@ public class Shooter extends SubsystemBase {
     /**
      * @return the current closed loop error value in RPM
      */
-    double getError() {
+    public double getError() {
         return Conversions.falconTicksPer100MsToRpm(masterMotor.getClosedLoopError());
     }
 
@@ -86,7 +83,7 @@ public class Shooter extends SubsystemBase {
      * @param targetVelocity the target velocity of the shooter
      * @return a command that sets the velocity of the shooter according to the given supplier
      */
-    public Command getPrimeShooterCommand(DoubleSupplier targetVelocity) {
+    public CommandBase getPrimeShooterCommand(DoubleSupplier targetVelocity) {
         return new RunCommand(() -> setTargetVelocity(targetVelocity.getAsDouble()), this)
                 .andThen(this::stop);
     }
@@ -100,6 +97,10 @@ public class Shooter extends SubsystemBase {
             }
         }, this)
                 .andThen(this::stop, this);
+    }
+
+    public CommandBase getEjectShooterCommand() {
+        return new StartEndCommand(() -> setTargetVelocity(ShooterConstants.EJECT_TARGET_VELOCITY), this::stop);
     }
 
     @Override

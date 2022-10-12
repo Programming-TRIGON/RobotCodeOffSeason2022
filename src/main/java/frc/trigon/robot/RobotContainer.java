@@ -5,11 +5,15 @@
 
 package frc.trigon.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.trigon.robot.commands.*;
+import frc.trigon.robot.commands.runswhendisabled.RunsWhenDisabledRunCommand;
 import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.simulation.SimulateableController;
 import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
@@ -31,16 +35,20 @@ public class RobotContainer {
     public static HubLimelight hubLimelight = new HubLimelight("limelight");
     PowerDistribution powerDistribution;
 
-    FieldRelativeSupplierDrive swerveCommand;
+    FieldRelativeSupplierDrive swerveDriveCommand;
+    CommandBase swerveDriveWithHubLockCommand;
     PlaybackSimulatedControllerCommand playbackSimulatedControllerCommand;
     RecordControllerCommand recordControllerCommand;
     CollectCommand collectCommand;
     Command primeShooterCommand;
     Command pitchCommand;
+    Command ejectCommand;
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
     AutoShootCommand autoShootCommand;
     TurnToTargetCommand turnToHubCommand;
+
+    Button foreignBallButton;
 
     public RobotContainer() {
         initComponents();
@@ -72,13 +80,22 @@ public class RobotContainer {
                 OPERATOR_DEADBAND);
         powerDistribution = new PowerDistribution(POWER_DISTRIBUTION_MODULE, PowerDistribution.ModuleType.kRev);
         hubLimelight = new HubLimelight("limelight");
+
+        foreignBallButton = new Button(() ->
+                !BallsCounter.getInstance().getFirstBall().equals("") && !BallsCounter.getInstance().getFirstBall()
+                        .equals(DriverStation.getAlliance().name().toLowerCase())
+        );
     }
 
     private void initCommands() {
-        swerveCommand = new FieldRelativeSupplierDrive(
+        swerveDriveCommand = new FieldRelativeSupplierDrive(
                 () -> driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
                 () -> -driverController.getRightX()
+        );
+        swerveDriveWithHubLockCommand = Commands.getSwerveDriveWithHubLockCommand(
+                () -> driverController.getLeftY(),
+                () -> -driverController.getLeftX()
         );
         collectCommand = new CollectCommand();
 
@@ -88,6 +105,7 @@ public class RobotContainer {
         primeShooterCommand = Commands.getPrimeShooterByLimelightCommand();
         pitchCommand = Commands.getPitchByLimelightCommand();
         turnToHubCommand = Commands.getTurnToLimelight0Command();
+        ejectCommand = Commands.getShooterEjectCommand();
         autoShootCommand = new AutoShootCommand();
 
         playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
@@ -95,17 +113,31 @@ public class RobotContainer {
     }
 
     private void bindDefaultCommands() {
-        Swerve.getInstance().setDefaultCommand(swerveCommand);
+        Swerve.getInstance().setDefaultCommand(swerveDriveCommand);
+
+        foreignBallButton.whileHeld(ejectCommand);
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();
+
+        new RunsWhenDisabledRunCommand(
+                () -> {
+                    SmartDashboard.putBoolean(
+                            "WNTS/shooter stable",
+                            Shooter.getInstance().shotsDetectorCommand.getIsStable());
+                    SmartDashboard.putBoolean("WNTS/pitcher stable", Pitcher.getInstance().atTargetAngle());
+                    SmartDashboard.putBoolean(
+                            "WNTS/limelight centered", RobotContainer.hubLimelight.isCentered());
+                }
+        ).schedule();
     }
 
     private void bindDriverCommands() {
         driverController.getLeftBumperBtn().whileHeld(collectCommand);
         driverController.getYBtn().whenPressed(Swerve.getInstance()::zeroHeading);
-        driverController.getBBtn().whileHeld(autoShootCommand);
-        driverController.getXBtn().whileHeld(turnToHubCommand);
+        driverController.getXBtn().whileHeld(autoShootCommand);
+        driverController.getABtn().whileHeld(turnToHubCommand);
+        driverController.getBBtn().whileHeld(new ShootFromCloseCommand());
         driverController.getRightBumperBtn().whileHeld(() -> Swerve.getInstance().setSlowDrive(true))
                 .whenReleased(() -> Swerve.getInstance().setSlowDrive(false));
     }
@@ -115,8 +147,8 @@ public class RobotContainer {
         operatorController.getRightBumperBtn().whileHeld(Transporter.getInstance().getLoadCommand());
         operatorController.getBBtn().whileHeld(Loader.getInstance().getLoadCommand());
         operatorController.getXBtn().whileHeld(Loader.getInstance().getEjectCommand());
-        operatorController.getYBtn().whileHeld(Shooter.getInstance().getPrimeShooterCommand(() -> 3000));
         operatorController.getABtn().whileHeld(Collector.getInstance().getCollectCommand());
+        operatorController.getYBtn().whenPressed(this::toggleLockOnHub);
     }
 
     private void putSendablesOnSmartDashboard() {
@@ -130,5 +162,13 @@ public class RobotContainer {
         SmartDashboard.putData(Swerve.getInstance());
         SmartDashboard.putData(recordControllerCommand);
         SmartDashboard.putData(playbackSimulatedControllerCommand);
+    }
+
+    private void toggleLockOnHub() {
+        Swerve.getInstance().setDefaultCommand(
+                Swerve.getInstance().getDefaultCommand() == swerveDriveCommand ?
+                swerveDriveWithHubLockCommand :
+                swerveDriveCommand
+        );
     }
 }
