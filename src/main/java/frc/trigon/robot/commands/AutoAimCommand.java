@@ -5,10 +5,10 @@ import frc.trigon.robot.controllers.simulation.SimulateableController;
 import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.Swerve;
 
-public class autoAimCommand extends ParallelCommandGroup {
+public class AutoAimCommand extends ParallelCommandGroup {
     Swerve swerve = Swerve.getInstance();
 
-    public autoAimCommand(SimulateableController controller) {
+    public AutoAimCommand(SimulateableController controller) {
         super(new FieldRelativeSupplierDrive(
                 controller::getLeftY,
                 () -> -controller.getLeftX(),
