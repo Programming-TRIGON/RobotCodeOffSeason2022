@@ -6,9 +6,9 @@
 package frc.trigon.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.trigon.robot.commands.*;
@@ -100,11 +100,11 @@ public class RobotContainer {
         primeShooterCommand = Commands.getPrimeShooterByLimelightCommand();
         pitchCommand = Commands.getPitchByLimelightCommand();
         turnToHubCommand = Commands.getTurnToLimelight0Command();
-        defaultLoaderCommand = Commands.getDefaultLoaderCommand();
-        defaultTransporterCommand = Commands.getDefaultTransporterCommand();
+        defaultLoaderCommand = Loader.getInstance().getDefaultLoadCommand();
+        defaultTransporterCommand = Transporter.getInstance().getDefaultTransportCommand();
         ejectCommand = Commands.getShooterEjectCommand();
-
         autoShootCommand = new AutoShootCommand();
+
         playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
         recordControllerCommand = new RecordControllerCommand(driverController);
     }
@@ -118,8 +118,6 @@ public class RobotContainer {
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();
-        defaultLoaderCommand.schedule();
-        defaultTransporterCommand.schedule();
     }
 
     private void bindDriverCommands() {

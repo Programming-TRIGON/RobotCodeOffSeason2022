@@ -3,14 +3,11 @@ package frc.trigon.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.trigon.robot.RobotContainer;
-import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.pitcher.Pitcher;
 import frc.trigon.robot.subsystems.shooter.Shooter;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
-import frc.trigon.robot.subsystems.transporter.Transporter;
 import frc.trigon.robot.utilities.ShootingCalculations;
 
 import java.util.function.BooleanSupplier;
@@ -24,7 +21,7 @@ public class Commands {
         );
     }
 
-    public static CommandBase getShooterEjectCommand(){
+    public static CommandBase getShooterEjectCommand() {
         return Shooter.getInstance().getEjectShooterCommand();
     }
 
@@ -50,16 +47,8 @@ public class Commands {
         );
     }
 
-    public static Command getDefaultLoaderCommand() {
-        return Loader.getInstance().getLoadCommand();
-    }
-
-    public static Command getDefaultTransporterCommand(){
-        return Transporter.getInstance().getLoadCommand();
-    }
-
-    static void runCommandWhile(ParallelCommandGroup commandGroup, BooleanSupplier condition, Command command) {
-        Button button = new Button(() -> condition.getAsBoolean() && commandGroup.isScheduled());
+    static void runCommandWhile(BooleanSupplier condition, Command command) {
+        Button button = new Button(condition);
         button.whileHeld(command);
     }
 }

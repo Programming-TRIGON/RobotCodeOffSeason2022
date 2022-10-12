@@ -158,10 +158,10 @@ public class SwerveModuleConstants {
         REAR_RIGHT_DRIVE_MOTOR.enableVoltageCompensation(true);
         REAR_RIGHT_ANGLE_MOTOR.enableVoltageCompensation(true);
 
-        FRONT_RIGHT_DRIVE_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General,1000,0);
-        FRONT_LEFT_DRIVE_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General,1000,0);
-        REAR_RIGHT_DRIVE_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General,1000,0);
-        REAR_LEFT_DRIVE_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General,1000,0);
+        FRONT_RIGHT_DRIVE_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General, 1000, 0);
+        FRONT_LEFT_DRIVE_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General, 1000, 0);
+        REAR_RIGHT_DRIVE_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General, 1000, 0);
+        REAR_LEFT_DRIVE_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General, 1000, 0);
 
         FRONT_RIGHT_ANGLE_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General, 1000, 0);
         FRONT_RIGHT_ANGLE_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1000, 0);
@@ -171,7 +171,6 @@ public class SwerveModuleConstants {
         REAR_RIGHT_ANGLE_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1000, 0);
         REAR_LEFT_ANGLE_MOTOR.setStatusFramePeriod(StatusFrame.Status_1_General, 1000, 0);
         REAR_LEFT_ANGLE_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1000, 0);
-
     }
 
     public static double
