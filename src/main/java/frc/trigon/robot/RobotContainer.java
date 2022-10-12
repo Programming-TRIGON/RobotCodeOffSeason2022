@@ -110,8 +110,8 @@ public class RobotContainer {
         turnToHubCommand = Commands.getTurnToLimelight0Command();
         defaultLoaderCommand = Loader.getInstance().getDefaultLoadCommand();
         defaultTransporterCommand = Transporter.getInstance().getDefaultTransportCommand();
-        ejectCommand = Commands.getShooterEjectCommand();
-        autonomousCommand = Commands.getHailMaryAutonomous();
+        ejectCommand = new EjectCommand();
+        autonomousCommand = Commands.newAuto();
         autoShootCommand = new AutoShootCommand();
 
         playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
@@ -122,6 +122,8 @@ public class RobotContainer {
         Swerve.getInstance().setDefaultCommand(swerveDriveCommand);
         Loader.getInstance().setDefaultCommand(defaultLoaderCommand);
         Transporter.getInstance().setDefaultCommand(defaultTransporterCommand);
+        Shooter.getInstance().setDefaultCommand(primeShooterCommand);
+        Pitcher.getInstance().setDefaultCommand(pitchCommand);
 
         foreignBallButton.whileHeld(ejectCommand);
 

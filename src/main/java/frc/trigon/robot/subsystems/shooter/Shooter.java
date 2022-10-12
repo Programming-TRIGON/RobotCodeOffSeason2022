@@ -4,7 +4,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.trigon.robot.utilities.Conversions;
 
 import java.util.function.DoubleSupplier;
@@ -27,7 +29,7 @@ public class Shooter extends SubsystemBase {
     /**
      * @return the target velocity in RPM
      */
-    private double getTargetVelocity() {
+    public double getTargetVelocity() {
         if(!masterMotor.getControlMode().equals(ControlMode.Velocity)) {
             return 0;
         }
@@ -100,7 +102,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public CommandBase getEjectShooterCommand() {
-        return new StartEndCommand(() -> setTargetVelocity(ShooterConstants.EJECT_TARGET_VELOCITY), this::stop);
+        return getPrimeShooterCommand(() -> ShooterConstants.EJECT_TARGET_VELOCITY);
     }
 
     @Override

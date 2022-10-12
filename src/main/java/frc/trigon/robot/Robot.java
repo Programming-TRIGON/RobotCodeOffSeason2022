@@ -29,11 +29,6 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
     }
 
-    @Override
-    public void autonomousPeriodic() {
-        robotContainer.getAutonomousCommand().schedule();
-    }
-
     public void disabledInit() {
         Collector.getInstance().setNeutralMode(NeutralMode.Coast);
     }
@@ -41,6 +36,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         Collector.getInstance().setNeutralMode(NeutralMode.Brake);
+        robotContainer.getAutonomousCommand().schedule();
     }
 
     @Override

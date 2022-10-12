@@ -1,7 +1,9 @@
 package frc.trigon.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.trigon.robot.subsystems.backspinreducer.BackspinReducer;
 import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.pitcher.Pitcher;
 import frc.trigon.robot.subsystems.pitcher.PitcherConstants;
@@ -20,13 +22,18 @@ public class ShootFromCloseCommand extends ParallelCommandGroup {
                 Pitcher.getInstance().getPitchingCommand(() -> PitcherConstants.CLOSE_SHOOTING_TARGET_ANGLE)
         );
         canShootBtn.whileHeld(
-                Loader.getInstance().getLoadCommand().alongWith(Transporter.getInstance().getLoadCommand())
+                getLoadCommand().alongWith(Transporter.getInstance().getLoadCommand())
         );
         canShootBtn.whenReleased(
-                Loader.getInstance().getLoadCommand().withInterrupt(() -> !isScheduled()).withTimeout(0.5));
+                getLoadCommand().withInterrupt(() -> !isScheduled()).withTimeout(0.5));
+    }
+
+    private Command getLoadCommand() {
+        return Loader.getInstance().getLoadCommand().alongWith(BackspinReducer.getInstance().getReducerCommand());
     }
 
     private boolean canShoot() {
-        return Shooter.getInstance().shotsDetectorCommand.getIsStable() && Pitcher.getInstance().atTargetAngle();
+        return Shooter.getInstance().shotsDetectorCommand.getIsStable() &&
+                Math.abs(PitcherConstants.CLOSE_SHOOTING_TARGET_ANGLE - Pitcher.getInstance().getAngle()) < 1;
     }
 }

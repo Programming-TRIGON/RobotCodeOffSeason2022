@@ -116,7 +116,7 @@ public class Swerve extends SubsystemBase {
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
-        builder.addDoubleProperty("Heading", () -> getHeading().getDegrees(), this::setHeading);
+        builder.addDoubleProperty("Heading", () -> (int) getHeading().getDegrees(), this::setHeading);
     }
 }
 

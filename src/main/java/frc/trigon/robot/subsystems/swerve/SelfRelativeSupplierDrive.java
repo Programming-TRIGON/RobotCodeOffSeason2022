@@ -32,9 +32,9 @@ public class SelfRelativeSupplierDrive extends CommandBase {
     public void execute() {
         swerve.selfRelativeDrive(
                 new Translation2d(
-                        xPower.getAsDouble() * SwerveConstants.MAX_SPEED_METERS_PER_SECOND,
-                        yPower.getAsDouble() * SwerveConstants.MAX_SPEED_METERS_PER_SECOND),
-                new Rotation2d(rotPower.getAsDouble() * SwerveConstants.MAX_ROTATIONAL_SPEED_RADIANS_PER_SECOND));
+                        xPower.getAsDouble(),
+                        yPower.getAsDouble()),
+                new Rotation2d(rotPower.getAsDouble()));
     }
 
     @Override

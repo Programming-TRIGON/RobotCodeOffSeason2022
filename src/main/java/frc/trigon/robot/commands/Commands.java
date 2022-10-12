@@ -25,10 +25,6 @@ public class Commands {
         );
     }
 
-    public static CommandBase getShooterEjectCommand() {
-        return Shooter.getInstance().getEjectShooterCommand();
-    }
-
     public static CommandBase getPitchByLimelightCommand() {
         return Pitcher.getInstance().getPitchingCommandWithIdleMode(
                 () -> RobotContainer.hubLimelight.hasTarget() ?
@@ -73,10 +69,34 @@ public class Commands {
                         .andThen(new SelfRelativeSupplierDrive(() -> 0, () -> 0, () -> Math.PI / 3).withTimeout(3.25)
                                 .andThen(new SelfRelativeSupplierDrive(() -> 1, () -> 0, () -> 0).withTimeout(1.5)
                                         .raceWith(new CollectCommand().withInterrupt(() -> !BallsCounter.getInstance()
-                                                        .getFirstBall().equals(""))
-                                                .andThen(new AutoShootCommand().withInterrupt(
-                                                        () -> BallsCounter.getInstance().getFirstBall()
-                                                                .equals("")))))));
+                                                .getFirstBall().equals(""))
+                                        )
+                                        .andThen(new AutoShootCommand().withInterrupt(
+                                                () -> BallsCounter.getInstance().getFirstBall()
+                                                        .equals(""))
+                                        )
+                                )
+                        )
+                );
+    }
+
+    public static Command newAuto() {
+        return new SelfRelativeSupplierDrive(() -> -0.5, () -> 0, () -> 0).withTimeout(4).andThen(
+                new AutoShootCommand().withInterrupt(() -> BallsCounter.getInstance().getFirstBall().equals(""))
+                        .andThen(
+                                new SelfRelativeSupplierDrive(() -> 0, () -> 0, () -> Math.PI).withTimeout(1.2).andThen(
+                                        new SelfRelativeSupplierDrive(() -> 0.5, () -> 0, () -> 0).withTimeout(4)
+                                                .raceWith(
+                                                        new CollectCommand().withInterrupt(
+                                                                () -> !BallsCounter.getInstance()
+                                                                        .getFirstBall().equals(""))
+                                                ).andThen(
+                                                        new AutoShootCommand().withInterrupt(
+                                                                () -> BallsCounter.getInstance().getFirstBall().equals(""))
+                                                )
+                                )
+                        )
+        );
     }
 
     public static CommandBase getSwerveDriveWithHubLockCommand(DoubleSupplier x, DoubleSupplier y) {

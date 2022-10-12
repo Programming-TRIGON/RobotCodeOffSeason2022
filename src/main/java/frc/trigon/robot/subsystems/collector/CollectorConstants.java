@@ -6,10 +6,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class CollectorConstants {
     static final double
-            COLLECTING_POWER = 0.4,
+            COLLECTING_POWER = 0.8,
             OPENING_POWER = 0.8,
             EJECTING_POWER = -0.5,
-            CLOSING_POWER = -0.2;
+            CLOSING_POWER = -0.6;
     private static final double
             OPENER_CURRENT_LIMIT_PEAK_CURRENT = 30,
             OPENER_CURRENT_LIMIT_PEAK_DURATION = 0.2,
@@ -49,7 +49,7 @@ public class CollectorConstants {
                 )
         );
 
-        OPENING_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0,1000,0);
-        COLLECTION_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0,1000,0);
+        OPENING_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1000, 0);
+        COLLECTION_MOTOR.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1000, 0);
     }
 }
