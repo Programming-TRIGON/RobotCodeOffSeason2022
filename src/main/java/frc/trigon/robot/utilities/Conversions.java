@@ -1,7 +1,5 @@
 package frc.trigon.robot.utilities;
 
-import frc.trigon.robot.subsystems.swerve.SwerveConstants;
-
 public class Conversions {
     public static final int MAG_TICKS = 4096;
     public static final int DEGREES_PER_REVOLUTIONS = 360;
