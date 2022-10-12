@@ -30,7 +30,6 @@ import frc.trigon.robot.subsystems.swerve.Swerve;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
 import frc.trigon.robot.subsystems.transporter.Transporter;
 
-
 public class RobotContainer {
     SimulateableController driverController;
     SimulateableController operatorController;
@@ -45,6 +44,7 @@ public class RobotContainer {
     Command primeShooterCommand;
     Command pitchCommand;
     Command ejectCommand;
+    Command autonomousCommand;
     CountBallsCommand countBallsCommand;
     ShotsDetectorCommand shotsDetectorCommand;
     AutoShootCommand autoShootCommand;
@@ -104,6 +104,7 @@ public class RobotContainer {
         pitchCommand = Commands.getPitchByLimelightCommand();
         turnToHubCommand = Commands.getTurnToLimelight0Command();
         ejectCommand = Commands.getShooterEjectCommand();
+        autonomousCommand = Commands.getHailMaryAutonomous();
         autoShootCommand = new AutoShootCommand();
 
         playbackSimulatedControllerCommand = new PlaybackSimulatedControllerCommand(driverController);
@@ -133,6 +134,10 @@ public class RobotContainer {
         operatorController.getXBtn().whileHeld(Loader.getInstance().getEjectCommand());
         operatorController.getYBtn().whileHeld(Shooter.getInstance().getPrimeShooterCommand(() -> 3000));
         operatorController.getABtn().whileHeld(Collector.getInstance().getCollectCommand());
+    }
+
+    public Command getAutonomousCommand() {
+        return autonomousCommand;
     }
 
     private void putSendablesOnSmartDashboard() {
