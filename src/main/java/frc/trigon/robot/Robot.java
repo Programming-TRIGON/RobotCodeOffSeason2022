@@ -7,6 +7,7 @@ package frc.trigon.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.trigon.robot.subsystems.collector.Collector;
 
@@ -27,6 +28,8 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
+        if(SmartDashboard.getNumber("closeShootVel", 43) == 43)
+            SmartDashboard.putNumber("closeShootVel", 0);
     }
 
     public void disabledInit() {

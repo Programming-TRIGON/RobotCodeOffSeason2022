@@ -6,11 +6,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.trigon.robot.RobotContainer;
 import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
+import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.pitcher.Pitcher;
 import frc.trigon.robot.subsystems.shooter.Shooter;
 import frc.trigon.robot.subsystems.swerve.DriveWithTurnToTargetCommand;
+import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.SelfRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
+import frc.trigon.robot.subsystems.transporter.Transporter;
 import frc.trigon.robot.utilities.ShootingCalculations;
 
 import java.util.function.BooleanSupplier;
@@ -81,22 +84,9 @@ public class Commands {
     }
 
     public static Command newAuto() {
-        return new SelfRelativeSupplierDrive(() -> -0.5, () -> 0, () -> 0).withTimeout(4).andThen(
-                new AutoShootCommand().withInterrupt(() -> BallsCounter.getInstance().getFirstBall().equals(""))
-                        .andThen(
-                                new SelfRelativeSupplierDrive(() -> 0, () -> 0, () -> Math.PI).withTimeout(1.2).andThen(
-                                        new SelfRelativeSupplierDrive(() -> 0.5, () -> 0, () -> 0).withTimeout(4)
-                                                .raceWith(
-                                                        new CollectCommand().withInterrupt(
-                                                                () -> !BallsCounter.getInstance()
-                                                                        .getFirstBall().equals(""))
-                                                ).andThen(
-                                                        new AutoShootCommand().withInterrupt(
-                                                                () -> BallsCounter.getInstance().getFirstBall().equals(""))
-                                                )
-                                )
-                        )
-        );
+        return new FieldRelativeSupplierDrive(() -> -0.5, () -> 0, () -> 0).withTimeout(1.8).andThen(
+                new AutoShootCommand()).withTimeout(6).andThen(Loader.getInstance().getLoadCommand()).alongWith(
+                Transporter.getInstance().getLoadCommand());
     }
 
     public static CommandBase getSwerveDriveWithHubLockCommand(DoubleSupplier x, DoubleSupplier y) {

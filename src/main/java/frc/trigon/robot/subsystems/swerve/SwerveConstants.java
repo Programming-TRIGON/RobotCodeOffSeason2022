@@ -8,7 +8,7 @@ public class SwerveConstants {
     public static final double MAX_SPEED_METERS_PER_SECOND = 4.25;
     public static final double MAX_ROTATIONAL_SPEED_RADIANS_PER_SECOND = 12.03;
 
-    static final double DRIVE_RAMP_RATE = 0.3;
+    static final double DRIVE_RAMP_RATE = 0.6;
     static final double DEAD_BAND_DRIVE_DEADBAND = 0.1;
     private static final int PIGEON_ID = 25;
     public static final Pigeon2 gyro = new Pigeon2(PIGEON_ID);

@@ -60,9 +60,9 @@ public class Swerve extends SubsystemBase {
             return;
         }
         if(slowDrive) {
-            chassisSpeeds.vxMetersPerSecond /= 4;
-            chassisSpeeds.vyMetersPerSecond /= 4;
-            chassisSpeeds.omegaRadiansPerSecond /= 4;
+            chassisSpeeds.vxMetersPerSecond /= 2;
+            chassisSpeeds.vyMetersPerSecond /= 2;
+            chassisSpeeds.omegaRadiansPerSecond /= 2;
         }
         SwerveModuleState[] swerveModuleStates = SwerveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         setTargetModuleStates(swerveModuleStates);

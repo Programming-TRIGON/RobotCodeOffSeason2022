@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.trigon.robot.commands.*;
 import frc.trigon.robot.commands.runswhendisabled.RunsWhenDisabledRunCommand;
@@ -18,6 +19,7 @@ import frc.trigon.robot.components.HubLimelight;
 import frc.trigon.robot.controllers.simulation.SimulateableController;
 import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
 import frc.trigon.robot.subsystems.ballscounter.CountBallsCommand;
+import frc.trigon.robot.subsystems.climber.Climber;
 import frc.trigon.robot.subsystems.collector.Collector;
 import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.pitcher.Pitcher;
@@ -125,7 +127,18 @@ public class RobotContainer {
         Shooter.getInstance().setDefaultCommand(primeShooterCommand);
         Pitcher.getInstance().setDefaultCommand(pitchCommand);
 
-        foreignBallButton.whileHeld(ejectCommand);
+        Climber.getInstance().setDefaultCommand(new RunCommand(
+                () -> {
+                    Climber.getInstance().setPower(
+                            driverController.getRightTriggerAxis() +
+                                    operatorController.getRightTriggerAxis() -
+                                    driverController.getLeftTriggerAxis() -
+                                    operatorController.getLeftTriggerAxis()
+                    );
+                }, Climber.getInstance()
+        ));
+
+        //        foreignBallButton.whileHeld(ejectCommand);
 
         countBallsCommand.schedule();
         shotsDetectorCommand.schedule();

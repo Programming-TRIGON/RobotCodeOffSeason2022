@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class CollectorConstants {
     static final double
-            COLLECTING_POWER = 0.8,
+            COLLECTING_POWER = 0.4,
             OPENING_POWER = 0.8,
             EJECTING_POWER = -0.5,
             CLOSING_POWER = -0.6;

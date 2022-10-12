@@ -1,5 +1,6 @@
 package frc.trigon.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -18,14 +19,16 @@ public class ShootFromCloseCommand extends ParallelCommandGroup {
         super();
         canShootBtn = new Button(() -> canShoot() && isScheduled());
         addCommands(
-                Shooter.getInstance().getPrimeShooterCommand(() -> ShooterConstants.CLOSE_SHOOTING_TARGET_VELOCITY),
+                Shooter.getInstance().getPrimeShooterCommand(() -> SmartDashboard.getNumber(
+                        "closeShootVel",
+                        ShooterConstants.CLOSE_SHOOTING_TARGET_VELOCITY)),
                 Pitcher.getInstance().getPitchingCommand(() -> PitcherConstants.CLOSE_SHOOTING_TARGET_ANGLE)
         );
         canShootBtn.whileHeld(
                 getLoadCommand().alongWith(Transporter.getInstance().getLoadCommand())
         );
-        canShootBtn.whenReleased(
-                getLoadCommand().withInterrupt(() -> !isScheduled()).withTimeout(0.5));
+        //        canShootBtn.whenReleased(
+        //                getLoadCommand().withInterrupt(() -> !isScheduled()).withTimeout(0.5));
     }
 
     private Command getLoadCommand() {

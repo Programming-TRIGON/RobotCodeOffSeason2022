@@ -13,7 +13,7 @@ public class ShotsDetectorCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if(Shooter.getInstance().atTargetVelocity() || Shooter.getInstance().getTargetVelocity() > 500) {
+        if(Shooter.getInstance().atTargetVelocity() && Shooter.getInstance().getTargetVelocity() > 500) {
             if(Timer.getFPGATimestamp() >= lastErrorTimer + ShooterConstants.TIME_TOLERANCE) {
                 isStable = true;
                 Shooter.getInstance().wasInSetpoint = true;

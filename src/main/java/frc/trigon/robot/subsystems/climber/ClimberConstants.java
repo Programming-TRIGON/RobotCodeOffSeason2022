@@ -14,12 +14,12 @@ public class ClimberConstants {
     static final double STABLE_PITCH = 0;
     private static final boolean AUX_INVERTED = false;
     private static final int
-            LEFT_MOTOR_ID = 0,
-            RIGHT_MOTOR_ID = 1,
+            LEFT_MOTOR_ID = 11,
+            RIGHT_MOTOR_ID = 7,
             PIGEON_ID = 2;
     private static final boolean
             LEFT_MOTOR_INVERTED = false,
-            RIGHT_MOTOR_INVERTED = false;
+            RIGHT_MOTOR_INVERTED = true;
     private static final double
             P = 1,
             I = 1,

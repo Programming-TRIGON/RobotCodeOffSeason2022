@@ -26,7 +26,7 @@ public class Climber extends SubsystemBase {
             JsonHandler.parseJsonFileToObject("ClimberConstants.json", ClimberConstants.LocalClimberConstants.class),
             new ClimberConstants.LocalClimberConstants()).maxTicks;
 
-    static Climber getInstance() {
+    public static Climber getInstance() {
         return INSTANCE;
     }
 
@@ -68,7 +68,7 @@ public class Climber extends SubsystemBase {
      *
      * @param power the amount of power (voltage)
      */
-    void setPower(double power) {
+    public void setPower(double power) {
         followerMotor.follow(masterMotor, FollowerType.PercentOutput);
         masterMotor.set(ControlMode.PercentOutput, power);
     }
