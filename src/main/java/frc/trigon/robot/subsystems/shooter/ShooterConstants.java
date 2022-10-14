@@ -17,8 +17,8 @@ public class ShooterConstants {
     static final WPI_TalonFX
             MASTER_MOTOR = RIGHT_MOTOR;
     static final double TIME_TOLERANCE = 0.5;
-    static final double VELOCITY_TOLERANCE = 60;
-    static final double S = 0.03;
+    static final double VELOCITY_TOLERANCE = 90;
+    static final double S = 0.0461;
     private static final WPI_TalonFX FOLLOWER_MOTOR =
             LEFT_MOTOR == MASTER_MOTOR ? RIGHT_MOTOR : LEFT_MOTOR;
     private static final boolean INVERTED = true;
@@ -27,7 +27,7 @@ public class ShooterConstants {
             P = 0.12,
             I = 0.00002,
             D = 0,
-            V = 0.0522,
+            V = 0.0587,
             MAX_I = 1300000;
 
     static {

@@ -66,7 +66,7 @@ public class Loader extends SubsystemBase {
     public Command getDefaultLoadCommand() {
         return new RunCommand(() -> {
             if(!BallsCounter.getInstance().isLoaderSwitchHeld() && !BallsCounter.getInstance().getFirstBall()
-                    .equals(""))
+                    .isEmpty())
                 setState(LoaderState.LOAD);
             else
                 setState(LoaderState.OFF);

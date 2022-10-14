@@ -12,7 +12,7 @@ public class HubLimelight extends Limelight {
             A = 0.003,
             B = -0.0968,
             C = 2.0034;
-    private static final double TOLERANCE = 0.5;
+    private static final double TOLERANCE = 1.5;
 
     /**
      * Constructs a new HubLimelight.

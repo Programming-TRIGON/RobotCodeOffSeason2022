@@ -87,7 +87,7 @@ public class RobotContainer {
         hubLimelight = new HubLimelight("limelight");
 
         foreignBallButton = new Button(() ->
-                !BallsCounter.getInstance().getFirstBall().equals("") && !BallsCounter.getInstance().getFirstBall()
+                !BallsCounter.getInstance().getFirstBall().isEmpty() && !BallsCounter.getInstance().getFirstBall()
                         .equals(DriverStation.getAlliance().name().toLowerCase())
         );
     }
@@ -124,7 +124,7 @@ public class RobotContainer {
         Swerve.getInstance().setDefaultCommand(swerveDriveCommand);
         Loader.getInstance().setDefaultCommand(defaultLoaderCommand);
         Transporter.getInstance().setDefaultCommand(defaultTransporterCommand);
-        Shooter.getInstance().setDefaultCommand(primeShooterCommand);
+        //        Shooter.getInstance().setDefaultCommand(primeShooterCommand);
         Pitcher.getInstance().setDefaultCommand(pitchCommand);
 
         Climber.getInstance().setDefaultCommand(new RunCommand(

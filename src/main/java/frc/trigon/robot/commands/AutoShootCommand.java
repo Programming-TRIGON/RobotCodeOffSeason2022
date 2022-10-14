@@ -3,6 +3,7 @@ package frc.trigon.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.trigon.robot.RobotContainer;
+import frc.trigon.robot.subsystems.backspinreducer.BackspinReducer;
 import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.pitcher.Pitcher;
 import frc.trigon.robot.subsystems.shooter.Shooter;
@@ -12,17 +13,19 @@ public class AutoShootCommand extends ParallelCommandGroup {
     Button canShootBtn;
 
     public AutoShootCommand() {
-        super();
-        canShootBtn = new Button(() -> canShoot() && isScheduled());
-        addCommands(
+        super(
                 Commands.getPrimeShooterByLimelightCommand(),
                 Commands.getPitchByLimelightCommand(),
                 Commands.getTurnToLimelight0Command()
         );
+        canShootBtn = new Button(() -> canShoot() && isScheduled());
         canShootBtn.whileHeld(
-                Loader.getInstance().getLoadCommand().alongWith(Transporter.getInstance().getLoadCommand()));
-        canShootBtn.whenReleased(
-                Loader.getInstance().getLoadCommand().withInterrupt(() -> !isScheduled()).withTimeout(0.5));
+                parallel(
+                        Loader.getInstance().getLoadCommand(),
+                        Transporter.getInstance().getLoadCommand(),
+                        BackspinReducer.getInstance().getReducerCommand()
+                )
+        );
     }
 
     private boolean canShoot() {

@@ -3,17 +3,15 @@ package frc.trigon.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.trigon.robot.RobotContainer;
 import frc.trigon.robot.subsystems.ballscounter.BallsCounter;
-import frc.trigon.robot.subsystems.loader.Loader;
 import frc.trigon.robot.subsystems.pitcher.Pitcher;
 import frc.trigon.robot.subsystems.shooter.Shooter;
 import frc.trigon.robot.subsystems.swerve.DriveWithTurnToTargetCommand;
-import frc.trigon.robot.subsystems.swerve.FieldRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.SelfRelativeSupplierDrive;
 import frc.trigon.robot.subsystems.swerve.TurnToTargetCommand;
-import frc.trigon.robot.subsystems.transporter.Transporter;
 import frc.trigon.robot.utilities.ShootingCalculations;
 
 import java.util.function.BooleanSupplier;
@@ -56,27 +54,27 @@ public class Commands {
     }
 
     public static Command getShootFromCloseThenReverseAutonomous() {
-        return new ShootFromCloseCommand().withInterrupt(() -> BallsCounter.getInstance().getFirstBall().equals(""))
+        return new ShootFromCloseCommand().withInterrupt(() -> BallsCounter.getInstance().getFirstBall().isEmpty())
                 .andThen(new SelfRelativeSupplierDrive(() -> -1.5, () -> 0, () -> 0).withTimeout(2));
     }
 
     public static Command getReverseThenShootAutonomous() {
         return new SelfRelativeSupplierDrive(() -> -1.0, () -> 0, () -> 0).withTimeout(2)
                 .andThen(new AutoShootCommand().withInterrupt(
-                        () -> BallsCounter.getInstance().getFirstBall().equals("")));
+                        () -> BallsCounter.getInstance().getFirstBall().isEmpty()));
     }
 
     public static Command getHailMaryAutonomous() {
-        return new ShootFromCloseCommand().withInterrupt(() -> BallsCounter.getInstance().getFirstBall().equals(""))
+        return new ShootFromCloseCommand().withInterrupt(() -> BallsCounter.getInstance().getFirstBall().isEmpty())
                 .andThen(new SelfRelativeSupplierDrive(() -> -0.5, () -> 0, () -> 0).withTimeout(2)
                         .andThen(new SelfRelativeSupplierDrive(() -> 0, () -> 0, () -> Math.PI / 3).withTimeout(3.25)
                                 .andThen(new SelfRelativeSupplierDrive(() -> 1, () -> 0, () -> 0).withTimeout(1.5)
                                         .raceWith(new CollectCommand().withInterrupt(() -> !BallsCounter.getInstance()
-                                                .getFirstBall().equals(""))
+                                                .getFirstBall().isEmpty())
                                         )
                                         .andThen(new AutoShootCommand().withInterrupt(
                                                 () -> BallsCounter.getInstance().getFirstBall()
-                                                        .equals(""))
+                                                        .isEmpty())
                                         )
                                 )
                         )
@@ -84,9 +82,10 @@ public class Commands {
     }
 
     public static Command newAuto() {
-        return new FieldRelativeSupplierDrive(() -> -0.5, () -> 0, () -> 0).withTimeout(1.8).andThen(
-                new AutoShootCommand()).withTimeout(6).andThen(Loader.getInstance().getLoadCommand()).alongWith(
-                Transporter.getInstance().getLoadCommand());
+        return new SequentialCommandGroup(
+                new SelfRelativeSupplierDrive(() -> -0.5, () -> 0, () -> 0).withTimeout(1),
+                new SelfRelativeSupplierDrive(() -> -0.5, () -> 0, () -> 0).withTimeout(3)
+        );
     }
 
     public static CommandBase getSwerveDriveWithHubLockCommand(DoubleSupplier x, DoubleSupplier y) {

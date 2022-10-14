@@ -64,9 +64,7 @@ public class Transporter extends SubsystemBase {
         return new RunCommand(() -> {
             if(
                     (!BallsCounter.getInstance().isLoaderSwitchHeld() &&
-                            !BallsCounter.getInstance().getFirstBall().equals("")) ||
-                            (!BallsCounter.getInstance().getSecondBall().equals("") &&
-                                    !BallsCounter.getInstance().isTouchingBall())
+                            !BallsCounter.getInstance().getFirstBall().isEmpty())
             )
                 setState(TransporterState.LOAD);
             else

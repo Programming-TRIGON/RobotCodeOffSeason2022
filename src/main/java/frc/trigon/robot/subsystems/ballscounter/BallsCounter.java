@@ -32,12 +32,12 @@ public class BallsCounter extends SubsystemBase {
     }
 
     void pushBalls() {
-        if(firstBall.equals("")) {
+        if(firstBall.isEmpty()){
             System.out.println("No balls to push!");
-        } else if(secondBall.equals("")) {
+        } else if(secondBall.isEmpty()){
             System.out.println("Pushing " + firstBall + " ball!");
             firstBall = "";
-        } else {
+        } else{
             System.out.println("Pushing " + firstBall + " and " + secondBall + " balls!");
             firstBall = secondBall;
             secondBall = "";
@@ -45,14 +45,14 @@ public class BallsCounter extends SubsystemBase {
     }
 
     void registerCurrentBall() {
-        if(firstBall.equals("")) {
+        if(firstBall.isEmpty()){
             firstBall = getColor();
             new WaitUntilCommand(this::isBallOut).andThen(
                             Loader.getInstance().getLoadCommand().until(() -> !BallsCounterConstants.LOADER_SWITCH.get()))
                     .schedule();
-        } else if(secondBall.equals("")) {
+        } else if(secondBall.isEmpty()){
             secondBall = getColor();
-        } else {
+        } else{
             System.out.println("No space for new ball!");
         }
     }
